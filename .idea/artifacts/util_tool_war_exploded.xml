@@ -18,6 +18,8 @@
           <element id="library" level="project" name="Maven: org.apache.poi:poi-ooxml-schemas:3.10.1" />
           <element id="library" level="project" name="Maven: org.apache.xmlbeans:xmlbeans:2.6.0" />
           <element id="library" level="project" name="Maven: stax:stax-api:1.0.1" />
+          <element id="library" level="project" name="Maven: com.itextpdf:itextpdf:5.5.10" />
+          <element id="library" level="project" name="Maven: com.itextpdf:itext-asian:5.2.0" />
           <element id="library" level="project" name="Maven: commons-io:commons-io:2.2" />
           <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.3.2" />
           <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.9" />
