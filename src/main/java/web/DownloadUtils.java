@@ -37,7 +37,7 @@ public class DownloadUtils {
             fis.close();
             // 清空response
             response.reset();
-            // 设置response的Header
+            // 设置response的Header,激活文件下载对话框
             response.addHeader("Content-Disposition", "attachment;filename=" + new String(filename.getBytes()));
             response.addHeader("Content-Length", "" + file.length());
             OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
