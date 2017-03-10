@@ -58,11 +58,7 @@ public class PDFWriter {
                 for (String field : inputTable.getFields()) {//遍历每一行中的每一个元素
                     //返回一个 Field 对象，该对象反映此 Class 对象所表示的类或接口的指定已声明字段。
                     Field f = userCla.getDeclaredField(field);
-//                    A value of {@code true} indicates that
-//     * the reflected object should suppress Java language access
-//     * checking when it is used.  A value of {@code false} indicates
-//                            * that the reflected object should enforce Java language access checks.
-                    f.setAccessible(true); //设置些属性是可以访问的
+                    f.setAccessible(true); //设置此属性是可以访问的，不经过java语言验证
                     Object val = f.get(t);//得到此属性的值
                     fontChinese.setColor(inputTable.getSytleConfig().getCellColor());
                     PdfPCell cell = new PdfPCell();
