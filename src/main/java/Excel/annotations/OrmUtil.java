@@ -12,6 +12,7 @@ import java.util.List;
 /**
  * Orm（对象关系映射）工具
  * @author Administrator
+ * 代维添加了部分注释
  *
  */
 public class OrmUtil {

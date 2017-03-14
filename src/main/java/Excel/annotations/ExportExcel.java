@@ -65,16 +65,17 @@ public class ExportExcel {
 	}
 	
 	/**
-	 * 构造函数
+	 * 构造函数（必须经过这一步）
 	 * @param title 表格标题，传“空值”，表示无标题
 	 * @param cls 实体对象，通过annotation.ExportField获取标题
 	 * @param type 导出类型（1:导出数据；2：导出模板）
 	 * @param groups 导入分组
 	 */
 	public ExportExcel(String title, Class<?> cls, int type, int... groups){
-		// Get annotation field 
+		// 获取cls的所有属性
 		Field[] fs = cls.getDeclaredFields();
 		for (Field f : fs){
+			//获取ExcelField.class类型的注解（如果存在多个注解）
 			ExcelField ef = f.getAnnotation(ExcelField.class);
 			if (ef != null && (ef.type()==0 || ef.type()==type)){
 				if (groups!=null && groups.length>0){
@@ -91,14 +92,16 @@ public class ExportExcel {
 							}
 						}
 					}
-				}else{
+				}else{//没有进行分组
+					//将注解和entity属性都添加进annotationList
 					annotationList.add(new Object[]{ef, f});
 				}
 			}
 		}
-		// Get annotation method
+		// 获取cls的所有方法
 		Method[] ms = cls.getDeclaredMethods();
 		for (Method m : ms){
+			//获取方法上的注解
 			ExcelField ef = m.getAnnotation(ExcelField.class);
 			if (ef != null && (ef.type()==0 || ef.type()==type)){
 				if (groups!=null && groups.length>0){
@@ -123,6 +126,7 @@ public class ExportExcel {
 		// Field sorting
 		Collections.sort(annotationList, new Comparator<Object[]>() {
 			public int compare(Object[] o1, Object[] o2) {
+				//按注解中的sort升序排列
 				return new Integer(((ExcelField)o1[0]).sort()).compareTo(
 						new Integer(((ExcelField)o2[0]).sort()));
 			};
@@ -130,6 +134,7 @@ public class ExportExcel {
 		// Initialize
 		List<String> headerList = new ArrayList();
 		for (Object[] os : annotationList){
+			//获取注解中的title值
 			String t = ((ExcelField)os[0]).title();
 			// 如果是导出，则去掉注释
 			if (type==1){
@@ -138,6 +143,7 @@ public class ExportExcel {
 					t = ss[0];
 				}
 			}
+			//将注解中的title值存入headerList
 			headerList.add(t);
 		}
 		initialize(title, headerList);
@@ -163,13 +169,15 @@ public class ExportExcel {
 	}
 	
 	/**
-	 * 初始化函数
+	 * 初始化函数，为head赋值
 	 * @param title 表格标题，传“空值”，表示无标题
 	 * @param headerList 表头列表
 	 */
 	private void initialize(String title, List<String> headerList) {
+		//excel可接受10000行
 		this.wb = new SXSSFWorkbook(10000);
 		this.sheet = wb.createSheet("Export");
+		//创建表格样式
 		this.styles = createStyles(wb);
 		// Create title
 		if (StringUtils.isNotBlank(title)){
@@ -189,6 +197,7 @@ public class ExportExcel {
 		headerRow.setHeightInPoints(16);
 		for (int i = 0; i < headerList.size(); i++) {
 			Cell cell = headerRow.createCell(i);
+			//为单元格设置样式
 			cell.setCellStyle(styles.get("header"));
 			String[] ss = StringUtils.split(headerList.get(i), "**", 2);
 			if (ss.length==2){
@@ -198,6 +207,7 @@ public class ExportExcel {
 				comment.setString(new XSSFRichTextString(ss[1]));
 				cell.setCellComment(comment);
 			}else{
+				//为单元格设值
 				cell.setCellValue(headerList.get(i));
 			}
 			sheet.autoSizeColumn(i);
@@ -219,13 +229,18 @@ public class ExportExcel {
 		
 		CellStyle style = wb.createCellStyle();
 		style.setAlignment(CellStyle.ALIGN_CENTER);
+		//垂直居中
 		style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+
 		Font titleFont = wb.createFont();
 		titleFont.setFontName("Arial");
 		titleFont.setFontHeightInPoints((short) 16);
 		titleFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
 		style.setFont(titleFont);
-		style.setWrapText(true);  
+
+		//是否包装
+		style.setWrapText(true);
+		//标题样式
 		styles.put("title", style);
 
 		style = wb.createCellStyle();
@@ -238,10 +253,14 @@ public class ExportExcel {
 		style.setTopBorderColor(IndexedColors.GREY_50_PERCENT.getIndex());
 		style.setBorderBottom(CellStyle.BORDER_THIN);
 		style.setBottomBorderColor(IndexedColors.GREY_50_PERCENT.getIndex());
+
+
 		Font dataFont = wb.createFont();
 		dataFont.setFontName("Arial");
 		dataFont.setFontHeightInPoints((short) 10);
 		style.setFont(dataFont);
+
+		//字体样式
 		styles.put("data", style);
 		
 		style = wb.createCellStyle();
@@ -272,6 +291,8 @@ public class ExportExcel {
 		headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
 		headerFont.setColor(IndexedColors.WHITE.getIndex());
 		style.setFont(headerFont);
+
+		//header样式
 		styles.put("header", style);
 		
 		return styles;
@@ -298,7 +319,7 @@ public class ExportExcel {
 	}
 	
 	/**
-	 * 添加一个单元格
+	 * 添加一个单元格，并为单元格赋值
 	 * @param row 添加的行
 	 * @param column 添加列号
 	 * @param val 添加值

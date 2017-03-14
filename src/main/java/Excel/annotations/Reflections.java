@@ -35,7 +35,9 @@ public class Reflections {
 	public static Object invokeGetter(Object obj, String propertyName) {
 		Object object = obj;
 		for (String name : StringUtils.split(propertyName, ".")){
+			//StringUtils.capitalize(name)使其首字母大写
 			String getterMethodName = GETTER_PREFIX + StringUtils.capitalize(name);
+			//调用getterMethodName方法
 			object = invokeMethod(object, getterMethodName, new Class[] {}, new Object[] {});
 		}
 		return object;
