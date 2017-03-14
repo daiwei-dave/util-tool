@@ -62,7 +62,7 @@ public class ImportExcel<T> {
 	 */
 	// List<Object[]> headerList = new ArrayList();
 
-	List<ExcelField> headerList = new ArrayList<>();
+	List<ExcelField> headerList = new ArrayList<ExcelField>();
 
 	/**
 	 * 
@@ -250,7 +250,7 @@ public class ImportExcel<T> {
 			throws InstantiationException, IllegalAccessException,
 			InvocationTargetException, NoSuchMethodException {
 
-		List<T> dataList = new ArrayList<>();
+		List<T> dataList = new ArrayList<T>();
 		if (CollectionUtils.isEmpty(headerList)) {
 			return dataList;
 		}
