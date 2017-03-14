@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Orm工具
+ * Orm（对象关系映射）工具
  * @author Administrator
  *
  */
@@ -55,7 +55,7 @@ public class OrmUtil {
 	}
 
 	/**
-	 * 转换值
+	 * 转换值，将从excel获取的值转换为注解所表示的类型
 	 * @param value
 	 * @param dataType
 	 * @return

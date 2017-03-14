@@ -29,7 +29,7 @@ import java.util.List;
 
 /**
  * 导入Excel文件（支持“XLS”和“XLSX”格式）
- * 
+ * 代维添加注释
  * @version 2013-03-10
  */
 public class ImportExcel<T> {
@@ -58,10 +58,9 @@ public class ImportExcel<T> {
 	private int dataNum;
 
 	/**
+	 *
 	 * 注解列表（Object[]{ ExcelField, Field/Method }）
 	 */
-	// List<Object[]> headerList = new ArrayList();
-
 	List<ExcelField> headerList = new ArrayList<ExcelField>();
 
 	/**
@@ -102,11 +101,15 @@ public class ImportExcel<T> {
 	}
 
 
-
+	/**
+	 * 初始化entity的注解
+	 * @param cls
+	 */
 	private void initExcelHeaderCell(Class<?> cls) {
-		// Get annotation field
+		// 获取cls的所有属性
 		Field[] fs = cls.getDeclaredFields();
 		for (Field f : fs) {
+			//获取属性对应的注解
 			ExcelField ef = f.getAnnotation(ExcelField.class);
 			if (ef != null) {
 				headerList.add(ef);
@@ -114,7 +117,7 @@ public class ImportExcel<T> {
 		}
 		Collections.sort(headerList, new Comparator<ExcelField>() {
 			/**
-			 * 排序
+			 * 升序排序
 			 */
 			public int compare(ExcelField ef1, ExcelField ef2) {
 				return ef1.sort() - ef2.sort();
@@ -123,6 +126,12 @@ public class ImportExcel<T> {
 
 	}
 
+	/**
+	 * 检验参数
+	 * @param fileName
+	 * @param is
+	 * @param sheetIndex
+	 */
 	private void checkParam(String fileName, InputStream is, int sheetIndex) {
 		try {
 			if (StringUtils.isBlank(fileName)) {
@@ -132,9 +141,11 @@ public class ImportExcel<T> {
 			} else if (fileName.toLowerCase().endsWith("xlsx")) {
 				this.workbook = new XSSFWorkbook(is);
 			} else {
+				//文件类型错误
 				throw new RuntimeException("common.message.upload_file_error");
 			}
 			if (this.workbook.getNumberOfSheets() < sheetIndex) {
+				//sheetIndex错误，excel表中没有对应的sheetIndex
 				throw new RuntimeException("common.message.upload_file_error");
 			}
 		} catch (Exception e) {
@@ -212,8 +223,12 @@ public class ImportExcel<T> {
 		Object val = "";
 		try {
 			Cell cell = row.getCell(column);
+			/**
+			 * 类型匹配
+			 */
 			if (cell != null) {
-				if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+				if (cell.getCellType() == Cell.CELL_TYPE_STRING) {//判断是否为string类型
+					//赋值
 					val = cell.getStringCellValue();
 				} else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
 					val = cell.getNumericCellValue();
@@ -259,12 +274,13 @@ public class ImportExcel<T> {
 		//备注：改成i <= this.getLastDataRowNum()才能读取到最后一行
 		// Get excel data
 		for (int i = this.getDataRowNum(); i <= this.getLastDataRowNum(); i++) {
+			//获取cls的实列
 			T model = OrmUtil.createModel(cls);
 			int column = 0;
 			StringBuilder builder = new StringBuilder();
 			for (ExcelField field : headerList) {
 				Row row = this.getRow(i);
-				// Get param type and type cast
+				//  获取注解返回类型
 				String valType = field.dataType();
 				Object val = this.getCellValue(row, column++,
 						isClassType(String.class, valType));
@@ -272,6 +288,7 @@ public class ImportExcel<T> {
 					continue;
 				}
 				try {
+					//转换后的值
 					val = OrmUtil.convertValue(val, valType);
 				} catch (Exception ex) {
 					ex.printStackTrace();
@@ -283,9 +300,11 @@ public class ImportExcel<T> {
 				if (val == null) {
 					val = "";
 				}
+				//entity set value
 				PropertyUtils.setProperty(model, field.property(), val);
 				builder.append(val).append(", ");
 			}
+			//将entity实列存入datalist
 			dataList.add(model);
 			log.debug("Read success: [" + i + "] " + builder.toString());
 		}
@@ -300,26 +319,33 @@ public class ImportExcel<T> {
 	}
 
 	// 不同国际化导出导入，title不会匹配，不同语言条件的导入导出也不会匹配
+
+	/**
+	 * 检验读取的excel字段与entity中的注解是否匹配
+	 */
 	private void validateImportFileFormat() {
+		//获取行对象
 		Row row = this.getRow(this.headerNum);
 		int column = 0;
 		for (ExcelField cell : headerList) {
+			//获取注解中的title值
 			String headTitle = cell.title();
 			Object val = this.getCellValue(row, column++, true);
 			if (val == null || !val.toString().equals(headTitle)) {
+				//excel标题与实体中所注解的标题不对应
 				String temp = "common.message.upload_file_title_error";
 				throw new RuntimeException(String.format(temp, val, headTitle));
 			}
 		}
 		Object val = this.getCellValue(row, column++, true);
-		if (val != null && StringUtils.isNotEmpty(val.toString())) {
+		if (val != null && StringUtils.isNotEmpty(val.toString())) {//读取到多余的字段也使其抛出异常
 			String temp = "common.message.upload_file_title_error";
 			throw new RuntimeException(String.format(temp, val, ""));
 		}
 	}
 
 	/**
-     * 是否为class类型
+     * 是否为string类型
      * 
      * @param clazz
      * @param className
