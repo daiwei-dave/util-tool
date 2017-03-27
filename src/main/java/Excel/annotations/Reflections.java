@@ -46,6 +46,9 @@ public class Reflections {
 	/**
 	 * 调用Setter方法, 仅匹配方法名。
 	 * 支持多级，如：对象名.对象名.方法
+	 * @param obj   类名
+	 * @param propertyName
+	 * @param value   方法参数
 	 */
 	public static void invokeSetter(Object obj, String propertyName, Object value) {
 		Object object = obj;
@@ -73,6 +76,7 @@ public class Reflections {
 
 		Object result = null;
 		try {
+			//获取变量值
 			result = field.get(obj);
 		} catch (IllegalAccessException e) {
 			logger.error("不可能抛出的异常{}", e.getMessage());
@@ -91,6 +95,7 @@ public class Reflections {
 		}
 
 		try {
+			//设置变量值
 			field.set(obj, value);
 		} catch (IllegalAccessException e) {
 			logger.error("不可能抛出的异常:{}", e.getMessage());
@@ -164,9 +169,11 @@ public class Reflections {
 	 */
 	public static Method getAccessibleMethod(final Object obj, final String methodName,
 			final Class<?>... parameterTypes) {
+		//检验参数
 		Validate.notNull(obj, "object can't be null");
 		Validate.notBlank(methodName, "methodName can't be blank");
 
+		//如向上转型到Object仍无法找到, 返回null.
 		for (Class<?> searchType = obj.getClass(); searchType != Object.class; searchType = searchType.getSuperclass()) {
 			try {
 				Method method = searchType.getDeclaredMethod(methodName, parameterTypes);
@@ -194,6 +201,7 @@ public class Reflections {
 		for (Class<?> searchType = obj.getClass(); searchType != Object.class; searchType = searchType.getSuperclass()) {
 			Method[] methods = searchType.getDeclaredMethods();
 			for (Method method : methods) {
+				//类的方法名与methodName匹配
 				if (method.getName().equals(methodName)) {
 					makeAccessible(method);
 					return method;
@@ -204,9 +212,10 @@ public class Reflections {
 	}
 
 	/**
-	 * 改变private/protected的方法为public，尽量不调用实际改动的语句，避免JDK的SecurityManager抱怨。
+	 * 设置方法为可访问
 	 */
 	public static void makeAccessible(Method method) {
+		//检查方法的修饰符
 		if ((!Modifier.isPublic(method.getModifiers()) || !Modifier.isPublic(method.getDeclaringClass().getModifiers()))
 				&& !method.isAccessible()) {
 			method.setAccessible(true);
@@ -214,9 +223,10 @@ public class Reflections {
 	}
 
 	/**
-	 * 改变private/protected的成员变量为public，尽量不调用实际改动的语句，避免JDK的SecurityManager抱怨。
+	 * 设置变量为可访问
 	 */
 	public static void makeAccessible(Field field) {
+		//检查变量的修饰符
 		if ((!Modifier.isPublic(field.getModifiers()) || !Modifier.isPublic(field.getDeclaringClass().getModifiers()) || Modifier
 				.isFinal(field.getModifiers())) && !field.isAccessible()) {
 			field.setAccessible(true);
@@ -255,7 +265,7 @@ public class Reflections {
 			logger.warn(clazz.getSimpleName() + "'s superclass not ParameterizedType");
 			return Object.class;
 		}
-
+		//返回实际类型参数的类型
 		Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
 
 		if (index >= params.length || index < 0) {
@@ -267,7 +277,7 @@ public class Reflections {
 			logger.warn(clazz.getSimpleName() + " not set the actual class on superclass generic parameter");
 			return Object.class;
 		}
-
+		//返回参数的类型，并转换为class形式
 		return (Class) params[index];
 	}
 	
