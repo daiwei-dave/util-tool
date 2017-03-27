@@ -12,9 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by zhangzhaoyang on 2017/2/11.
- */
+
 public class PDFWriter {
 
     public static <T> void writePDFTables(List<PDFInputTable<T>> tables, DateFormat dateFormat, HttpServletResponse response) throws Exception {

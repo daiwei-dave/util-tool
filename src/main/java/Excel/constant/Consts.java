@@ -1,7 +1,7 @@
 package Excel.constant;
 
 /**
- * Created by zhangzhaoyang on 2017/2/11.
+ * 
  */
 public class Consts {
 

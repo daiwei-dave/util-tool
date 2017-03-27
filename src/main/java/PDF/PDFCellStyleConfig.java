@@ -5,7 +5,7 @@ import com.itextpdf.text.Rectangle;
 
 /**
  * pdf单元样式设置配置
- * Created by zhangzhaoyang on 2017/2/11.
+ * Created by daiwei on 2017/2/11.
  */
 public class PDFCellStyleConfig {
 
