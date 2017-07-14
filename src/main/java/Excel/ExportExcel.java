@@ -17,6 +17,7 @@ import java.util.*;
 
 /**
  * Created by daiwei on 2017/6/26.
+ * 导出excel：http://www.cnblogs.com/rookie404/p/5925385.html
  */
 public class ExportExcel {
     /**
@@ -273,6 +274,7 @@ public class ExportExcel {
 //            Row bodyRow = sheet.createRow(index++);
 //            for (int j = 0; j < keys.length; j++) {
 //                Cell bodyCell = bodyRow.createCell(j);
+                    //将null转为空字符串
 //                bodyCell.setCellValue(list.get(i).get(keys[j]) == null ?
 //                        " " : list.get(i).get(keys[j]).toString());
 //                bodyCell.setCellStyle(bodyStyle);
