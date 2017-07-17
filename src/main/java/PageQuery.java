@@ -1,5 +1,6 @@
 /**
  * Created by daiwei on 2017/7/14.
+ * 分页类
  */
 public class PageQuery {
     // 当前第几页
