@@ -111,8 +111,12 @@ public class ImpotExcel {
 //        String errorMsg = "";
 //        //得到第一个shell
 //        Sheet sheet = wb.getSheetAt(0);
-//        //得到Excel的行数
-//        int totalRows = sheet.getLastRowNum();
+            //获取excel的实际行数
+//          int totalRows = sheet.getPhysicalNumberOfRows();
+//          //判断是否有空行
+//          if (totalRows < sheet.getLastRowNum()) {
+//             totalRows = sheet.getLastRowNum();
+//         }
 //        //总列数
 //        int totalCells = 0;
 //        //得到Excel的列数(前提是有行数)，从第二行算起
@@ -125,6 +129,7 @@ public class ImpotExcel {
 //        //循环Excel行数,从第二行开始。标题不入库
 //        for (int r = 1; r <= totalRows; r++) {
 //            String rowMessage = "";
+                //行对象
 //            Row row = sheet.getRow(r);
 //            if (row == null) {
 //                errorMsg += br + "第" + (r + 1) + "行数据有问题，请仔细检查！";
@@ -189,9 +194,6 @@ public class ImpotExcel {
 //        }
 //        //全部验证通过才导入到数据库
 //        if (StringUtils.isEmpty(errorMsg)) {
-//            for (ProcePotInput potInput : ProcePotInputList) {
-//                //        this.saveUserKnowledge(userKnowledgeBase, userName);
-//            }
 //            errorMsg = "导入成功，共" + ProcePotInputList.size() + "条数据！";
 //        }
 //        return ProcePotInputList;

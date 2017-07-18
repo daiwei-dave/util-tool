@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cqqndl.dw.dao.UserDao">
+	<resultMap id="baseResultMap" type="com.cqqndl.dw.entity.User">
+		<result column="id" property="id" />
+		<result column="username" property="username" />
+		<result column="password" property="password" />
+		<result column="state" property="state" />
+		<result column="create_time" property="createTime" />
+		<result column="name" property="name" />
+		<result column="position" property="position" />
+		<result column="response" property="response" />
+		<result column="division" property="division" />
+
+		<result column="PG_OK" property="pgOk" />
+		<result column="ROLE_ID" property="roleId" />
+		<result column="ROLE_NM" property="roleNm" />
+		<result column="PRVLG_ID" property="prvlgId" />
+		<result column="pg_lvl_id" property="pgLvlId" />
+
+
+	</resultMap>
+
+	<resultMap id="resultMap" type="com.cqqndl.dw.entity.User">
+		<result column="id" property="id" />
+		<result column="username" property="username" />
+		<result column="password" property="password" />
+		<result column="state" property="state" />
+		<result column="create_time" property="createTime" />
+		<result column="name" property="name" />
+		<result column="position" property="position" />
+		<result column="response" property="response" />
+		<result column="division" property="division" />
+		<collection property="roleList" ofType="com.cqqndl.dw.entity.Role">
+			<result property="roleId" column="role_id"  />
+			<result property="roleNm" column="role_nm"  />
+		</collection>
+	</resultMap>
+
+	<sql id="baseColumnList">
+		id,username,password,state,create_time,name,position,response,division
+	</sql>
+
+	<sql id="baseWhereClause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null">
+				and id=#{id}
+			</if>
+			<if test="username != null">
+				and username=#{username}
+			</if>
+			<if test="password != null">
+				and password=#{password}
+			</if>
+			<if test="state != null">
+				and state=#{state}
+			</if>
+			<if test="createTime != null">
+				and create_time=#{createTime}
+			</if>
+			<if test="name != null">
+				and name=#{name}
+			</if>
+			<if test="position != null">
+				and position=#{position}
+			</if>
+			<if test="response != null">
+				and response=#{response}
+			</if>
+			<if test="division != null">
+				and division=#{division}
+			</if>
+		</trim>
+	</sql>
+
+	<sql id="selectiveSetClause">
+		<trim suffixOverrides=",">
+				username=#{username,jdbcType=VARCHAR},
+				password=#{password,jdbcType=VARCHAR},
+				name=#{name,jdbcType=VARCHAR},
+				position=#{position,jdbcType=VARCHAR},
+				response=#{response,jdbcType=VARCHAR},
+				division=#{division,jdbcType=VARCHAR},
+		</trim>
+	</sql>
+
+
+	<!--oracle设置了序列号，故新增时也将插入主键-->
+	<insert id="add" parameterType="Object">
+		<selectKey  resultType="java.lang.Integer" order="BEFORE" keyProperty="id">
+			SELECT T_USER_SEQ.Nextval as id from DUAL
+		</selectKey>
+		insert into
+		T_USER(id,username,password,name,position,response,division)
+		values(#{id,jdbcType=DECIMAL},#{username,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{position,jdbcType=VARCHAR},#{response,jdbcType=VARCHAR},#{division,jdbcType=VARCHAR})
+	</insert>
+
+	<update id="update" parameterType="Object">
+		update T_USER set
+		username=#{username,jdbcType=VARCHAR},password=#{password,jdbcType=VARCHAR},state=#{state,jdbcType=VARCHAR},name=#{name,jdbcType=VARCHAR}
+		where id=#{id}
+	</update>
+
+	<update id="updateBySelective" parameterType="Object">
+		update T_USER set
+		<include refid="selectiveSetClause" />
+		where id=#{id}
+	</update>
+
+	<delete id="delete" parameterType="Object">
+		delete from T_USER where
+		id=#{id}
+	</delete>
+
+	<delete id="deleteUserByUserId" parameterType="Object">
+		delete from T_USER where
+		id=#{id}
+	</delete>
+
+		<!--
+		一对多映射
+		-->
+	<select id="queryUserById" resultMap="resultMap" parameterType="Object">
+		SELECT
+		t.ID,
+		tr.ROLE_ID,
+		tr.ROLE_NM
+		from
+		(select TU.*,TRUR.ROLE_ID	from T_USER tu
+		LEFT JOIN T_RLTN_USER_ROLE trur
+		on tu.ID=TRUR.USER_ID) t
+		LEFT JOIN T_ROLE tr
+		ON t.ROLE_ID=TR.ROLE_ID
+		where t.ID=#{id}
+	</select>
+
+	<select id="queryByCount" resultType="java.lang.Integer"
+		parameterType="Object">
+		select count(1) from T_USER
+		<include refid="baseWhereClause" />
+	</select>
+
+	<select id="queryByList" resultMap="baseResultMap"
+		parameterType="Object">
+		select
+		<include refid="baseColumnList" />
+		from T_USER
+		<include refid="baseWhereClause" />
+	</select>
+
+
+	<select id="getAllUserList" resultMap="resultMap"
+			parameterType="Object">
+		SELECT t.*,
+		tr.ROLE_ID,
+		tr.ROLE_NM
+		from
+		(select TU.*,TRUR.ROLE_ID from T_USER tu
+		LEFT JOIN T_RLTN_USER_ROLE trur
+		on tu.ID=TRUR.USER_ID) t
+		LEFT JOIN T_ROLE tr
+		ON t.ROLE_ID=TR.ROLE_ID
+		where 1=1
+		<trim suffixOverrides=",">
+
+			<if test="name != null and name != ''">
+				AND t.name LIKE CONCAT('%', CONCAT ('${name}','%'))
+			</if>
+			<if test="roleId != null and roleId != ''">
+				AND tr.ROLE_ID=#{roleId}
+			</if>
+		</trim>
+		ORDER BY t.id
+	</select>
+
+	<select id="getUserList" resultMap="resultMap"
+			parameterType="Object">
+		SELECT t.* ,
+		tr.ROLE_ID AS role_role_id,
+		tr.ROLE_NM AS role_role_nm
+		from
+		(select TU.*,TRUR.ROLE_ID,ROWNUM row_num from T_USER tu
+		LEFT JOIN T_RLTN_USER_ROLE trur
+		on tu.ID=TRUR.USER_ID) t
+		LEFT JOIN T_ROLE tr
+		ON t.ROLE_ID=TR.ROLE_ID
+		where 1=1
+		<trim suffixOverrides=",">
+
+			<if test="username != null and username != ''">
+				AND t.username=#{username}
+			</if>
+			<if test="roleId != null and roleId != ''">
+				AND tr.ROLE_ID=#{roleId}
+			</if>
+			t.row_num BETWEEN #{start} and #{end}
+		</trim>
+		ORDER BY t.id
+
+	</select>
+
+
+
+	<update id="updatePwd" parameterType="Object">
+		update T_USER set
+            password=#{newPassword}
+		where password=#{password} AND username=#{username}
+	</update>
+
+
+	<select id="queryUsersByUsername" resultMap="baseResultMap"
+			parameterType="Object">
+		SELECT t3.*,TU.* from
+(SELECT t2.*,TRUR.USER_ID FROM
+(select t1.*,trrp.ROLE_ID from
+(SELECT TPL.PG_LVL_ID,TPL.PG_OK,TRPP.PRVLG_ID from  T_PAGE_LVL tpl
+INNER JOIN T_RLTN_PRVLG_PG trpp
+on TPL.PG_LVL_ID=TRPP.PG_LVL_ID)t1
+inner join T_RLTN_ROLE_PRVLG trrp
+on t1.PRVLG_ID=TRRP.PRVLG_ID)t2
+INNER JOIN T_RLTN_USER_ROLE trur
+on T2.ROLE_ID=TRUR.ROLE_ID)t3
+RIGHT JOIN T_USER tu
+ON T3.USER_ID=tu.ID
+where TU.username=#{username}
+ORDER BY T3.PG_LVL_ID
+	</select>
+
+</mapper>

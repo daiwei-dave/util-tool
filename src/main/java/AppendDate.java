@@ -12,6 +12,21 @@ import java.util.Map.Entry;
 /**
  * Created by daiwei on 2017/4/11.
  * 日期拼接成连续
+ *
+ *对结果位数进行保留
+ *DecimalFormat df = new DecimalFormat("#.00");
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
  */
 @Service("alumYieldFacade")
 public class AppendDate {
