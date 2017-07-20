@@ -86,7 +86,7 @@ public class DateUtil {
 	public static void main(String[] args) throws Exception {
 
 		//测试getDatesBetweenTwoDate
-		String start = "2014-01-03";
+		String start = "2014-03-05";
 		String end = "2014-03-05";
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 //		Date dBegin = sdf.parse(start);
@@ -112,6 +112,9 @@ public class DateUtil {
 	public static List<Date> getDatesBetweenTwoDate(Date beginDate, Date endDate) {
 		List<Date> lDate = new ArrayList<Date>();
 		lDate.add(beginDate);// 把开始时间加入集合
+		if(beginDate.getTime()==endDate.getTime()){
+			return lDate;
+		}
 		Calendar cal = Calendar.getInstance();
 		// 使用给定的 Date 设置此 Calendar 的时间
 		cal.setTime(beginDate);
