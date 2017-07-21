@@ -6,7 +6,8 @@ import java.util.Random;
 import java.util.concurrent.*;
 
 /**
- * FutureTask实现多线程
+ * FutureTask实现多线程，让多个线程并行去执行任务
+ * 应用场景：for循环中遍历消耗时间长，可用多线程并行执行
  * 参考自：http://liuyieyer.iteye.com/blog/2083111
  * Created by daiwei on 2017/7/20.
  */
@@ -20,13 +21,15 @@ public class TestMain {
             e.printStackTrace();
         }
     }
+
+
     void exec() throws ExecutionException, InterruptedException {
         //进行异步任务列表
         List<FutureTask<Integer>> futureTasks = new ArrayList<FutureTask<Integer>>();
         //线程池 初始化十个线程 和JDBC连接池是一个意思 实现重用
-        ExecutorService executorService = Executors.newFixedThreadPool(5);
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
         long start = System.currentTimeMillis();
-        //类似与run方法的实现 Callable是一个接口，在call中手写逻辑代码
+        //类似与run方法的实现 Callable是一个接口，在call中手写逻辑代码，使用Callable对象可以能使任务返回执行的结果。
         Callable<Integer> callable = new Callable<Integer>() {
             public Integer call() throws Exception {
                 Integer res = new Random().nextInt(100);
@@ -38,6 +41,7 @@ public class TestMain {
         for(int i=0;i<10;i++){
             //创建一个异步任务
             FutureTask<Integer> futureTask = new FutureTask<Integer>(callable);
+            //将返回结果放进list
             futureTasks.add(futureTask);
             //提交异步任务到线程池，让线程池管理任务 特爽把。
             //由于是异步并行任务，所以这里并不会阻塞
