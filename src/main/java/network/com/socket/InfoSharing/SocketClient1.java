@@ -1,4 +1,4 @@
-package network;
+package network.com.socket.InfoSharing;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -8,7 +8,7 @@ import java.net.Socket;
 /**
  * Created by daiwei on 2017/7/21.
  */
-public class SocketClient2 extends Socket{
+public class SocketClient1 extends Socket{
     private static final String SERVER_IP ="127.0.0.1";
     private static final int SERVER_PORT =2013;
 
@@ -17,7 +17,7 @@ public class SocketClient2 extends Socket{
     private BufferedReader in;
     public static void main(String[] args) {
         try {
-            new SocketClient2();//启动客户端
+            new SocketClient1();//启动客户端
         }catch (Exception e) {
         }
     }
@@ -25,7 +25,7 @@ public class SocketClient2 extends Socket{
     /**
      * 与服务器连接，并输入发送消息
      */
-    public SocketClient2()throws Exception{
+    public SocketClient1()throws Exception{
         super(SERVER_IP, SERVER_PORT);
         client =this;
         out =new PrintWriter(this.getOutputStream(),true);

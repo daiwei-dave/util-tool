@@ -1,4 +1,4 @@
-package network.com.socket;
+package network.com.socket.InfoSharing;
 
 import java.io.BufferedReader;
 import java.io.IOException;
