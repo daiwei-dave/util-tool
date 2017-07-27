@@ -1,5 +1,7 @@
 package Validation;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -51,9 +53,13 @@ public class PhoneValidationUtils {
      * @return
      */
     public static String  convertPhone(String str) {
-        DecimalFormat df = new DecimalFormat("#");
-        Double phone = Double.parseDouble(str);
-        return df.format(phone);
+        if (!StringUtils.isBlank(str)){
+            DecimalFormat df = new DecimalFormat("#");
+            Double phone = Double.parseDouble(str);
+            return df.format(phone);
+        }else {
+            return "";
+        }
     }
     public static void main(String[] args) {
 
