@@ -89,6 +89,7 @@ public class DateUtil {
 		String start = "2014-03-05";
 		String end = "2014-03-05";
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		System.out.println("hah");
 //		Date dBegin = sdf.parse(start);
 //		Date dEnd = sdf.parse(end);
 //		List<Date> listDate = getDatesBetweenTwoDate(dBegin, dEnd);
