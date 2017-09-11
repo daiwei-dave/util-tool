@@ -1,10 +1,4 @@
-package Excel.gaosheng;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.Date;
+package Excel.BigExcel;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -15,15 +9,22 @@ import org.apache.poi.xssf.model.SharedStringsTable;
 import org.apache.poi.xssf.model.StylesTable;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
-import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
+import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-public abstract class BigExcelReader{
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
+
+/**
+ * @Description 大容量excel解析
+ * @Author daiwei
+ * @Date 2017/9/6
+ * @Copyright(c) gome inc Gome Co.,LTD
+ */
+public abstract class BigExcelReaderUtil {
 
     enum xssfDataType {
         BOOL, ERROR, FORMULA, INLINESTR, SSTINDEX, NUMBER,
@@ -42,6 +43,7 @@ public abstract class BigExcelReader{
     private XMLReader parser;
     private InputSource sheetSource;
     private int index = 0;
+    OPCPackage pkg=null;
 
     /**
      * 读大数据量Excel
@@ -52,8 +54,8 @@ public abstract class BigExcelReader{
      * @throws OpenXML4JException
      * @throws SAXException
      */
-    public BigExcelReader(String filename) throws IOException, OpenXML4JException, SAXException{
-        OPCPackage pkg = OPCPackage.open(filename);
+    public BigExcelReaderUtil(String filename) throws IOException, OpenXML4JException, SAXException{
+        pkg = OPCPackage.open(filename);
         init(pkg);
     }
 
@@ -66,7 +68,7 @@ public abstract class BigExcelReader{
      * @throws OpenXML4JException
      * @throws SAXException
      */
-    public BigExcelReader(File file) throws IOException, OpenXML4JException, SAXException{
+    public BigExcelReaderUtil(File file) throws IOException, OpenXML4JException, SAXException{
         OPCPackage pkg = OPCPackage.open(file);
         init(pkg);
     }
@@ -79,7 +81,7 @@ public abstract class BigExcelReader{
      * @throws OpenXML4JException
      * @throws SAXException
      */
-    public BigExcelReader(InputStream in) throws IOException, OpenXML4JException, SAXException{
+    public BigExcelReaderUtil(InputStream in) throws IOException, OpenXML4JException, SAXException{
         OPCPackage pkg = OPCPackage.open(in);
         init(pkg);
     }
@@ -120,6 +122,14 @@ public abstract class BigExcelReader{
             if(sheet != null){
                 try {
                     sheet.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            //关闭pkg
+            if (pkg!=null){
+                try {
+                    pkg.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

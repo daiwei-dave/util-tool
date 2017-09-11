@@ -1,5 +1,5 @@
-package Excel.gaosheng;
-import Excel.gaosheng.BigExcelReader;
+package Excel.BigExcel;
+
 
 import java.util.Arrays;
 
@@ -10,12 +10,16 @@ import java.util.Arrays;
  */
 public class BigExcelReaderTest {
     public static void main(String[] args) throws Exception{
-        String filepath = "d:/竞争力模型数据-样机管理-201731.xlsx";
-        BigExcelReader reader = new BigExcelReader(filepath) {
+        String filepath = "d:/竞争力模型-样机管理-201731.xlsx";
+ //       BigExcelReader reader = new BigExcelReader(filepath) {
+        BigExcelReaderUtil reader=new BigExcelReaderUtil(filepath) {
             @Override
             protected void outputRow(String[] datas, int[] rowTypes, int rowIndex) {
                 // 此处输出每一行的数据
                 System.out.println(Arrays.toString(datas));
+                if (rowIndex==10){
+                    return;
+                }
 //                for (int i = 0; i <datas.length ; i++) {
 //                    String s=datas[i];
 //                }
