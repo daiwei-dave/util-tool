@@ -10,7 +10,9 @@ import java.util.Arrays;
  */
 public class BigExcelReaderTest {
     public static void main(String[] args) throws Exception{
-        String filepath = "d:/竞争力模型-样机管理-201731.xlsx";
+       // String filepath = "d:/竞争力模型-样机管理-201731.xlsx";
+        String filepath = "E:/poiTest.xlsx";
+
  //       BigExcelReader reader = new BigExcelReader(filepath) {
         BigExcelReaderUtil reader=new BigExcelReaderUtil(filepath) {
             @Override
@@ -20,9 +22,9 @@ public class BigExcelReaderTest {
                 if (rowIndex==10){
                     return;
                 }
-//                for (int i = 0; i <datas.length ; i++) {
-//                    String s=datas[i];
-//                }
+                for (int i = 0; i <datas.length ; i++) {
+                    String s=datas[i];
+                }
             }
         };
         // 执行解析
