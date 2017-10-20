@@ -1,0 +1,116 @@
+
+
+
+
+springMVC优点：
+1.看起来更优雅
+
+
+
+一。Model  ModelMap ModelAndView
+
+Model 是一个接口， 其实现类为ExtendedModelMap，继承了ModelMap类。
+ModelMap
+ModelMap对象主要用于传递控制方法处理数据到结果页面，也就是说我们把结果页面上需要的数据放到ModelMap对象中即可，
+他的作用类似于request对象的setAttribute方法的作用，用来在一个请求过程中传递处理的数据。通过以下方法向页面传递参数：
+addAttribute(String key,Object value);
+在页面上可以通过el变量方式$key或者bboss的一系列数据展示标签获取并展示modelmap中的数据。
+modelmap本身不能设置页面跳转的url地址别名或者物理跳转地址，那么我们可以通过控制器方法的返回值来设置跳转url地址别名或者物理跳转地址。
+
+ModelAndView
+ModelAndView对象有两个作用：
+作用一 设置转向地址,如下所示（这也是ModelAndView和ModelMap的主要区别）
+ModelAndView view = new ModelAndView("path:ok");
+
+作用二 用于传递控制方法处理结果数据到结果页面，也就是说我们把需要在结果页面上需要的数据放到ModelAndView对象中即可，
+他的作用类似于request对象的setAttribute方法的作用，用来在一个请求过程中传递处理的数据。通过以下方法向页面传递参数：
+addObject(String key,Object value);
+
+在页面上可以通过el变量方式$key或者bboss的一系列数据展示标签获取并展示ModelAndView中的数据。
+
+如：
+public ModelAndView xxxxmethod(String someparam)
+{
+     //省略方法处理逻辑若干
+      //构建ModelAndView实例，并设置跳转地址
+      ModelAndView view = new ModelAndView("path:handleok");
+      //将数据放置到ModelAndView对象view中,第二个参数可以是任何java类型
+      view.addObject("key",someparam);
+     ......
+     //返回ModelAndView对象view
+      return view;
+}
+
+
+
+
+
+二。springMVC的数据绑定问题
+
+1.当参数为Int是，不穿参数会报错。但使用Integer不传参数不会报错，只是传的参数设为null
+
+
+三。常见注解
+1.@ResponseBody
+作用： 
+      该注解用于将Controller的方法返回的对象，通过适当的HttpMessageConverter转换为指定格式后，写入到Response对象的body数据区。
+使用时机：
+      返回的数据不是html标签的页面，而是其他某种格式的数据时（如json、xml等）使用；
+
+
+如
+@RequestMapping(value="/{seckillId}/detail",method=RequestMethod.GET)
+public String detail(@PathVariable("seckillId") Long seckillId,Model model)
+
+3.@RequestMapping
+
+RequestMapping是一个用来处理请求地址映射的注解，可用于类或方法上。用于类上，表示类中的所有响应请求的方法都是以该地址作为父路径。
+RequestMapping注解有六个属性，下面我们把她分成三类进行说明。
+1） value， method；
+value：     指定请求的实际地址，指定的地址可以是URI Template 模式（后面将会说明），是用数组表示的，可以匹配多个url；
+method：  指定请求的method类型， GET、POST、PUT、DELETE等，不指定时都可以进行请求。
+2） consumes，produces；
+consumes： 指定处理请求的提交内容类型（Content-Type），例如application/json, text/html;
+produces:    指定返回的内容类型，仅当request请求头中的(Accept)类型中包含该指定类型才返回；
+
+,produces ={"text/html;charset=UTF-8"}
+3） params，headers；
+
+params： 指定request中必须包含某些参数值是，才让该方法处理。
+headers： 指定request中必须包含某些指定的header值，才能让该方法处理请求。
+
+4.@CookieValue 
+可以把Request header中关于cookie的值绑定到方法的参数上。
+
+
+
+
+
+
+
+6. @Service(value="ehrCompany")   ehrCompany为实现的接口名所注入的bean，一般在Facade层使用，bean在spring-dubbo-consumer.xml中配置
+
+@Controller(value = "ehrPosition") ？
+
+
+参数绑定的注解：
+
+1.。@ModelAttribute
+The name of the model attribute to bind to.
+
+2.@RequestParam
+
+参数直接绑定，绑定的是请求参数而不是RequestMapping中的参数
+
+3.@PathVariable  ： The URI template variable to bind to  绑定的是RequestMapping中的参数 注意与@RequestParam的区别
+
+
+
+
+
+
+
+
+
+
+

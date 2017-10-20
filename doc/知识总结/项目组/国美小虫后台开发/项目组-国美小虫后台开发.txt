@@ -1,0 +1,182 @@
+
+
+
+
+ 用户名:<input name="username" value="admin"><br>
+    密码:<input name="password" value="Abcd1234"><br>
+    记住我<input type="checkbox" name="rememberMe"><br>
+
+
+
+流程：
+一.扫码登陆  （小虫端）
+1.sso那里传来一个token，我这边接收
+
+2.我这边调用sso里的方法对token进行校验
+
+
+3.成功  。。。。。，失败。。。。。。。
+
+
+
+二。密码登陆   （pc端）
+1，先校验验证码
+
+2.将用户名和密码传给sso服务器，由sso进行校验
+
+3.shiro校验
+
+
+
+
+问题：
+1.扫码登陆
+1）扫描确认之后，传递的参数是什么？传过去的是SSo服务器校验还是我调用sso服务器的方法校验
+token里是否有密码
+2）与密码登陆如何兼容
+
+
+2.是否还会用到shiro认证
+
+
+1）要的话
+
+1.token里还是 用户名和密码
+2.采用相同的加密方式进行校验
+3.登出还是借助shiro以相同的方式
+
+
+
+2.不要的话
+1.认证通过就返回，此时必须的用拦截器
+2.登出，则移除session即可
+
+
+
+3.密码找回如何弄
+4.权限控制是所有人都可以进入管理系统吗？
+
+
+验证码
+
+http://blog.csdn.net/u014104286/article/details/70515004
+
+
+
+
+http://localhost:8080/main.html
+
+
+username
+password
+rememberMe
+ 登陆
+  登出
+  defaultKaptcha
+  
+  
+  vrifyCode
+
+
+http://localhost:8080/advertisementMsg/queryById?id=1
+
+
+后期优化
+1.拦截的连接返回登陆页
+
+
+
+
+
+
+
+success: function(data){ //登录成功后的回调函数，参数data为标示符code，
+    window.location.href="/scanCodeLogin?code="+data;
+	},
+switchCallback: function(){ // 点击切换时的回调函数
+    window.location.href="/index.html";
+    }
+
+
+
+
+
+
+
+2017-09-28 18:09:54 903 [http-nio-8082-exec-3] DEBUG com.gome.sso.CustomerAuthenticationManager - sso response : {
+  "code" : "0",
+  "msg" : "SUCCESS",
+  "data" : {
+    "uid" : "60",
+    "empNo" : "10240477",
+    "token" : "3902ad4419cb4d4db01a378244b82ec5",
+    "adAccount" : "ZHANGLIEWEI",
+    "apAccount" : "ZLW160518",
+    "comCode" : "Q040",
+    "empName" : "张列维"
+  }
+}
+
+
+
+/**
+ * 
+ * @param code 临时票据，第三方应用使用这个票据来换取token
+ * @return
+ */
+
+        //通过票据获取token
+        com.gome.mars.core.ResultData<QrToken> qrTokenResultData = customerAuthenticationManager.loginQR(code);
+        System.out.println(qrTokenResultData);
+        //token验证
+        com.gome.mars.core.ResultData<ExpiringToken> tokenResultData = customerAuthenticationManager.isAuthenticated(qrTokenResultData.getData().getToken());
+        System.out.println(tokenResultData);
+       
+
+
+
+
+http://sso.gome.work
+
+http://sso.gome.inc
+SSO鉴权
+
+
+passwordLoginArea:
+
+@Autowired
+CustomerAuthenticationManager customerAuthenticationManager;
+
+<script>
+
+<form id="loginForm" name="login" method="post" action="imgvrifyControllerDefaultKaptcha">
+    用户名:<input name="username" value="gxl160329"><br>
+    密码:<input name="password" value="123456"><br>
+    验证码: <input type="text" name="vrifyCode" /> <img alt="验证码" onclick = "this.src='/defaultKaptcha?d='+new Date()*1" src="/defaultKaptcha" /><br>
+    记住我<input type="checkbox" name="rememberMe"><br>
+    <input id="login" type="button" name="登录" value="登录">
+    <a href="loginQR.html">切换到扫码登陆</a>
+</form>
+
+@Autowired
+CustomerAuthenticationManager customerAuthenticationManager;
+
+
+
+
+
+
+
+
+
+
+
+checkSession
+
+loginQR
+
+code
+
+logout
+
+3.4：开始

@@ -1,0 +1,43 @@
+1.sql语句进行动态拼接时，一定要注意留空格
+如：
+//动态sql
+1.1		StringBuilder sql = new StringBuilder(
+				"select * from t_student where 1=1");
+				sql.append(" limit " + fromIndex + "," + pageSize);（正确）
+//动态sql
+1.2	StringBuilder sql = new StringBuilder(
+				"select * from t_student where 1=1");
+				sql.append("limit " + fromIndex + "," + pageSize);（不正确）
+
+
+2.
+Access denied for user 'Administrator'@'localhost' (using password: YES)	（密码有错）			
+
+
+
+3.子查询
+
+子查询时，（select *）t最好加上别名如（select t.*）t便于阅读和调试
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+三。dubug
+
+
+1.update 一定要跟条件
+
+
+
+2.as 后面加“”，则字段最后为小写，否则为大写

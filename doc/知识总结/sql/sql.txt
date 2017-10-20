@@ -1,0 +1,589 @@
+
+
+
+二。
+mysql中的DATETIME类型与DATE类型与TIMESTAMP类型
+
+1.当你需要同时包含日期和时间信息的值时则使用DATETIME类型。MySQL以'YYYY-MM-DD HH:MM:SS'格式检索和显示DATETIME值。
+支持的范围为'1000-01-01 00:00:00'到'9999-12-31 23:59:59'。(“支持”表示尽管先前的值可能工作，但没有保证)。
+
+2.当你只需要日期值而不需要时间部分时应使用DATE类型。MySQL用'YYYY-MM-DD'格式检索和显示DATE值。
+支持的范围是'1000-01-01'到 '9999-12-31'。
+
+3.TIMESTAMP
+TIMESTAMP列的显示格式与DATETIME列相同。换句话说，显示宽度固定在19字符，并且格式为YYYY-MM-DD HH:MM:SS。
+datetime 以'YYYY-MM-DD HH:MM:SS'格式检索和显示DATETIME值。支持的范围为'1000-01-01 00:00:00'到'9999-12-31 23:59:59'
+TIMESTAMP值不能早于1970或晚于2037，不设定时默认为当前时间
+DEFAULT CURRENT_TIMESTAMP：表示默认为当前时间
+三。
+ENGINE=INNODB 存储引擎，INNODB支持事务
+AUTO_INCREMENT=1000  自定义主键增长空间
+
+
+四。
+bigint
+
+从 -2^63 (-9223372036854775808) 到 2^63-1 (9223372036854775807) 的整型数据（所有数字）。存储大小为 8 个字节。
+
+P.S. bigint已经有长度了，在mysql建表中的length，只是用于显示的位数
+
+int
+
+从 -2^31 (-2,147,483,648) 到 2^31 – 1 (2,147,483,647) 的整型数据（所有数字）。存储大小为 4 个字节。int 的 SQL-92 同义字为 integer。
+
+smallint
+
+从 -2^15 (-32,768) 到 2^15 – 1 (32,767) 的整型数据。存储大小为 2 个字节。
+
+tinyint
+
+从 0 到 255 的整型数据。存储大小为 1 字节。
+
+
+五。
+1.SQL 左外连接，右外连接，全连接，内连接
+a表       id   name     b表     id     job   parent_id   
+              1   张3                   1     23     1   
+              2   李四                  2     34     2   
+              3   王武                  3     34     4   
+    
+  a.id同parent_id   存在关系   
+    
+  内连接   inner join与join的结果是一样的
+  select   a.*,b.*   from   a   inner   join   b     on   a.id=b.parent_id   
+    
+  结果是     
+  1   张3                   1     23     1   
+  2   李四                  2     34     2   
+    
+  左连接   
+  select   a.*,b.*   from   a   left   join   b     on   a.id=b.parent_id   
+    
+  结果是     
+  1   张3                    1     23     1   
+  2   李四                  2     34     2   
+  3   王武                  null   
+
+  右连接   
+  select   a.*,b.*   from   a   right   join   b     on   a.id=b.parent_id   
+    
+  结果是     
+  1   张3                   1     23     1   
+  2   李四                 2     34     2   
+  null                       3     34     4   
+    
+  完全连接   
+  select   a.*,b.*   from   a   full   join   b     on   a.id=b.parent_id   
+
+  结果是     
+  1   张3                   1     23     1   
+  2   李四                 2     34     2   
+  null                 3     34     4   
+  3   王武                 null
+  
+  
+  
+  
+2.sql子查询   先调用里面的查询语句
+
+运用范围：
+1.运算符后如加减乘除
+2.表达式后如form，where,when，in,having,>,=
+
+2.1	
+1、单行子查询
+        select ename,deptno,sal
+        from emp
+        where deptno=(select deptno from dept where loc='NEW YORK')；
+
+     2、多行子查询
+        SELECT ename,job,sal
+        FROM EMP
+        WHERE deptno in ( SELECT deptno FROM dept WHERE dname LIKE 'A%')；
+
+     3、多列子查询
+        SELECT deptno,ename,job,sal
+        FROM EMP
+        WHERE (deptno,sal) IN (SELECT deptno,MAX(sal) FROM EMP GROUP BY deptno)；
+
+     4、内联视图子查询
+       (1)SELECT ename,job,sal,rownum
+          FROM (SELECT ename,job,sal FROM EMP ORDER BY sal)；
+       (2)SELECT ename,job,sal,rownum
+          FROM ( SELECT ename,job,sal FROM EMP ORDER BY sal)
+          WHERE rownum<=5；
+  
+     5、在HAVING子句中使用子查询
+        SELECT deptno,job,AVG(sal) FROM EMP GROUP BY deptno,job HAVING AVG(sal)>(SELECT sal FROM EMP WHERE ename='MARTIN')； 
+		
+		
+2.2 mybatis实例		
+<!--多表查询员工和职位的关联信息-->
+	<select id="queryEmpsPostion" resultMap="empPostionDtoMap">
+		SELECT act.id AS account_id, t.EMP_NO,t.STATE,t.EMP_SUBTEAM,t.EMP_TEAM,t.DEPT,t.EMP_NATIVE,t.RESIDENCE_PROVINCE
+		,t.RESIDENCE_CITY,t.NATIONALITY,t.MARITAL,t.RELIGION,t.NATION,t.SPELL,t.SEX,t.NAME,t.COM_ID,
+		b_position.short_name,b_position.post_no FROM
+
+		( <!--查询b_employee的所有信息与b_emp_post_relation的职位编码-->
+		SELECT b_employee.*, b_emp_post_relation.post_no FROM  b_employee
+		<!--b_employee的员工编号=b_emp_post_relation的员工编号-->
+		LEFT JOIN b_emp_post_relation ON b_employee.emp_no=b_emp_post_relation.emp_no
+		where  (STATE &lt;&gt;'0' or  STATE is null)
+			<trim suffixOverrides=",">
+			<if test="dept != null and dept != ''">
+				and DEPT=#{dept}
+			</if>
+			<if test="empNo != null and empNo != ''">
+				and EMP_NO=#{empNo}
+			</if>
+
+			<if test="spell != null and spell != ''">
+				and SPELL like concat('${spell}','%')
+			</if>
+
+			<if test="sex != null and sex != ''">
+				and SEX=#{sex}
+			</if>
+
+			<if test="name != null and name != ''">
+				and NAME like concat('${name}','%')
+			</if>
+
+			<if test="comId != null">
+				and COM_ID=#{comId}
+			</if>
+
+		</trim>
+		<!--将查询到的结果全部封装到表t中-->
+		) t
+		LEFT JOIN
+		b_position
+		<!--b_position的职位编码==t的职位编码-->
+		ON t.post_no=b_position.post_no
+		<!--b_account的员工编号==t的员工编号-->
+		LEFT JOIN b_account act ON act.emp_no = t.emp_no
+
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+ 
+五。
+1.CONCAT函数
+ 
+ SQL CONCAT函数用于将两个字符串连接起来，形成一个单一的字符串。试试下面的例子：
+
+SQL> SELECT CONCAT('FIRST ', 'SECOND');
++----------------------------+
+| CONCAT('FIRST ', 'SECOND') |
++----------------------------+
+| FIRST SECOND               |
++----------------------------+
+1 row in set (0.00 sec)
+想要更详细了解CONCAT函数，考虑EMPLOYEE_TBL的表具有以下记录：
+
+SQL> SELECT * FROM employee_tbl;
++------+------+------------+--------------------+
+| id   | name | work_date  | daily_typing_pages |
++------+------+------------+--------------------+
+|    1 | John | 2007-01-24 |                250 |
+|    2 | Ram  | 2007-05-27 |                220 |
+|    3 | Jack | 2007-05-06 |                170 |
+|    3 | Jack | 2007-04-06 |                100 |
+|    4 | Jill | 2007-04-06 |                220 |
+|    5 | Zara | 2007-06-06 |                300 |
+|    5 | Zara | 2007-02-06 |                350 |
++------+------+------------+--------------------+
+7 rows in set (0.00 sec)
+现在，假设根据上述表要连接名员工ID和work_date，那么你可以使用下面的命令：
+
+SQL> SELECT CONCAT(id, name, work_date)
+    -> FROM employee_tbl;
++-----------------------------+
+| CONCAT(id, name, work_date) |
++-----------------------------+
+| 1John2007-01-24             |
+| 2Ram2007-05-27              |
+| 3Jack2007-05-06             |
+| 3Jack2007-04-06             |
+| 4Jill2007-04-06             |
+| 5Zara2007-06-06             |
+| 5Zara2007-02-06             |
++-----------------------------+
+7 rows in set (0.00 sec)
+
+ 
+ 
+ 
+ 
+2.TIMESTAMPDIFF()函数
+ 
+ 今天在项目当做用到了TIMESTAMPDIFF()函数的用法，要求对扫描单件扫描时间到当前时间大于24小时的单件进行处理。下面值对TIMESTAMPDIFF和TIMESTAMPADD函数的用法的用法进行总结。
+
+在MySQL应用时，经常要使用这两个函数TIMESTAMPDIFF和TIMESTAMPADD。
+
+一，TIMESTAMPDIFF
+
+语法：
+
+TIMESTAMPDIFF(interval,datetime_expr1,datetime_expr2)。
+
+说明：
+
+返回日期或日期时间表达式datetime_expr1 和datetime_expr2the 之间的整数差。其结果的单位由interval 参数给出。该参数必须是以下值的其中一个：
+
+ 
+
+FRAC_SECOND。表示间隔是毫秒
+SECOND。秒
+MINUTE。分钟
+HOUR。小时
+DAY。天
+WEEK。星期
+MONTH。月
+QUARTER。季度
+YEAR。年
+使用如下：
+mysql> select TIMESTAMPDIFF(day,'2012-08-24','2012-08-30');  
++----------------------------------------------+   
+| TIMESTAMPDIFF(day,'2012-08-24','2012-08-30') |  
++----------------------------------------------+   
+|                                            6 |   
++----------------------------------------------+   
+1 row in set (0.00 sec)  
+mysql> select TIMESTAMPDIFF(MINUTE,'2012-08-24 09:00:00','2012-08-30 12:00:00');  
++-------------------------------------------------------------------+   
+| TIMESTAMPDIFF(MINUTE,'2012-08-24 09:00:00','2012-08-30 12:00:00') |  
++-------------------------------------------------------------------+   
+|                                                              8820 |   
++-------------------------------------------------------------------+   
+1 row in set (0.01 sec)  
+ 
+二，TIMESTAMPADD
+ 
+语法：
+TIMESTAMPADD(interval,int_expr,datetime_expr)
+ 
+说明：
+将整型表达式int_expr 添加到日期或日期时间表达式 datetime_expr中。式中的interval和上文中列举的取值是一样的。
+mysql> select TIMESTAMPADD(MINUTE,8820,'2012-08-24 09:00:00');  
++-------------------------------------------------+   
+| TIMESTAMPADD(MINUTE,8820,'2012-08-24 09:00:00') |  
++-------------------------------------------------+   
+| 2012-08-30 12:00:00                             |   
++-------------------------------------------------+   
+1 row in set (0.00 sec)  
+ 
+ 
+ 
+unix_timestamp：
+unix_timestamp()函数的作用是返回一个确切的时间点的UNIX时间戳，这个Unix时间戳是一个无符号整数。unix_timestamp()函数有两种重载形式，一是不带任何参数，另外一个是带有一个Date或DateTime或TimeStamp类型的参数。
+    unix_timestamp()，返回自1970-1-1 8:00:00开始到当前系统时间为止的秒数。
+    unix_timestamp(date)，返回1970-1-1 8:00:00开始到date所代表的时间为止的秒数，对于早于1970-1-1 8:00:00的时间，总是返回 0 。
+ 
+ 
+ 
+四。运算符
+1.非运算符
+1）<>
+如：select * from bike where location <> '松林'
+2）&lt;&gt;
+如：select * from bike where location &lt;&gt; '松林'
+
+3）!=
+如：select * from bike where location != '松林'
+2.转义字符：
+< => &lt;
+> => &gt;
+& => &amp;
+" => &quot;
+' => &apos;
+五。子查询
+子查询是指出现在【其他SQL语句内】的SELECT子句
+eg：
+SELECT * FROM t1 WHERE column1 = (SELECT column1 FROM t2);
+其中，SELECT * FROM t1 ...称为Outer Query[外查询](或者Outer Statement)
+SELECT column1 FROM t2 称为Sub Query[子查询]
+
+
+
+
+
+
+
+五。
+性能优化：
+1.在某些情况下，如果明知道查询结果只有一个，SQL语句中使用LIMIT 1会提高查询效率。
+LIMIT 1适用于查询结果为1条（也可能为0）会导致全表扫描的的SQL语句。即避免全表扫描
+
+
+2.count(1)：代表你这个查询的表里的第一个字段（一般是主键所在的列）
+其实1就代表你这个查询的表里的第一个字段
+这里用1，也是为了方便，当然如果数据量较大的话，也可以提高速度，因为写count(*)的话会所有列扫描，这里用1的话或者用字段名的话，只扫描你写的那个列
+
+
+3.INSERT ... ON DUPLICATE KEY UPDATE ：当索引值重复时执行update语句，相当于insertOrUpdate操作
+
+
+该语句是基于唯一索引或主键使用，比如一个字段a被加上了unique index，
+并且表中已经存在了一条记录值为1，下面两个语句会有相同的效果：
+INSERT INTO table (a,b,c) VALUES (1,2,3)  
+  ON DUPLICATE KEY UPDATE c=c+1;  
+  
+UPDATE table SET c=c+1 WHERE a=1;  
+补充：
+1.ORDER BY   后面一般跟别名
+
+你可以对多列数据排序。优先顺序按从左到右依次降低，所以查询语句中各列的排列顺序很重要。 
+在下面的例子中，最高的net_amount排在最先（降序）。假如两行或者两行以上数据都包含了同样的 net_amount值，
+那么同行中last_name值在字母表中最先出现的排先，因为last_name一列还是按照升序排序的（默认的）。如果不包含了同样的 net_amount值，后面的排序语句不起作用。
+Select * FROM Sales orDER BY net_amount DESC, last_name, first_name;
+
+
+
+2.GROUP BY
+
+GROUP BY 一般后面跟查询出现相同的列，在计数时应用较为广泛
+
+
+SQL GROUP BY 实例
+我们拥有下面这个 "Orders" 表：
+O_Id	OrderDate	OrderPrice	Customer
+1	2008/12/29	1000	Bush
+2	2008/11/23	1600	Carter
+3	2008/10/05	700	Bush
+4	2008/09/28	300	Bush
+5	2008/08/06	2000	Adams
+6	2008/07/21	100	Carter
+现在，我们希望查找每个客户的总金额（总订单）。
+我们想要使用 GROUP BY 语句对客户进行组合。
+我们使用下列 SQL 语句：
+SELECT Customer,SUM(OrderPrice) FROM Orders
+GROUP BY Customer
+结果集类似这样：
+Customer	SUM(OrderPrice)
+Bush	2000
+Carter	1700
+Adams	2000
+很棒吧，对不对？
+让我们看一下如果省略 GROUP BY 会出现什么情况：
+SELECT Customer,SUM(OrderPrice) FROM Orders
+结果集类似这样：
+Customer	SUM(OrderPrice)
+Bush	5700
+Carter	5700
+Bush	5700
+Bush	5700
+Adams	5700
+Carter	5700
+上面的结果集不是我们需要的。
+那么为什么不能使用上面这条 SELECT 语句呢？解释如下：上面的 SELECT 语句指定了两列（Customer 和 SUM(OrderPrice)）。
+"SUM(OrderPrice)" 返回一个单独的值（"OrderPrice" 列的总计），而 "Customer" 返回 6 个值（每个值对应 "Orders" 表中的每一行）。
+因此，我们得不到正确的结果。不过，您已经看到了，GROUP BY 语句解决了这个问题。
+
+2.2：HAVING
+在 SQL 中增加 HAVING 子句原因是，WHERE 关键字无法与合计函数一起使用。
+http://www.w3school.com.cn/sql/sql_having.asp
+
+
+3，CONCAT  一般用于对字符串的拼接
+
+2.删除整个表的所有记录时
+1.DELETE
+　?DML语言
+　?可以回退
+　?可以有条件的删除
+
+     DELETE FROM 表名
+　  WHERE 条件
+
+2.TRUNCATE TABLE
+　?DDL语言
+　?无法回退
+　?默认所有的表内容都删除
+　?删除速度比delete快。
+
+   TRUNCATE TABLE 表名
+
+   
+   
+   
+   
+4.新增或者更新
+INSERT  into   t_coupon_user(name,phone,user_group,create_time,modify_time,status,first_sign) 
+  values('user','18428385857','5',now(),now(),  0, 1) ON DUPLICATE KEY UPDATE name='user3'
+
+  
+5.更新后返回主键id
+
+SET @update_id := 0;  
+UPDATE `t_coupon_user` SET `name`='ad' ,id = (SELECT @update_id := id) WHERE phone='13562458749';
+SELECT @update_id as id;
+
+
+
+6.设置虚列如：
+SELECT NULL AS portId,
+参考自：https://zhidao.baidu.com/question/464433814.html
+二。sql函数：
+mysql 
+
+sql中关于时间的找date函数
+
+
+1.IF函数
+第一个位置：判断条件
+第二个位置：符合的情况
+第三个位置：不符合的情况
+mysql> SELECT IF(1<2,'yes ','no');
+
+
+
+2，CONVERT() 函数可以用不同的格式显示日期/时间数据。
+语法
+CONVERT(data_type(length),data_to_be_converted,style)
+
+3.MySQL case when then else end 用法
+CASE sex 
+         WHEN '1' THEN '男' 
+         WHEN '2' THEN '女' 
+ELSE '其他' END 
+
+
+4.IFNULL(expr1,expr2)的用法：
+
+假如expr1   不为   NULL，则   IFNULL()   的返回值为   expr1; 
+否则其返回值为   expr2
+
+5.sql中exists,not exists的用法
+select name from student where sex = 'm' and mark exists(select 1 from grade where ...) ,只要
+exists引导的子句有结果集返回，就为真即执行，not exists则为没有结果集返回，就为真即执行
+
+
+
+6.SQL SELECT DISTINCT 语句
+
+在表中，可能会包含重复值。这并不成问题，不过，有时您也许希望仅仅列出不同（distinct）的值。
+关键词 DISTINCT 用于返回唯一不同的值。
+语法：
+SELECT DISTINCT 列名称 FROM 表名称
+
+7.datediff(now(),tip.end_date)   前一个减去后一个
+如：
+
+SELECT DATEDIFF('2008-12-30','2008-12-29') AS DiffDate
+结果：
+DiffDate
+1
+例子 2
+使用如下 SELECT 语句：
+SELECT DATEDIFF('2008-12-29','2008-12-30') AS DiffDate
+结果：
+DiffDate
+-1
+
+
+
+
+
+8.
+SUM() 函数
+
+
+Sum()函数里面的参数是列名的时候，是计算列名的值的相加，而不是有值项的总数。
+<!-- verified_status=1时加1，否则加0-->
+convert(sum(case when verified_status=1 then 1 else 0 end),char(50)) as confirmedAmount
+
+COUNT() 函数
+
+COUNT() 函数返回匹配指定条件的行数。（NULL 不计入）
+
+
+9.UNION 和 UNION ALL 操作符
+UNION 操作符用于合并两个或多个 SELECT 语句的结果集。
+请注意，UNION 内部的 SELECT 语句必须拥有相同数量的列。列也必须拥有相似的数据类型。同时，每条 SELECT 语句中的列的顺序必须相同。
+参考自：
+http://www.w3school.com.cn/sql/sql_union.asp
+
+
+
+
+
+
+三。索引
+
+1.联合唯一索引
+
+/* 设置手机号和人员类别为联合唯一索引                                        */
+alter table t_coupon_user add unique index(phone,user_group);
+
+2.PRIMARY KEY（主键索引）：它是一种特殊的唯一索引，不允许有空值。
+
+ALTER TABLE `table_name` ADD PRIMARY KEY ( `column` )
+
+3.UNIQUE(唯一索引)：它与前面的”普通索引”类似，不同的就是：索引列的值必须唯一，但允许有空值。如果是组合索引，则列值的组合必须唯一
+
+ALTER TABLE `table_name` ADD UNIQUE (`column`)
+
+
+其他方式：
+1）创建索引：CREATE UNIQUE INDEX indexName ON tableName(tableColumns(length))
+（2）修改表结构：ALTER tableName ADD UNIQUE [indexName] ON (tableColumns(length))   如ALTER TABLE article ADD INDEX index_article_title ON title(200);
+
+（3）创建表的时候直接指定：CREATE TABLE tableName ( [...], UNIQUE [indexName] (tableColumns(length));
+
+4.INDEX(普通索引)
+mysql>ALTER TABLE `table_name` ADD INDEX index_name ( `column` )
+
+
+5.多列索引
+ALTER TABLE `table_name` ADD INDEX index_name ( `column1`, `column2`, `column3` )
+
+
+MySQL只对<，<=，=，>，>=，BETWEEN，IN，以及某些时候的LIKE才会使用索引（以通配符%和_开头作查询时，MySQL不会使用索引）。
+http://www.jb51.net/article/49346.htm
+
+
+
+6.索引方法  BTREE和hash
+
+
+BTREE应用的范围更广
+
+http://www.jb51.net/article/62533.htm
+
+http://www.cnblogs.com/osfipin/p/4943229.html
+
+
+
+7.cast函数
+CAST函数用于将某种数据类型的表达式显式转换为另一种数据类型。CAST()函数的参数是一个表达式，它包括用AS关键字分隔的源值和目标数据类型。
+http://www.studyofnet.com/news/109.html
+
+
+
+
+
+
+
+
+
+
+
+
+

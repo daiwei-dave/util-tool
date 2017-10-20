@@ -1,0 +1,41 @@
+
+
+一。myeclipse
+
+@myeclipse配置jre:（和eclipse操作一样）
+window->preferences->java->installed jre->add->java(jdk的安装目录)
+@myeclipse集成tomcat:
+window->preferences->myeclipse->servers->tomcat->选版本->选enable(并引入tomcat的安装根目录)->在版本下选择jdk
+
+
+
+myeclipse运行该程序：
+1.关掉tomcat
+2.在tomcat删除已部署的项目（有时它会将最新的重新部署，此时直接重启即可）
+3.重启tomcat
+
+
+
+
+
+
+
+
+eclipse创建JavaWeb程序:
+New --> Project --> Web --> Dynamic Web Project
+1. 填写JavaWeb程序名称
+2. 选择Target runtime(目标环境)
+3. 配置tomcat服务器及路径
+4. JRE运行环境，选择自己下载的JDK版本
+
+
+也可先在整体环境下先设置运行环境： 
+windows --> preferences --> Server --> Runtime Environments
+--> Add --> 添加相应的Tomcat版本
+
+创建首页：
+右键点击"WebContent" --> New --> JSP file --> 命名为 index.jsp
+
+
+运行该程序：
+1.右键项目名 --> 选择“Run As”  --> "On Server" --> “Finish”

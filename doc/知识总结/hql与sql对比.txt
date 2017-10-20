@@ -1,0 +1,22 @@
+1.hql
+
+1.1 使用hql查询返回的一般都会设置层list集合
+1.2 参数传递方便
+List<SubItem> items = getHibernateTemplate().find("from SubItem where subItemID = ?",subItemID);
+
+1.3.hql查询一般步骤
+public List<Topic> queryTopicBySubItemID(int subItemID, Page page) {
+		// TODO Auto-generated method stub
+		//获得session对象
+		Session session=getSession();
+		String hql="from Topic where subItemID=:id";	
+		//执行查询
+		Query query=session.createQuery(hql);
+		//设置ID参数
+		query.setInteger("id",subItemID);
+		//设置分页信息
+		query.setFirstResult(page.getBeginIndex());
+		query.setMaxResults(page.getEveryPage());
+		//返回查询结果
+		return query.list();
+	}

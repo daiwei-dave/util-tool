@@ -1,0 +1,351 @@
+
+
+
+
+
+Spring Boot可以轻松创建单独的，生产级的基于Spring的应用程序，您可以“运行”。我们对Spring平台和第三方库提出了一个意见，所以你可以从最小的开始。大多数Spring Boot应用程序需要很少的Spring配置。
+
+特征
+
+创建独立的Spring应用程序
+直接嵌入Tomcat，Jetty或Undertow（无需部署WAR文件）
+提供意见“初始”POM以简化您的Maven配置
+每当可能时自动配置Spring
+提供生产就绪的功能，如指标，健康检查和外部化配置
+绝对没有代码生成和对XML没有要求配置
+
+
+
+
+组合注解
+
+
+ @RestController是@Controller和@ResponseBody的结合体，两个标注合并起来的作用。
+ 
+ 
+ @GetMapping   get请求方式的注解
+ 
+ 
+常用注解
+
+启动入口main方法下的注解
+
+
+@SpringBootApplication ：springboot启动入口， @SpringBootApplication 注解等价于以默认属性使用 @Configuration ， @EnableAutoConfiguration 和 @ComponentScan
+
+
+
+@Configuration     声明被声明的类将由spring容器进行管理bean容器,被声明后，只要springBoot一启动就会就会加载相应的Bean
+	@Configuration可理解为用spring的时候xml里面的<beans>标签
+	@Bean可理解为用spring的时候xml里面的<bean>标签
+
+
+
+@ComponentScan     自动收集所有的Spring组件， 包括 @Configuration 类
+@EnableAutoConfiguration    
+@EnableScheduling     启动定时任务
+
+
+
+
+
+
+3.引入xml配置
+
+@ImportResource(locations={"spring-rop-conf.xml"})
+
+
+4.@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})             禁用特定的自动配置
+
+
+ 
+ 
+ 一。pom.xml
+		<!--父模块-->
+        <parent>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-parent</artifactId>
+			<version>1.5.1.RELEASE</version>
+		</parent>
+		
+		
+		
+		
+		<!--
+		Spring Boot包含一个Maven插件， 它可以将项目打包成一个可执行jar。 如果想使用它， 你可以将该插件添加到 <plugins> 节
+点处
+		-->
+		<build>
+			<plugins>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+				</plugin>
+			</plugins>
+		</build>
+		
+		
+ 
+ 
+		<!--核心模块，包括自动配置支持、日志和YAML-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<!--测试模块，包括JUnit、Hamcrest、Mockito-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		
+		
+		<!--引入Web模块-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		
+		<!--Spring Boot中使用Thymeleaf-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		
+		
+		<!--Swagger2依赖-->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.2.2</version>
+		</dependency>
+		
+		
+		
+		<!--数据源配置-->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.39</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+		
+		
+		<!--Spring-data-jpa-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		
+		
+		<!--引入redis-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-redis</artifactId>
+		</dependency>
+		
+		
+		<!--这里不引入spring-boot-starter-jdbc依赖，是由于mybatis-spring-boot-starter中已经包含了此依赖-->
+		<dependency>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		
+		
+		
+		
+		
+		<!--引入dubbo-->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dubbo</artifactId>
+			<version>2.5.3</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.zookeeper</groupId>
+			<artifactId>zookeeper</artifactId>
+			<version>3.4.6</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		
+		<dependency>
+			<groupId>com.github.sgroschupf</groupId>
+			<artifactId>zkclient</artifactId>
+			<version>0.1</version>
+		</dependency>
+		
+		
+		<!--引入AOP-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+		
+		
+		<!--引入spring的缓存-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
+
+		
+		<!--引入EhCache的缓存-->
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+		</dependency>
+		
+		<!--引入redis的缓存-->
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+		</dependency>
+		
+		
+二，环境配置	
+		
+		
+application.properties中配置通用内容，并设置spring.profiles.active=dev，以开发环境为默认配置
+application-{profile}.properties中配置各个环境不同的内容		
+		
+		
+三。模板引擎
+
+在动态HTML实现上Spring Boot依然可以完美胜任，并且提供了多种模板引擎的默认配置支持，所以在推荐的模板引擎下，我们可以很快的上手开发动态网站。
+
+Spring Boot提供了默认配置的模板引擎主要有以下几种：
+
+Thymeleaf
+FreeMarker
+Velocity
+Groovy
+Mustache
+Spring Boot建议使用这些模板引擎，避免使用JSP，若一定要使用JSP将无法实现Spring Boot的多种特性，具体可见后文：支持JSP的配置
+
+当你使用上述模板引擎中的任何一个，它们默认的模板配置路径为：src/main/resources/templates。当然也可以修改这个路径，
+具体如何修改，可在后续各模板引擎的配置属性中查询并修改。
+
+
+
+四。整合Swagger2
+
+Swagger2它可以轻松的整合到Spring Boot中，并与Spring MVC程序配合组织出强大RESTful API文档。
+它既可以减少我们创建文档的工作量，同时说明内容又整合入实现代码中，让维护文档和修改代码整合为一体，
+可以让我们在修改代码逻辑的同时方便的修改文档说明。另外Swagger2也提供了强大的页面测试功能来调试每个RESTful API。
+
+
+五。异常处理
+
+类似于国美项目中的resultData封装
+
+
+六。事务管理
+
+可以看org.springframework.transaction.annotation.Isolation枚举类中定义了五个表示隔离级别的值：
+
+DEFAULT：这是默认值，表示使用底层数据库的默认隔离级别。对大部分数据库而言，通常这值就是：READ_COMMITTED。
+READ_UNCOMMITTED：该隔离级别表示一个事务可以读取另一个事务修改但还没有提交的数据。该级别不能防止脏读和不可重复读，因此很少使用该隔离级别。
+READ_COMMITTED：该隔离级别表示一个事务只能读取另一个事务已经提交的数据。该级别可以防止脏读，这也是大多数情况下的推荐值。
+REPEATABLE_READ：该隔离级别表示一个事务在整个过程中可以多次重复执行某个查询，并且每次返回的记录都相同。即使在多次查询之间有新增的数据满足该查询，这些新增的记录也会被忽略。该级别可以防止脏读和不可重复读。
+SERIALIZABLE：所有的事务依次逐个执行，这样事务之间就完全不可能产生干扰，也就是说，该级别可以防止脏读、不可重复读以及幻读。但是这将严重影响程序的性能。通常情况下也不会用到该级别。
+
+
+
+可以看org.springframework.transaction.annotation.Propagation枚举类中定义了6个表示传播行为的枚举值：
+
+
+public enum Propagation {
+    REQUIRED(0),
+    SUPPORTS(1),
+    MANDATORY(2),
+    REQUIRES_NEW(3),
+    NOT_SUPPORTED(4),
+    NEVER(5),
+    NESTED(6);
+}
+REQUIRED：如果当前存在事务，则加入该事务；如果当前没有事务，则创建一个新的事务。
+SUPPORTS：如果当前存在事务，则加入该事务；如果当前没有事务，则以非事务的方式继续运行。
+MANDATORY：如果当前存在事务，则加入该事务；如果当前没有事务，则抛出异常。
+REQUIRES_NEW：创建一个新的事务，如果当前存在事务，则把当前事务挂起。
+NOT_SUPPORTED：以非事务方式运行，如果当前存在事务，则把当前事务挂起。
+NEVER：以非事务方式运行，如果当前存在事务，则抛出异常。
+NESTED：如果当前存在事务，则创建一个事务作为当前事务的嵌套事务来运行；如果当前没有事务，则该取值等价于REQUIRED。
+
+
+七。与dubbo集成
+
+
+
+
+
+八。日志管理
+
+引入log4j依赖：
+在创建Spring Boot工程时，我们引入了spring-boot-starter，其中包含了spring-boot-starter-logging，
+该依赖内容就是Spring Boot默认的日志框架Logback，所以我们在引入log4j之前，需要先排除该包的依赖，再引入log4j的依赖（以避免jar包冲突）
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j</artifactId>
+		</dependency>
+
+
+
+
+九。缓存
+
+
+
+
+
+
+	

@@ -1,0 +1,7 @@
+
+
+1.
+2016-08-30 13:52:34,480 [http-bio-8080-exec-9] WARN  [org.apache.struts2.dispatcher.Dispatcher] - Could not find action or result
+No result defined for action com.sanqing.action.LoginAction and result success
+
+所报的错误为路径不对，多出现于struts2中，记得要加（  namespace="/"）表示拦截相对于本项目的路径

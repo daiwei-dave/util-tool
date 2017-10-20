@@ -1,0 +1,246 @@
+
+
+
+
+一期：
+
+appSecret：5FFBC752002B09E51A97CB3EA6F614B8
+paramsSecret：nhmVBqocAIVzFgyt
+appKey：gome-cdim-score200
+paramsKey：20170908172537
+二期：
+
+
+
+小虫积分接口
+
+向积分提供总部，大区，分部
+marsOrg
+
+data
+{
+
+   orgNo:   10000001      //机构编码
+   allName: 国美集团     //机构全称
+   regionList:
+   {
+	[
+   
+		{
+			orgNo:   10000158
+			allName: 华北一区
+			branchList
+				[
+					{	
+					orgNo:   10000168
+					allName: 河北分部		
+					}，
+					{	
+					orgNo:   10010566
+					allName: 天津分部		
+					}
+				]
+				
+		},
+		
+		{
+			orgNo:   50000025
+			allName: 华东大区
+			branchList
+				{
+	
+				orgNo:   10011523
+				allName: 安徽分部		
+				}，
+				{
+	
+				orgNo:   10011808
+				allName: 常州分部		
+				}
+				
+		}  
+	]		
+   }
+}
+
+
+state ？
+
+is_virtual  ？
+
+
+部分sql有：
+ (state != 0 or state is null or state = '' ) and (is_virtual != 'X' or is_virtual is null or is_virtual = '')
+
+
+
+
+
+ 
+
+
+
+
+
+
+查看所在相应组织层级下的员工
+
+SELECT e.emp_no,o.* from b_org o INNER JOIN b_employee e ON o.org_no=e.dept WHERE o.level_detail=11
+
+
+查询挂在总部下的组织层级
+SELECT
+	o.*
+FROM
+	b_org o
+WHERE
+	o.parent_no in(SELECT
+	o.org_no
+FROM
+	b_org o
+WHERE
+	o.parent_no = 10000001)
+ORDER BY level_detail DESC
+
+
+查询不合法的组织层级
+
+SELECT * FROM b_org WHERE right_no is NULL and state=1 AND com_id=1
+
+职级
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+安卓
+编号67 王永海   有问题已解决
+
+
+获取所在的组织机构
+
+
+//                //员工所对应组织机构的层级为空
+//                if (StringUtils.isBlank(employeeList.get(i).getLevelDetail())) {
+//                    //如果为国美集团
+//                    if (employeeList.get(i).getOrgNo().equals("10000001")) {
+//                        employeeList.get(i).setHeadquarters(employeeList.get(i).getDeptName());
+//                        employeeList.get(i).setHqsCode(employeeList.get(i).getOrgNo());
+//                    } else {
+//                        continue;
+//                    }
+//                } else {
+//                    //员工在总部
+//                    if (Integer.parseInt(employeeList.get(i).getLevelDetail()) < 10) {
+//                        Org org = queryLevelDetailByOrgNo(employeeList.get(i).getOrgNo(), "01");
+//                        employeeList.get(i).setHeadquarters(org.getAllName());
+//                        employeeList.get(i).setHqsCode(org.getOrgNo());
+//                    } else if (Integer.parseInt(employeeList.get(i).getLevelDetail()) < 16) {//员工在大区
+//                        Org org = queryLevelDetailByOrgNo(employeeList.get(i).getOrgNo(), "10");
+//                        if (org.getLevelDetail().equals("10")){
+//                            employeeList.get(i).setRegion(org.getAllName());
+//                            employeeList.get(i).setRegionCode(org.getOrgNo());
+//                            employeeList.get(i).setHeadquarters(orgDao.queryLevelDetailByOrgNo(org.getParentNo()).getAllName());
+//                            employeeList.get(i).setHqsCode(orgDao.queryLevelDetailByOrgNo(org.getParentNo()).getOrgNo());
+//                        }else if(Integer.parseInt(org.getLevelDetail())<10){//部分员工在大区本部而率属于总部
+//                            employeeList.get(i).setHeadquarters(org.getAllName());
+//                            employeeList.get(i).setHqsCode(org.getOrgNo());
+//                        }
+//                    } else if (Integer.parseInt(employeeList.get(i).getLevelDetail()) > 10) {//员工在分部
+//                        Org org = queryLevelDetailByOrgNo(employeeList.get(i).getOrgNo(), "16", "22");
+//                        if (org.getLevelDetail().equals("22")) {
+//                            employeeList.get(i).setTwoBranchName(org.getAllName());
+//                            employeeList.get(i).setTwoBranchCode(org.getOrgNo());
+//                            employeeList.get(i).setOneBranchName(orgDao.queryLevelDetailByOrgNo(org.getParentNo()).getAllName());
+//                            employeeList.get(i).setOneBranchCode(orgDao.queryLevelDetailByOrgNo(org.getParentNo()).getOrgNo());
+//                        }
+//                        if (org.getLevelDetail().equals("16")) {
+//                            employeeList.get(i).setOneBranchName(org.getAllName());
+//                            employeeList.get(i).setOneBranchCode(org.getOrgNo());
+//                        }
+//                        employeeList.get(i).setRegion(queryLevelDetailByOrgNo(org.getOrgNo(), "10").getAllName());
+//                        employeeList.get(i).setRegionCode(queryLevelDetailByOrgNo(org.getOrgNo(), "10").getOrgNo());
+//                        employeeList.get(i).setHeadquarters(queryLevelDetailByOrgNo(org.getOrgNo(), "01").getAllName());
+//                        employeeList.get(i).setHqsCode(queryLevelDetailByOrgNo(org.getOrgNo(), "01").getOrgNo());
+//                    }
+//                }
+
+
+
+
+
+
+
+快速查询所对应的父机构
+
+SELECT             
+          	ORG_NO,
+        	PARENT_NO,
+        	ORG_TYPE,
+        	SHORT_NAME,
+        	ALL_NAME,
+        	SPELL,
+        	FIRST_LETTER,
+        	ORG_LEVEL,
+        	LEVEL_DETAIL,
+        	IS_VIRTUAL,
+        	NODE_TYPE,
+        	STATE,
+        	SALE_ORG_NO,
+        	CREATE_TIME,
+        	MODIFY_TIME,
+        	TOP_ID,
+        	COMPANY_TYPE,
+        	COMPANY_LEVEL,
+        	GRADE,
+        	HEADER,
+        	LEFT_NO,
+        	RIGHT_NO,
+        	QUANTITY
+    	    FROM B_ORG 
+    	    WHERE
+	    	LEFT_NO <=1098 AND RIGHT_NO >=1147
+			AND	(STATE != 0 OR STATE IS NULL OR STATE = '' ) 
+			ORDER BY LEFT_NO DESC
+
+
+
+
+
+
+
+
+
+
+
+
+SELECT
+	e.*, o.all_name AS dept_name,
+	o.org_no AS org_no,
+	o.level_detail AS level_detail,
+	o.left_no AS left_no,
+	o.right_no AS right_no,
+	p.post_no AS post_no,
+	p.post_level AS post_level,
+	p.all_name AS post_Name
+FROM
+	b_employee e
+LEFT JOIN b_org o ON e.dept = o.org_no
+LEFT JOIN b_emp_post_relation epr ON e.emp_no = epr.emp_no
+LEFT JOIN b_position p ON epr.post_no = p.post_no
+WHERE
+	e.emp_no IN (00022983)
+AND (
+	e.STATE <> '0'
+	OR e.STATE IS NULL
+)

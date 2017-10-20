@@ -1,0 +1,69 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+TO_CHAR 是把日期或数字转换为字符串
+TO_DATE 是把字符串转换为数据库中的日期类型转换函数
+
+参考自：
+https://www.douban.com/note/31849478/
+
+
+
+
+
+
+
+
+
+
+
+fm9999999990.00：保留两位小数
+
+参考自：
+http://www.educity.cn/luntan/888437.html
+
+
+
+
+
+
+
+ROW_NUMBER () OVER
+简单的说row_number()从1开始，为每一条分组记录返回一个数字，这里的ROW_NUMBER() OVER (ORDER BY xlh DESC) 是先把xlh列降序，
+再为降序以后的每条xlh记录返回一个序号。 
+ROW_NUMBER() OVER函数的基本用法
+
+参考自：
+http://jingyan.baidu.com/article/9989c74604a644f648ecfef3.html
+
+
+dual：
+习惯上,我们称之为'伪表'.因为他不存储主题数据.他的存在,是为了操作上的方便.因为select 都是要有特定对象的.
+
+https://zhidao.baidu.com/question/170487574.html
+
+
+
+Oracle中的NVL函数
+
+NVL函数的格式如下：NVL(expr1,expr2)
+
+含义是：如果oracle第一个参数为空那么显示第二个参数的值，如果第一个参数的值不为空，则显示第一个参数本来的值。
+
+http://www.cnblogs.com/zrui-xyu/p/4819712.html
+
+
+Oracle中的bettween-and函数是包含两边的
+https://zhidao.baidu.com/question/1605198412044566227.html
+
+

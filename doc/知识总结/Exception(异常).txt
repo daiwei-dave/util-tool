@@ -1,0 +1,54 @@
+
+
+
+
+
+
+
+
+
+
+
+9.异常
+
+
+一。相关关键字
+1.catch和throw的区别
+
+catch可以捕获异常，使程序继续运行
+throw直接抛出异常，抛给上一级，如果上一级没有catch则程序立刻终止
+
+2.throw和throws的区别
+
+throw是语句抛出一个异常（已经明确将会抛出哪种异常）。
+语法：throw (异常对象);
+         throw e;
+
+throws是方法可能抛出异常的声明。(用在声明方法时，表示该方法可能要抛出异常)
+语法：[(修饰符)](返回值类型)(方法名)([参数列表])[throws(异常类)]{......}
+            public void doA(int a) throws Exception1,Exception3{......}
+
+ 
+ 
+ http://blog.csdn.net/hhy62011980/article/details/5548278
+ 
+ 
+ 3.finally
+ finally会在return之后执行
+ 
+ 
+ 
+二。结构
+
+
+
+1.运行时异常RuntimeException
+
+
+
+2.非运行时异常 （编译异常）
+
+
+
+
+http://blog.csdn.net/hguisu/article/details/6155636

@@ -2,6 +2,8 @@
 <project version="4">
   <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/doc/知识总结/缓存/redis缓存.txt" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/doc/知识总结/缓存/缓存.txt" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/reflect/UserService.java" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
   </component>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:b="http://www.springframework.org/schema/beans"
+         xmlns="http://www.springframework.org/schema/security"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+              http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+
+			  
+			  
+			  
+			  
+			  
+	主要用于安全认证		  
+	
+	<!--
+	Specifies whether the use of Spring Security's pre and post invocation annotations
+                (@PreFilter, @PreAuthorize, @PostFilter, @PostAuthorize) should be enabled for this
+                application context. Defaults to "disabled".
+	-->
+    <global-method-security pre-post-annotations="enabled" />
+
+	<!--http的自动配置设为false-->
+    <http auto-config="false">
+  
+		<!--
+		default-target-url：The URL that will be redirected to after successful authentication
+		authentication-failure-url：The URL for the login failure page
+		always-use-default-target：Whether the user should always be redirected to the default-target-url after login.
+		-->
+        <form-login login-page="/portal/login" default-target-url="/portal/portal" always-use-default-target="true" authentication-failure-url="/portal/login?error=true"/>
+		<!--
+		logout-url：注销地址，默认注销URL是/j_spring_security_logout
+		invalidate-session：注销是否使session失效，默认为true
+	
+		-->
+        <logout logout-url="/j_spring_security_logout" invalidate-session="true" delete-cookies="SESSIONID"/>
+       <!-- <session-management invalid-session-url="/portal/invalid">
+            <concurrency-control expired-url="/portal/expired" error-if-maximum-exceeded="false" max-sessions="1" />
+        </session-management>-->
+        <!--前端资源 开始，
+		intercept-url 定义了一个权限控制的规则。
+		pattern 属性表示我们将对哪些 url 进行权限控制
+		access 属性表示在请求对应的 URL 时需要什么权限，默认配置时它应该是一个以逗号分隔的角色列表，请求的用户只需拥有其中的一个角色就能成功访问对应的 URL。
+		-->
+        <intercept-url pattern="/asset-libs/*" access="permitAll"/>
+        <intercept-url pattern="/assets/*" access="permitAll"/>
+        <!--前端资源 结束-->
+        <intercept-url pattern="/portal/login" access="permitAll"/>
+        <intercept-url pattern="/portal/portal" access="hasRole('ROLE_USER')" />
+        <csrf disabled="true"/>
+    </http>
+
+
+    <!--<authentication-basicdata>-->
+        <!--<authentication-provider>-->
+            <!--<user-service>-->
+                <!--<user name="test01" password="123456" authorities="ROLE_USER, ROLE_ACCOUNT_ADD,ROLE_ACCOUNT_UPDATE,ROLE_ACCOUNT_DELETE,ROLE_ACCOUNT_QUERY" />-->
+                <!--<user name="test" password="123456" authorities="ROLE_USER,ROLE_ACCOUNT_QUERY" />-->
+            <!--</user-service>-->
+        <!--</authentication-provider>-->
+    <!--</authentication-basicdata>-->
+
+    <!--&lt;!&ndash; 用户名密码加密或解密 &ndash;&gt;-->
+    <b:bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder">
+        <b:property name="iterations" value="4" />
+        <b:property name="encodeHashAsBase64" value="false"></b:property>
+    </b:bean>
+    <!--<b:bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder">
+    </b:bean>-->
+
+    <!-- 加盐 -->
+    <b:bean id="mySaltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource">
+        <b:property name="userPropertyToUse" value="username" />
+    </b:bean>
+    <b:bean id="userDetailsSecurityService" class="com.gome.platform.framework.security.service.SecurityUserDetailService"/>
+
+    <!-- 认证管理 -->
+    <b:bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <b:property name="userDetailsService" ref="userDetailsSecurityService" />
+        <b:property name="passwordEncoder" ref="passwordEncoder" />
+        <b:property name="saltSource" ref="mySaltSource" />
+        <b:property name="hideUserNotFoundExceptions" value="false" />
+    </b:bean>
+
+    <authentication-manager erase-credentials="false" alias="authenticationManager">
+        <authentication-provider ref="daoAuthenticationProvider" />
+    </authentication-manager>
+	
+	
+	
+	<!-- 同一时间内允许同一账号保持4个在线,error-if-maximum-exceeded="true"表示第第四个以后的登不进去 -->
+	<session-management>
+	<concurrency-control max-sessions="4"
+	error-if-maximum-exceeded="true" />
+	</session-management>
+	
+Spring Security 命名空间的引入可以简化我们的开发，它涵盖了大部分 Spring Security 常用的功能。它的设计是基于框架内大范围的依赖的，可以被划分为以下几块。
+
+Web/Http 安全：这是最复杂的部分。通过建立 filter 和相关的 service bean 来实现框架的认证机制。当访问受保护的 URL 时会将用户引入登录界面或者是错误提示界面。
+业务对象或者方法的安全：控制方法访问权限的。
+AuthenticationManager：处理来自于框架其他部分的认证请求。
+AccessDecisionManager：为 Web 或方法的安全提供访问决策。会注册一个默认的，但是我们也可以通过普通 bean 注册的方式使用自定义的 AccessDecisionManager。
+AuthenticationProvider：AuthenticationManager 是通过它来认证用户的。
+UserDetailsService：跟 AuthenticationProvider 关系密切，用来获取用户信息的。
+
+
+<!--authentication-manager 元素指定了一个 AuthenticationManager，
+其需要一个 AuthenticationProvider（对应 authentication-provider 元素）来进行真正的认证，
+默认情况下 authentication-provider 对应一个 DaoAuthenticationProvider，
+其需要 UserDetailsService（对应 user-service 元素）来获取用户信息 UserDetails（对应 user 元素）。
+这里我们只是简单的使用 user 元素来定义用户，而实际应用中这些信息通常都是需要从数据库等地方获取的，这个将放到后续再讲。
+		-->
+	<security:authentication-manager>
+      <security:authentication-provider>
+         <security:user-service>
+            <security:user name="user" password="user" authorities="ROLE_USER"/>
+            <security:user name="admin" password="admin" authorities="ROLE_USER, ROLE_ADMIN"/>
+         </security:user-service>
+      </security:authentication-provider>
+   </security:authentication-manager>
+
+</b:beans>

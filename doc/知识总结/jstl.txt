@@ -1,0 +1,21 @@
+
+//(@ taglib)之间必须得有空格
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+格式化标签
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+二.关于EL表达式语言的简单总结
+基本语法
+
+一、EL简介
+  1.语法结构
+    ${expression}
+	2.变量
+    EL存取变量数据的方法很简单，例如：${username}。它的意思是取出某一范围中名称为username的变量。
+    因为我们并没有指定哪一个范围的username，所以它会依序从Page、Request、Session、Application范围查找。
+    假如途中找到username，就直接回传，不再继续找下去，但是假如全部的范围都没有找到时，就回传null。
+    属性范围在EL中的名称
+        Page         PageScope
+        Request         RequestScope
+        Session         SessionScope
+        Application     ApplicationScope

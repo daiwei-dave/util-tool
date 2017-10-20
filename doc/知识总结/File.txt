@@ -1,0 +1,68 @@
+
+
+
+
+一。File
+
+		 path = new File(".");
+		//相当于查看当前项目有哪些子目录
+		String[] list = path.list();
+		for (String itemName : list) {
+			System.out.println(itemName);
+		}
+		System.out.println("--------->");
+		path = new File("E:\\javaio");
+		//相当于查看该目录下有哪些子目录
+		list = path.list();
+		for(String itemName : list){
+			System.out.println(itemName);
+		}
+		System.out.println("--------->");
+		//相当于在当前项目下创建imooc文件夹
+		path = new File(new File("."),"imooc");
+		path.mkdirs();
+		list = path.list();//列出bin目录下的所有文件或者是文件夹
+		for(String itemName : list){
+			System.out.println(itemName);
+		}
+	}
+	
+	
+	File path = new File("E:\\javaio\\imooc.txt");
+	//判断是否为目录,true:含子目录，false:不含子目录
+	System.out.println(path.isDirectory());
+	
+	File path = new File("E:\\javaio\\imooc.txt");
+		//磁盘分隔符
+		System.out.println(File.separator);
+		
+		
+	File path = new File("E:\\javaio\\imooc");
+		//由 Java 应用程序创建的所有非目录文件一定是标准文件。 
+		System.out.println(path.isFile());返回为false	
+		
+		File path = new File("E:\\javaio\\imooc.txt");
+		System.out.println(path.isFile());返回为true
+		
+		
+		
+		
+		
+		
+	
+
+
+二。fileinputStream	
+		
+available()：返回下一次对此输入流调用的方法可以不受阻塞地从此输入流读取（或跳过）的估计剩余字节数。		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

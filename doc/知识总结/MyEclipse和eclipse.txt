@@ -1,0 +1,18 @@
+@myeclipse配置jre:（和eclipse操作一样）
+window->preferences->java->installed jre->add->java(jdk的安装目录)
+@myeclipse集成tomcat:
+window->preferences->myeclipse->servers->tomcat->选版本->选enable(并引入tomcat的安装根目录)->在版本下选择jdk
+
+
+
+
+eclipse：
+
+project-->build automatically 就可自动编译
+
+
+
+
+1.调试
+
+在某个地方打断点，程序就会在次断点位置停止，用鼠标指在实体类就可看到前台提交的信息

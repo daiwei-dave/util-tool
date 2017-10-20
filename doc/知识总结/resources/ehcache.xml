@@ -1,0 +1,89 @@
+<ehcache
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../config/ehcache.xsd">
+
+    <diskStore path="java.io.tmpdir" />
+	
+	<!-- 登录记录缓存 锁定10分钟 -->
+    <!--
+		name ：指定一个cache的名字，用来识别不同的cache，必须惟一。
+		maxEntriesLocalHeap 用来限制当前缓存在堆内存上所能保存的最大元素数量
+        eternal:对象是否永久有效，一但设置了，timeout将不起作用。
+        timeToIdleSeconds：设置对象在失效前的允许闲置时间（单位：秒）。仅当eternal=false对象不是永久有效时使用，可选属性，默认值是0，也就是可闲置时间无穷大。
+        timeToLiveSeconds：设置对象在失效前允许存活时间（单位：秒）。最大时间介于创建时间和失效时间之间。仅当eternal=false对象不是永久有效时使用，默认是0.，也就是对象存活时间无穷大。
+        overflowToDisk：当内存中对象数量达到maxElementsInMemory时，Ehcache将会对象写到磁盘中。
+		maxElementsOnDisk：在硬盘上最大的对象个数, 硬盘管理的缓存元素数量最大限值。默认值为0，就是没有限制。
+		diskPersistent： 是否持久化磁盘缓存，设定在虚拟机重启时是否进行磁盘存储，默认为false. 
+		diskExpiryThreadIntervalSeconds：访问磁盘线程活动时间。
+		emoryStoreEvictionPolicy：元素逐出缓存规则。共有三种，(LRU)最近最少使用，为默认。   First In First Out (FIFO)，先进先出。  Less Frequently Used(specified as LFU)最少使用。
+        statistics="true" 进行统计
+		
+		其中必须要填的属性为: maxElementsInMemory:  eternal: overflowToDisk: 
+    -->
+
+    <defaultCache
+        maxElementsInMemory="100"
+        eternal="false"
+        timeToIdleSeconds="60"
+        timeToLiveSeconds="30"
+        overflowToDisk="true"
+        maxElementsOnDisk="150"
+        diskPersistent="false"
+        diskExpiryThreadIntervalSeconds="60"
+        memoryStoreEvictionPolicy="LRU" />
+
+    <cache
+        name="InternalPurchase.findById"
+        maxElementsInMemory="15"
+        eternal="false"
+        overflowToDisk="false"
+        timeToIdleSeconds="15"
+        timeToLiveSeconds="15"
+        memoryStoreEvictionPolicy="LFU" />
+
+    <cache
+        name="EmpPosition.findById"
+        maxElementsInMemory="1000"
+        eternal="false"
+        overflowToDisk="false"
+        timeToIdleSeconds="30"
+        timeToLiveSeconds="30"
+        memoryStoreEvictionPolicy="LFU" />
+
+    <cache
+        name="Employee.queryEmpByNo"
+        maxElementsInMemory="1000"
+        eternal="false"
+        overflowToDisk="false"
+        timeToIdleSeconds="30"
+        timeToLiveSeconds="30"
+        memoryStoreEvictionPolicy="LFU" />
+
+    <cache
+        name="SystemConstant.findValueByKey"
+        maxElementsInMemory="100"
+        eternal="false"
+        overflowToDisk="false"
+        timeToIdleSeconds="15"
+        timeToLiveSeconds="15"
+        memoryStoreEvictionPolicy="LFU" />
+
+    <cache
+        name="App.findAppByAppKey"
+        maxElementsInMemory="100"
+        eternal="false"
+        overflowToDisk="false"
+        timeToIdleSeconds="15"
+        timeToLiveSeconds="15"
+        memoryStoreEvictionPolicy="LFU" />
+
+    <!-- 过期时间要对应 InternalPurchaseTesseraeControllerUtil.getWeixinSignatureEntity() 里面的提前更新时间 --> 
+    <cache
+        name="WeixinMpAccount.findByAppKey"
+        maxElementsInMemory="5"
+        eternal="false"
+        overflowToDisk="false"
+        timeToIdleSeconds="30"
+        timeToLiveSeconds="30"
+        memoryStoreEvictionPolicy="LFU" />
+</ehcache>

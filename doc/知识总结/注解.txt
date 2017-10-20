@@ -1,0 +1,106 @@
+
+
+
+
+/**
+     * ExcelField为注解的类，
+		title为属性
+     */
+
+
+@ExcelField(title = "活动编号", align = 1, sort = 1,property="campaignNo")
+对应的源码
+String title();  //  String对应的title值类型。
+一。注解的基础概念
+
+注解的分类：
+
+　　根据注解参数的个数，我们可以将注解分为三类：
+　　　　1.标记注解:一个没有成员定义的Annotation类型被称为标记注解。这种Annotation类型仅使用自身的存在与否来为我们提供信息。比如后面的系统注解@Override;
+　　　　2.单值注解
+　　　　3.完整注解　　
+
+　　根据注解使用方法和用途，我们可以将Annotation分为三类：
+　　　　1.JDK内置系统注解
+　　　　2.元注解
+　　　　3.自定义注解
+
+系统内置标准注解：
+
+　　注解的语法比较简单，除了@符号的使用外，他基本与Java固有的语法一致，JavaSE中内置三个标准注解，定义在java.lang中：
+　　　　@Override：用于修饰此方法覆盖了父类的方法;@Override 是一个标记注解类型，它被用作标注方法。它说明了被标注的方法重载了父类的方法，起到了断言的作用。如果我们使用了这种Annotation在一个没有覆盖父类方法的方法时，java编译器将以一个编译错误来警示。这个annotaton常常在我们试图覆盖父类方法而确又写错了方法名时发挥威力。
+　　　　@Deprecated：用于修饰已经过时的方法;
+　　　　@SuppressWarnnings:用于通知java编译器禁止特定的编译警告。
+
+
+
+
+
+
+
+
+
+
+
+二。引用java.lang.annotation
+
+1.@Target
+作用：用于描述注解的使用范围（即：被描述的注解可以用在什么地方）
+取值(ElementType)有：
+
+　　　　1.CONSTRUCTOR:用于描述构造器
+　　　　2.FIELD:用于描述域，即只能在类的属性中使用
+　　　　3.LOCAL_VARIABLE:用于描述局部变量
+　　　　4.METHOD:用于描述方法
+　　　　5.PACKAGE:用于描述包
+　　　　6.PARAMETER:用于描述参数
+　　　　7.TYPE:用于描述类、接口(包括注解类型) 或enum声明        （在方法中不能使用此注解）
+
+
+
+2.@Retention：
+作用：表示需要在什么级别保存该注释信息，用于描述注解的生命周期（即：被描述的注解在什么范围内有效）
+
+取值（RetentionPoicy）有：
+
+　　　　1.SOURCE:在源文件中有效（即源文件保留）
+　　　　2.CLASS:在class文件中有效（即class保留）
+　　　　3.RUNTIME:编译器将把注解记录在类文件中，在运行时 VM 将保留注解，因此可以反射性地读取。
+
+
+3.@Documented:
+@Documented用于描述其它类型的annotation应该被作为被标注的程序成员的公共API，
+因此可以被例如javadoc此类的工具文档化。Documented是一个标记注解，没有成员。
+
+
+
+4.@Inherited：
+@Inherited 元注解是一个标记注解，@Inherited阐述了某个被标注的类型是被继承的。如果一个使用了@Inherited修饰的annotation类型被用于一个class，
+则这个annotation将被用于该class的子类。
+
+
+5.@interface（自定义注解）
+
+注解参数的可支持数据类型：
+
+　　　　1.所有基本数据类型（int,float,boolean,byte,double,char,long,short)
+　　　　2.String类型
+　　　　3.Class类型
+　　　　4.enum类型
+　　　　5.Annotation类型
+　　　　6.以上所有类型的数组
+
+注解元素的默认值：
+注解元素必须有确定的值，要么在定义注解的默认值中指定，要么在使用注解时指定，非基本类型的注解元素的值不可为null。因此, 使用空字符串或0作为默认值是一种常用的做法。
+
+
+
+
+
+
+
+
+6.@ see  超链接注解
+
+
+

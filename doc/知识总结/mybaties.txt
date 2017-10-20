@@ -1,0 +1,351 @@
+一。
+
+
+1.javabean与mysql字段匹配有两种方法
+1）javabean注解
+2）<resultMap>标签
+<resultMap id="baseResultMap" type="com.gome.platform.basicdata.entity.Position">
+		<result column="POST_NO" property="postNo" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="STATE" property="state" typeHandler="com.gome.platform.basicdata.dao.typeHandler.EntityStateHandler" />
+		<result column="POST_LEVEL" property="postLevel" />
+		<result column="IS_LEADER" property="isLeader" />
+		<result column="FIRST_LETTER" property="firstLetter" />
+		<result column="SPELL" property="spell" />
+		<result column="ALL_NAME" property="allName" />
+		<result column="SHORT_NAME" property="shortName" />
+		<result column="BELONG_ORG" property="blongOrg" />
+		<result column="MODIFY_TIME" property="modifyTime" />
+		<result column="COM_ID" property="comId" />
+	</resultMap>
+	
+	
+注意：
+1，select 所返回的列名一定要以<result column="" property="" />中的column的值所对应，而不是以property标签的值所对应
+
+二。配置参数
+
+1.<settings></settings>标签
+
+1）	是否开启自动驼峰命名规则（camel case）映射
+name="mapUnderscoreToCamelCas value="true" />
+
+2）当结果为null时也将进行显示
+name="callSettersOnNulls"   value="true"/>
+
+
+
+parameterType：将要传入语句的参数的完全限定类名或别名。这个属性是可选的，因为 MyBatis 可以通过 TypeHandler 推断出具体传入语句的参数，默认值为 unset
+
+对于多参数传递，参数一般存在map中。在mybaties中可以设为parameterType="Object"，若参数为map类型，在mybaties中可以直接默认
+
+字符串替换   #{}与${columnName}的区别
+
+默认情况下,使用#{}格式的语法会导致 MyBatis 创建预处理语句属性并安全地设置值（比如?）。这样做更安全，更迅速，通常也是首选做法，不过有时你只是想直接在 SQL 语句中插入一个不改变的字符串。比如，像 ORDER BY，你可以这样来使用：
+
+ORDER BY ${columnName}
+这里 MyBatis 不会修改或转义字符串。
+
+NOTE 以这种方式接受从用户输出的内容并提供给语句中不变的字符串是不安全的，会导致潜在的 SQL 注入攻击，因此要么不允许用户输入这些字段，要么自行转义并检验。
+
+
+resultType: 如果你搜索只是返回一个值，比如说String ，或者是int，那你直接用resultType就行了。
+2.  resultMap：  但是你如果是返回一个复杂的对象，就用resultMap且还要配置javabean与数据库的列表的对应关系
+
+
+如1：
+<resultMap class="包.User" id="User">
+  <result property="id" column="ID" />
+  <result property="name" column="NAME" />
+ </resultMap>
+ 
+<select id="getUserByID" resultMap="User">
+ Select ID,NAME from User where id =#id#
+ </select>
+
+ 如2：  可以不用再javabean设置注解？
+ <resultMap id="baseResultMap" type="com.gome.platform.basicdata.entity.Position">
+		<result column="POST_NO" property="postNo" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="STATE" property="state" typeHandler="com.gome.platform.basicdata.dao.typeHandler.EntityStateHandler" />
+		<result column="POST_LEVEL" property="postLevel" />
+		<result column="IS_LEADER" property="isLeader" />
+		<result column="FIRST_LETTER" property="firstLetter" />
+		<result column="SPELL" property="spell" />
+		<result column="ALL_NAME" property="allName" />
+		<result column="SHORT_NAME" property="shortName" />
+		<result column="BELONG_ORG" property="blongOrg" />
+		<result column="MODIFY_TIME" property="modifyTime" />
+		<result column="COM_ID" property="comId" />
+	</resultMap>
+2.1高级结果映射
+
+
+1）
+association – 一个复杂的类型关联;许多结果将包成这种类型
+嵌入结果映射 – 结果映射自身的关联,或者参考一个，相当于在再一次做了与javabean的映射
+
+
+如：
+<!-- Result Map -->
+	<resultMap id="baseResultMap" type="com.gome.platform.basicdata.entity.Employee">
+		<result column="EMP_NO" property="empNo" />
+		<result column="EMP_NO_LOGIC" property="empNoLogic" />
+		<result column="NAME" property="name" />
+		<result column="SEX" property="sex" />
+		<result column="EMP_STATE" property="empState" />
+		<result column="BIRTHDAY" property="birthday" />
+		<result column="SPELL" property="spell" />
+		<result column="FIRST_LETTER" property="firstLetter" />
+		<result column="NATION" property="nation" />
+		<result column="RELIGION" property="religion" />
+		<result column="MARITAL" property="marital" />
+		<result column="NATIONALITY" property="nationality" />
+		<result column="SALARY_PWD" property="salaryPwd" />
+		<result column="RESIDENCE_TYPE" property="residenceType" />
+		<result column="RESIDENCE_PLACE" property="residencePlace" />
+		<result column="RESIDENCE_CITY" property="residenceCity" />
+		<result column="RESIDENCE_PROVINCE" property="residenceProvince" />
+		<result column="EMP_NATIVE" property="empNative" />
+		<result column="EMP_TEAM" property="empTeam" />
+		<result column="DEPT" property="dept" />
+		<result column="EMP_SUBTEAM" property="empSubteam" />
+		<result column="ENTERDATE" property="enterdate" />
+		<result column="LEAVEDATE" property="leavedate" />
+		<result column="STATE" property="state" typeHandler="com.gome.platform.basicdata.dao.typeHandler.EntityStateHandler" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="MODIFY_TIME" property="modifyTime" />
+		<result column="COM_ID" property="comId" />
+		<!-实现一对多等映射关系-->
+		<association property="employeeExtra" column="EMP_NO" javaType="com.gome.platform.basicdata.entity.EmployeeExtra" resultMap="extraResultMap"/>
+	</resultMap>
+
+
+三。常用注解
+1.@Param
+可以解决传递多个参数的问题
+如：
+List<User> getAllUsers(@Param("start") int start,@Param("end") int end);
+@Param("start")中的start为xml中的参数，不是页面传递的参数，参数都将会设成string类型
+2.
+@Id  
+@GeneratedValue(strategy = GenerationType.AUTO)  
+
+在指定主键时，如果不指定主键生成策略，默认为AUTO。 
+
+
+
+
+
+
+四。动态sql
+
+<if test="storeName != null and storeName != ''">
+            AND store_name LIKE CONCAT('%',#{storeName,jdbcType=VARCHAR},'%')
+</if>
+
+使用CONCAT进行拼接，不使用可能会有语法错误
+
+
+1.  choose, when, otherwise关键字
+
+
+
+1）有些时候，我们不想用到所有的条件语句，而只想从中择其一二。针对这种情况，MyBatis 提供了 choose 元素，它有点像 Java 中的 switch 语句。
+
+<select id="findActiveBlogLike"
+     resultType="Blog">
+  SELECT * FROM BLOG WHERE state = ‘ACTIVE’
+  <choose>
+    <when test="title != null">
+      AND title like #{title}
+    </when>
+    <when test="author != null and author.name != null">
+      AND author_name like #{author.name}
+    </when>
+    <otherwise>
+      AND featured = 1
+    </otherwise>
+  </choose>
+</select>
+
+
+
+2）where关键字
+
+where 元素知道只有在一个以上的if条件有值的情况下才去插入“WHERE”子句。
+若where必须要跟条件，可以设置1=1
+FROM B_POSITION
+		<where>
+		   1=1	AND  (B_POSITION.STATE &lt;&gt;'0' or  B_POSITION.STATE is null) AND COM_ID=#{comId}
+		   
+		   
+SELECT * FROM
+		b_employee e
+		<where>
+			<if test="birthday!=null and birthday != ''">
+				e.BIRTHDAY LIKE concat('%',#{birthday},'%')
+			</if>
+			AND (e.STATE &lt;&gt; '0'OR e.STATE IS NULL)
+		</where>		   
+	
+若以where开头，则会自动去除and或or
+
+	
+		   
+trim 关键字
+1.若前边是WHERE，则去除and或or
+<trim prefix="WHERE" prefixOverrides="AND |OR ">
+  ... 
+</trim>
+2.
+注意这里我们忽略的是后缀中的值，而又一次附加了前缀中的值。
+<trim prefix="SET" suffixOverrides=",">
+  ...
+</trim>
+
+
+
+2.foreach   
+
+
+2.1 in条件
+ in条可以实现通过id批量查询，批量删除，批量更新
+动态 SQL 的另外一个常用的必要操作是需要对一个集合进行遍历，通常是在构建 IN 条件语句的时候。比如：
+
+1.  in条可以实现通过id批量查询
+<select id="selectPostIn" resultType="domain.blog.Post">
+  SELECT *
+  FROM POST P
+  WHERE ID in
+  <foreach item="item" index="index" collection="list"
+      open="(" separator="," close=")">
+        #{item}
+  </foreach>
+</select>
+
+备注：
+1.item="item" 与#{item} 要相对应
+2.collection="list" 当dao接口含有@Param("postNos")值时，collection的值应为@Param的值
+
+
+2.2 批量逻辑删除
+	 <update id="deleteBatch" parameterType="Object">
+         update B_POSITION set STATE=0
+         WHERE  COM_ID=#{comId}
+         AND POST_NO IN
+         <foreach collection="postNos" index="index" item="item" open="(" close=")" separator=",">
+             ${item}
+         </foreach>
+    </update>
+
+2.3<!-- 批量更新 -->
+	<update id="batchUpdatePosts">
+	    <if test="posts != null">  
+			<!-- 执行多条update语句，每条与";" 隔开 -->
+	      <foreach collection="posts" separator=";" item="item" index="index" >
+					update B_POSITION 
+					<set>
+						<if test="item.state != null ">
+							STATE=#{item.state,typeHandler=com.gome.platform.basicdata.dao.typeHandler.EntityStateHandler},
+						</if>
+						<if test="item.postLevel != null">
+							POST_LEVEL=#{item.postLevel},
+						</if>
+						<if test="item.isLeader != null and item.isLeader != ''">
+							IS_LEADER=#{item.isLeader},
+						</if>
+						<if test="item.firstLetter != null and item.firstLetter != ''">
+							FIRST_LETTER=#{item.firstLetter},
+						</if>
+						<if test="item.spell != null and item.spell != ''">
+							SPELL=#{item.spell},
+						</if>
+						<if test="item.allName != null and item.allName != ''">
+							ALL_NAME=#{item.allName},
+						</if>
+						<if test="item.shortName != null and item.shortName != ''">
+							SHORT_NAME=#{item.shortName},
+						</if>
+						<if test="item.blongOrg != null and item.blongOrg != ''">
+							BELONG_ORG=#{item.blongOrg},
+						</if>
+						MODIFY_TIME=now()
+					</set>
+					where POST_NO = #{item.postNo}
+			 </foreach>
+		</if>			 
+    </update>
+
+
+
+
+
+
+2.批量插入
+
+<insert
+        id="insertBatchReport"
+        parameterType="java.util.List">
+        insert into t_report_statistics (id,region_name,one_branch_code,one_branch_name,two_branch_code,
+        two_branch_name,store_code,store_name,campaign_name,brand_name,campaign_status,
+        claimed_amount,confirmed_amount,confirmed_ratio,campaign_no,campaign_duration)
+        values
+        <foreach
+            collection="list"
+            item="item"
+            index="index"
+            separator=",">
+            (#{item.id},#{item.regionName},#{item.oneBranchCode},#{item.oneBranchName},
+            #{item.twoBranchCode},#{item.twoBranchName},#{item.storeCode},#{item.storeName},
+            #{item.campaignName},#{item.brandName},#{item.campaignStatus},
+            #{item.claimedAmount},#{item.confirmedAmount},#{item.confirmedRatio},#{item.campaignNo},#{item.campaignDuration})
+        </foreach>
+    </insert>
+
+
+编译的结果如：Preparing: insert into B_POSITION(POST_NO,CREATE_TIME, STATE, POST_LEVEL,IS_LEADER,FIRST_LETTER,SPELL,ALL_NAME,SHORT_NAME,BELONG_ORG,MODIFY_TIME,COM_ID) values (?,now(), null, ?,?,?,?,?,?,?,now(),?) , (?,now(), null, ?,?,?,?,?,?,?,now(),?) 	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+五。
+可直接进行多参数查询，return以list集合存储的实体信息
+mybatisDao.getSqlSession().selectList("com.gome.gsm.web.entity.InternalPurchase.listByCondition", params);
+
+
+
+
+六。
+mybatis可以直接映射boolean类型。0为false，1为true
+
+
+debug
+
+1.注意每个字段要加“逗号”
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

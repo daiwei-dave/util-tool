@@ -1,0 +1,61 @@
+一。
+1.maven仓库地址
+http://mvnrepository.com/
+maven官方文档
+http://maven.apache.org/
+2.jQuery的api官网
+http://api.jquery.com/
+
+3.struts2官方教程
+http://www.tutorialspoint.com/struts_2/
+
+4.mybatis官方教程
+mybatis.github.io/mybatis-3/zh/index.html
+
+4.1mysql官网
+http://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-configuration-properties.html
+5.spring官网
+docs.spring.io/spring/docs/
+
+6.logback（日志）官网
+logback.qos.ch/manual/configuration.html
+
+7.dubbo(分布式架构)
+http://dubbo.io/
+
+
+
+
+3.eclipse如何把多个项目放在一个文件夹下
+在Package Explorer顶部的右侧有有机表图标按钮，
+点击倒三角
+Top Level Elements->Working Set。此时就会发现，很多项目会自动纳入一个文件夹，这个文件夹的名字叫做other Projects，这是默认的
+如果想自己建立自己的文件夹，点击倒三角，Configure Working Set，会出现弹框。
+        出现弹框后，点击New按钮，就可以创建文件夹。
+        在此界面，双击某一文件夹，就会进入编辑界面，可以修改文件夹名称，也可以选择将
+        那个项目放置到该目录下。
+        想删除，就选择remove。
+		
+4.如何设置eclipse下查看java源码	
+windows--preferences--java--installed jres --选中jre6--点击右边的edit--选中jre6/lib/rt.jar 
+--点击右边的 source attachment configuration -- external file selection --找到你的jdk下的src.zip文件，
+选择，然后就结束了		
+
+
+
+
+
+比慕课好的课：
+51cto:   springMVC，
+导师推荐视频：ajax，
+
+
+taglib 标签库
+artifact  加工品
+
+
+
+
+
+
+		

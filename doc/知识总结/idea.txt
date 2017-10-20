@@ -1,0 +1,54 @@
+
+
+
+
+一。idea的好处
+
+1.对maven的集成
+
+2.对tomcat简单热部署
+
+3.集成的有用插件多
+
+
+
+二.IntelliJ Idea 常用快捷键列表
+
+1）.网上找的
+Ctrl+N   查找类
+Ctrl+Shift+N  查找文件
+Ctrl + Shift + T  生成单元测试
+Ctrl+F 查找请求路径
+Ctrl + Shift + f  查找关键字内容
+Ctrl + I 实现方法
+Ctrl + Alt + T  用if、while、try catch来围绕选中的代码行
+
+Ctrl+Alt+L  格式化代码
+Alt+回车   导入包,自动修正,引入变量（多指接收的类名）,加try-catch
+
+
+ctrl + alt + v  自动填充变量，效果一样
+Ctrl+Alt+u    查看继承关系
+2）.自己发现的
+
+Ctrl +  /  还可注释xml代码 
+
+3)
+1.
+在IntelJ中和Eclipse中稍有不同，在Eclipse中，输入main再按Alt+/即可自动补全main函数，但是在IntellJ中则是输入psvm，选中即可
+
+2.
+System.out.println();在IntellJ中是输入sout
+
+三。调试
+
+1.下一步：  Step Over
+
+2. 终止调试： Resume Program 即直接跑到结束
+
+
+
+
+
+
+

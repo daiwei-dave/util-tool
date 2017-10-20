@@ -1,0 +1,639 @@
+
+
+
+
+
+
+
+
+基础数据
+缓存到10s
+
+
+
+
+
+出铝指示导出     http://10.122.2.43:8080/intelligent/exportIndicatrix?wcId=621010&date=20170731
+
+1.位数问题  
+页面为两位
+总权重，全槽炉底压降，上周平均电压，在产铝量
+
+(SELECT RUN_TIME FROM T_ALUM_PROCE WHERE POT_ST='NORM' AND RUN_TIME<1400)
+下料量是指加料量吗？
+fillQuant  加料量 14   
+
+
+POT_ST   槽状态
+
+
+
+
+
+
+1，技术维护
+
+
+
+
+
+
+CREATE OR REPLACE TRIGGER Trigger_User    
+BEFORE INSERT ON T_USER   
+	for each row    
+	when(NEW.ID is NULL)  
+	begin    
+		select T_USER_Seq.Nextval into :NEW.ID from dual;    
+	end;  
+
+
+
+
+
+
+一.梳理需求逻辑
+
+关联表：表名：槽号信息（t_alum_pot）
+
+1.电解九图控制
+
+表（t_alum_proce）中
+
+电解温度   elec_tmpr
+分子比  mole_ratio
+
+
+表（t_alum_proce）中
+平均电压  avg_vol
+设定电压  set_vol
+电流强度  cur_intens
+
+
+表（t_alum_proce）中
+实际出铝量 alu_actl
+铝水平    alum_level
+出铝指示量  alum_extr_inst
+
+
+表（t_alum_proce）中
+实际氟化铝加料量  alum_fluo_quant_actl
+设定氟化铝加料量   alum_fluo_quant_set
+
+
+表（t_alum_proce）中
+噪声   noise_ratio
+下料间隔  feed_nb
+
+
+表（t_alum_proce）中
+阴极压降   cathode_vol_drop（？只有一个字段吗）
+氧化铝30天累计和  fill_quant 
+
+表（t_alum_proce）中
+铁含量     fe_content
+硅含量     si_content
+
+
+表（t_alum_proce）中
+电解质水平 elec_level
+
+
+表（t_alum_proce）中
+加料量    fill_quant
+效应次数  eff_num
+闪烁效应次数  flsh_eff_num
+
+
+
+
+
+
+
+时间筛选：参考字段，，电解车间和槽号相独立，槽号是唯一的
+
+
+
+2.阳极组装产量 （一共四张表）
+
+
+
+
+
+date
+
+
+todo:
+
+
+
+
+
+部署生产环境要同步
+
+数据库所做的变动：
+
+1.T_RLTN_ROLE_PRVLG_SEQ   起始值由1变为227
+
+
+
+ALTER SEQUENCE T_RLTN_ROLE_PRVLG_SEQ INCREMENT BY 227;
+
+SELECT T_RLTN_ROLE_PRVLG_SEQ.NEXTVAL FROM DUAL;
+
+ALTER SEQUENCE T_RLTN_ROLE_PRVLG_SEQ INCREMENT BY 1;
+
+
+
+
+
+
+
+
+
+1.新增角色测试参数（）
+
+{
+    "roleNm": "test2",
+    "roleList": [
+        {
+            "pgLvlId": "2110",
+            "lvlNo": "3"
+        },
+         {
+            "pgLvlId": "2120",
+            "lvlNo": "3"
+        },
+        
+        {
+            "pgLvlId": "22",
+            "lvlNo": "2"
+        },
+        {
+            "pgLvlId": "3",
+            "lvlNo": "1"
+        }
+    ]
+}
+
+
+
+
+
+
+pageList: [
+	{
+		"pgLvlNm": "电解九图控制",
+		"pgLvlId": "2110",
+		"lvlNo":"1",
+		"pageList": [
+			{
+				"pgLvlNm": "电解九图控制",
+				"pgLvlId": "2110",
+				"lvlNo":"2",
+				"pageList": [
+					{
+						"pgLvlNm": "电解九图控制",
+						"pgLvlId": "2110",
+						"lvlNo":"3"
+					},
+					{
+						"pgLvlNm": "电解九图控制",
+						"pgLvlId": "2110",
+						"lvlNo":"3"
+					}
+				]
+			},
+			{
+				"pgLvlNm": "电解九图控制",
+				"pgLvlId": "2110",
+				"lvlNo":"2",
+				"pageList": [
+					{
+						"pgLvlNm": "电解九图控制",
+						"pgLvlId": "2110",
+						"lvlNo":"3"
+					},
+					{
+						"pgLvlNm": "电解九图控制",
+						"pgLvlId": "2110",
+						"lvlNo":"3"
+					}
+				]
+			}
+		]
+				
+	}
+]
+
+
+
+
+
+{
+  "code": "0",
+  "msg": "SUCCESS",
+  "data": {
+    "totalRecords": 1,
+    "pageNumber": 1,
+    "totalPage": 1,
+    "pageSize": 3,
+    "dataList": [
+      {
+        "roleId": 2,
+        "roleNm": "系统管理",
+        "roleList": [
+          {
+            "upPgLvlId": 21,
+            "upUpPgLvlId": 2
+          },
+          {
+            "upPgLvlId": 22,
+            "upUpPgLvlId": 2
+          },
+          {
+            "upPgLvlId": 23,
+            "upUpPgLvlId": 2
+          },
+          {
+            "upPgLvlId": 24,
+            "upUpPgLvlId": 2
+          },
+          {
+            "upPgLvlId": 25,
+            "upUpPgLvlId": 2
+          },
+          {
+            "upPgLvlId": 31,
+            "upUpPgLvlId": 3
+          },
+          {
+            "upPgLvlId": 32,
+            "upUpPgLvlId": 3
+          },
+          {
+            "upPgLvlId": 33,
+            "upUpPgLvlId": 3
+          },
+          {
+            "upPgLvlId": 34,
+            "upUpPgLvlId": 3
+          },
+          {
+            "upPgLvlId": 35,
+            "upUpPgLvlId": 3
+          },
+          {
+            "upPgLvlId": 41,
+            "upUpPgLvlId": 4
+          },
+          {
+            "upPgLvlId": 42,
+            "upUpPgLvlId": 4
+          },
+          {
+            "upPgLvlId": 43,
+            "upUpPgLvlId": 4
+          },
+          {
+            "upPgLvlId": 44,
+            "upUpPgLvlId": 4
+          },
+          {
+            "upPgLvlId": 51,
+            "upUpPgLvlId": 5
+          },
+          {
+            "upPgLvlId": 52,
+            "upUpPgLvlId": 5
+          },
+          {
+            "upPgLvlId": 53,
+            "upUpPgLvlId": 5
+          },
+          {
+            "upPgLvlId": 54,
+            "upUpPgLvlId": 5
+          },
+          {
+            "upPgLvlId": 61,
+            "upUpPgLvlId": 6
+          },
+          {
+            "upPgLvlId": 62,
+            "upUpPgLvlId": 6
+          },
+          {
+            "upPgLvlId": 63,
+            "upUpPgLvlId": 6
+          },
+          {
+            "upPgLvlId": 64,
+            "upUpPgLvlId": 6
+          },
+          {
+            "upPgLvlId": 65,
+            "upUpPgLvlId": 6
+          },
+          {
+            "upPgLvlId": 71,
+            "upUpPgLvlId": 7
+          },
+          {
+            "upPgLvlId": 72,
+            "upUpPgLvlId": 7
+          },
+          {
+            "upPgLvlId": 73,
+            "upUpPgLvlId": 7
+          },
+          {
+            "upPgLvlId": 74,
+            "upUpPgLvlId": 7
+          }
+        ]
+      }
+    ]
+  }
+}
+
+
+
+
+
+新增：无问题
+删除：无问题
+编辑：
+角色列表:
+
+{
+  "code": "0",
+  "msg": "SUCCESS",
+  "data": {
+    "produceList": [
+      {
+        "prodDate": "20170401",
+        "prodYield": "566.0",
+        "csmdQuant": "224.0",
+        "csmdQuantOut": "566.0",
+        "pIronConsumption": "3990.0",
+        "prodnCsmd": "7.05",
+        "csmdQuantIn": "0",
+        "csmdQuantStore": "0",
+        "stokQuant": "0"
+      },
+    
+	{
+        "prodDate": "20170430",
+        "prodYield": "367.0",
+        "csmdQuant": "548.0",
+        "csmdQuantIn": "342.0",
+        "csmdQuantOut": "367.0",
+        "csmdQuantStore": "14.0",
+        "pIronConsumption": "2590.0",
+        "prodnCsmd": "7.06",
+        "stokQuant": "0"
+      }
+    ],
+    "sum": {
+      "prodYield": 12543,
+      "stokQuant": "0",
+      "csmdQuant": 12486,
+      "csmdQuantIn": 9690,
+      "csmdQuantOut": 12543,
+      "csmdQuantStore": 14,
+      "pIronConsumption": 90167,
+      "prodnCsmd": "7.19"
+    }
+  }
+}
+
+
+
+
+
+		
+		
+		
+"totalRecords": 39,
+"pageNumber": 1,
+"totalPage": 8,
+"pageSize": 5,		
+"dataList":
+	[	
+		{
+			"roleId": "1",
+			"roleNm": "角色名称",		
+			"roleList": [
+				{
+					"pgLvlNm": "电解九图控制",
+					"pgLvlId": "2110",
+					"lvlNo":"3",
+					"upPgLvlId":"102",//上级
+					"upUpPgLvlId":"1"//上上级
+				},	
+				
+				{
+					"pgLvlNm": "电解参数统计分析",  // 名称   
+					"pgLvlId": "2120",       // 页面层级ID 
+					"lvlNo":"3",              //层级数
+					"upPgLvlId":"102",//上级
+					"upUpPgLvlId":"1"//上上级
+				}
+			]
+		},
+		{
+			"roleId": "2",
+			"roleNm": "角色名称",		
+			"roleList": [
+				{
+				  "pgLvlNm": "电解九图控制",
+				  "pgLvlId": "2110",
+				  "lvlNo":"3",
+				  "upPgLvlId":"102",//上级
+				  "upUpPgLvlId":"1"//上上级
+				},	
+				{
+				  "pgLvlNm": "电解参数统计分析",    // 名称   
+				  "pgLvlId": "2120",                // 页面层级ID 
+				  "lvlNo":"3",                      //层级数
+				  "upPgLvlId":"102",//上级
+				  "upUpPgLvlId":"1"//上上级
+				}
+			]
+		}
+	]
+
+
+
+
+
+
+
+
+
+只有按年选择时，阳极库存和碳块库存合计是月累计除以12吧
+
+
+
+ 
+大宗原材料汇总表
+
+
+ rawMaterial : {
+    1000000005 : "预焙阳极\\1700*600*635",
+    1000000038 : "弧形预焙阳极/1700*660*650MM",
+    1000000007 : "氧化铝",
+    1000000009 : "氟化铝",
+    1000000039 : "氟化铝F-2",
+    1000000015 : "石灰石粉\\粒径325目\\通过率≥90％\\CaO\\≥52.06%",
+  },
+
+elementMap:{
+    // 氧化铝－子成分
+    qnn0021 : "AL2O3",
+    qnn0001 : "Si02",
+    qnn0002 : "Fe203",
+    qnn0003 : "Na2O",
+    qnn0004 : "K2O",
+    qnn0005 : "CaO",
+    qnn0006 : "ZnO",
+    qnn0007 : "Ga2O3",
+    qnn0008 : "灼减",
+    qnn0009 : "F",
+    qnn0010 : "Al",
+    qnn0011 : "Na",
+    qnn0012 : "硫酸盐(以SO42-计)",
+    qnn0013 : "P2O5",
+    qnn0015 : "松装密度",
+    qnn0027 : "表观密度",
+    qnn0028 : "真密度",
+    qnn0029 : "耐压强度",
+    qnn0032 : "室温电阻率",
+    qnn0034 : "灰分含量",
+    qnn0035 : "S",
+    qnn0036 : "V",
+    qnn0049 : "水分",
+    qnn0087 : "细度(250目筛余率)",
+    qnnsamp : "testVilad",
+
+  },
+
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+http://10.122.2.43:8080/qmRecptimeMatHead/exportElementByVenderByDate?year=2017&month=06&vendorId=200030&matlId=1000000038 
+大宗原材料汇总表
+
+
+  
+弧形预焙阳极/1700*660*650MM质量统计（按时间）
+
+http://10.122.2.43:8080/qmRecptimeMatHead/exportDetailByMatlByType?year=2017&month=06&matlId=1000000038&groupBy=vendor
+
+弧形预焙阳极/1700*660*650MM质量统计（按供应商）
+
+http://10.122.2.43:8080/qmRecptimeMatHead/exportElementByVenderByDate?year=2017&month=06&vendorId=200030&matlId=1000000038
+
+重庆锦旗碳素有限公司弧形预焙阳极/1700*660*650MM质量变化
+
+
+
+
+氟化铝和氟化铝F-2没问题
+氧化铝没问题
+预焙阳极\\1700*600*635和弧形预焙阳极/1700*660*650MM没问题
+
+
+
+修复氟化铝和氟化铝F-2硫酸盐(以SO42-计)列没有数据"，
+
+预焙阳极\\1700*600*635和弧形预焙阳极/1700*660*650MM文件名对反
+
+修复小数点与页面的不对应
+
+无问题
+
+http://10.122.2.43:8080/qualityStatistic/exportFireCoalList?year=2017&month=06
+进厂燃煤质量汇总
+
+http://10.122.2.43:8080/qualityStatistic/exportDailyFireCoalQuality?year=2017&month=06
+进厂燃煤质量统计（按时间）
+
+http://10.122.2.43:8080/qualityStatistic/exportVendorsFireCoalQuality?year=2017&month=06
+进厂燃煤质量达标率（按供应商）
+
+http://10.122.2.43:8080/qualityStatistic/exportFireCoalQualityByVendor?year=2017&month=06&vendorId=100522
+
+成都铁路生活发展有限责任公司燃煤质量变化
+
+
+SELECT TPL.PG_LVL_ID,TRPP.PRVLG_ID FROM T_PAGE_LVL tpl
+INNER JOIN T_RLTN_PRVLG_PG trpp
+on TPL.PG_LVL_ID=TRPP.PG_LVL_ID
+ORDER BY TRPP.PRVLG_ID
+
+
+权限管理：
+
+
+用户-角色
+
+通过T_RLTN_USER_ROLE关联
+
+角色-权限
+
+通过T_RLTN_USER_ROLE关联
+
+权限-页面
+通过T_RLTN_PRVLG_PG关联
+
+
+
+磷生铁单耗（kg/块）	（表生产消耗（t_prodn_csmd），中CSMD_MATL=1000000006，按照yield_billdate得到的消耗数据）*1000/(表铝业产量（t_alum_yield），中wc_id=621030，prod_yield按照yield_billdate得到每天的产量)
+		
+		
+	
+	
+	
+
+
+
+
+级值分析
+编号：15
+	
+总和：	21220.55
+
+
+
+火眼个数权重修正值+电解质出入天权重修正值    这两个没有计算
+
+
+第四个参数修改与前段协调
+	
+	
+
+
+
+你看下第四个，铝水平标准值权重修改值后，传过来的值还是之前的
+
+

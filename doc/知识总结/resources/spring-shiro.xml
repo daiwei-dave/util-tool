@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+      http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util.xsd
+      ">
+
+    <bean id="shiroAuthorizeReam" class="com.gome.shiro.realm.ShiroAuthorizeReam">
+       <!-- <property name="credentialsMatcher">
+            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+                <property name="hashAlgorithmName" value="MD5"></property>
+                <property name="hashIterations" value="1"></property>
+            </bean>
+        </property>-->
+    </bean>
+
+
+    <!-- 配置权限管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="sessionManager" ref="sessionManager"/>
+        <property name="realm" ref="shiroAuthorizeReam"/>
+        <property name="cacheManager" ref="cacheManager"/>
+    </bean>
+
+    <bean id="sessionDAO" class="com.gome.shiro.session.RedisSessionRepository">
+        <property name="jedisCluster" ref="jedisCluster"/>
+    </bean>
+
+    <bean id="cacheManager" class="com.gome.shiro.cache.RedisCacheManager">
+        <property name="jedisCluster" ref="jedisCluster"/>
+    </bean>
+
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <!-- 设置全局会话超时时间，默认30分钟(1800000) -->
+        <property name="globalSessionTimeout" value="72000000" />
+        <!-- 是否在会话过期后会调用SessionDAO的delete方法删除会话 默认true -->
+        <property name="deleteInvalidSessions" value="true" />
+		
+        <!-- 设置调度时间间隔，单位毫秒，默认就是1小时；会话验证器调度时间 -->
+        <property name="sessionValidationInterval" value="1800000" />
+		
+        <!-- session存储的实现，负责对session的增删改查 -->
+        <property name="sessionDAO" ref="sessionDAO" />
+		
+        <!-- sessionIdCookie的实现,用于重写覆盖容器默认的JSESSIONID -->
+        <property name="sessionIdCookie" ref="sharesession" />
+        <!-- 是否开启会话验证器，默认是开启的。定时检查失效的session -->
+        <property name="sessionValidationSchedulerEnabled" value="true" />
+    </bean>
+
+    <!-- sessionIdCookie的实现,用于重写覆盖容器默认的JSESSIONID -->
+    <bean id="sharesession" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <!-- cookie的name,对应的默认是 JSESSIONID -->
+        <constructor-arg name="name" value="SHAREJSESSIONID" />
+		
+        <!-- 设置Cookie的路径，默认空，即存储在域名根下，jsessionId的path为 / 用于多个系统共享jsessionId -->
+        <property name="path" value="/" />
+		
+		 <!-- 如果设置为true，则客户端不会暴露给客户端脚本代码 -->
+        <property name="httpOnly" value="true"/>
+		
+		<!-- maxAge=-1表示浏览器关闭时失效此Cookie -->
+        <property name="maxAge" value="-1"/>
+    </bean>
+
+    <bean id="sessionExpFilter" class="com.gome.shiro.filter.SessionExpiredFilter"></bean>
+
+
+    <!-- 配置shiro的过滤器工厂类，id- shiroFilter要和我们在web.xml中配置的过滤器一致 -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!-- 调用我们配置的权限管理器 -->
+        <property name="securityManager" ref="securityManager"/>
+        <!-- 配置我们的登录请求地址 -->
+        <property name="loginUrl" value="/index.html"/>
+        <!-- 配置我们在登录页登录成功后的跳转地址，如果你访问的是非/login地址，则跳到您访问的地址 -->
+        <!--<property name="successUrl" value="/main"/>-->
+        <!-- 如果您请求的资源不再您的权限范围，则跳转到/403请求地址 -->
+        <property name="unauthorizedUrl" value="/error-page/403.jsp"/>
+        <property name="filters">
+            <util:map>
+                <entry key="sessionexp" value-ref="sessionExpFilter"/>
+            </util:map>
+        </property>
+        <!-- 
+		权限配置 ：
+		常用拦截器：
+		1.user：用户拦截器，用户已经身份验证/记住我登录的都可；示例“/**=user”
+		-->
+        <property name="filterChainDefinitions">
+            <value>
+                /static/**=anon
+                /login=anon
+                /couponApp/**=anon
+                /error-page/**=anon
+                /router*=anon
+                /manage/**=anon
+                /app/**=anon
+                /spide/**=anon
+                /logout=anon
+                /*.js=anon
+                /*.css=anon
+                /*.png=anon
+                /*.jpg=anon
+                /*.gif=anon
+                /*.swf=anon
+                /*.ico=anon
+                /*.html=anon			
+				 <!-- 过滤器链，按顺序依次过滤。[admin:manage]为perms所带的参数 -->
+                /** = sessionexp,authc,perms[admin:manage]
+            </value>
+        </property>
+    </bean>
+
+	<!-- Shiro生命周期处理器，可以自动的来调用配置在 Spring IOC 容器中 shiro bean 的生命周期方法-->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+	
+	
+	<!--  
+    5. 启用 IOC 容器中使用 shiro 的注解. 但必须在配置了 LifecycleBeanPostProcessor 之后才可以使用. 
+    -->     
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor"/>
+
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+	
+	
+	
+
+</beans>

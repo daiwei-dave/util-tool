@@ -1,0 +1,98 @@
+
+
+一。为什么用rop?
+
+
+
+
+
+二。
+1.Rop    ：
+Rop，即Rapid Open Platform,是一个参考淘宝开放平台（TOP Taobao Open Platform）的平台设计思路，
+充分借鉴Spring MVC的技术架构原理开发的一个快速服务开放平台开源框架项目，可以让您迅速构建成熟的SOA服务平台。
+它不同于传统的SOAP Web Service和Rest Web Service这些Web Service 技术型框架，Rop是一个应用型的Web Service平台框架，
+它不但可以方便快捷地开发一个个Web Service服务，还提供了服务平台领域问题的整体解决方案。因此,... 
+
+传统的Web Service框架帮助你建造房子，而Rop框架帮助您建造城市。 
+
+
+
+
+
+
+
+
+2.和springMVC及其相似
+
+
+
+
+
+
+
+
+
+
+3.请求服务模型
+
+appKey 
+是应用键，开放平台用以确定客户端应用的身份， 如 000001， 000002 等。 应用键对应一个
+密钥 secret。要基于服务平台开发应用，必须事先通过申请获取 appKey/secret 后，才能进
+行应用的开发。
+
+
+sign 
+是签名串，请求参数的签名，服务平台通过它验证请求数据的合法性。
+
+
+
+
+加密/授权必须有这四个参数，并做相关的配置
+
+ private static final String appSecret = "abcdeabcdeabcdeabcdeabcd6";
+    private static final String parmasSecret = "SA0CC42AC1581A06";
+    private static final String appKey = "00001";
+    private static final String paramsKey = "0-00001";
+	
+	
+	
+	
+	
+	
+
+@ServiceMethod    Rop 使用@ServiceMethod 注解实现 HTTP 请求到服务处理方法的映射。
+
+
+httpAction：服务允许的 HTTP 请求方法，可选值在 HttpAction 枚举中定义，即
+GET 或 POST，如果不指定则不限制；
+
+
+ignoreSign = IgnoreSignType.YES：关闭服务级签名认证
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,33 @@
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-4.0.xsd
+">
+
+
+<!--spring-context主要用于加载工程的上下文-->
+
+<context:component-scan base-package="com.gome"/>
+
+<context:property-placeholder ignore-unresolvable="true" location="classpath*:/*.properties" />
+
+<!--ignore-unresolvable="true" 当property resource没有找到时忽略使其不报错-->
+<context:property-placeholder ignore-unresolvable="true" location="classpath*:/*.properties" />
+
+
+
+
+
+<bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+<!--Set locations of properties files to be loaded-->
+        <property name="locations">
+            <list>
+                <value>classpath*:*.properties</value>
+            </list>
+        </property>
+    </bean>

@@ -1,0 +1,139 @@
+一。
+1.IOC(控制反转)：已基本掌握
+为什么用IOC？
+1.对象的创建统一托管
+2.规范的生命周期管理
+3.灵活的依赖注入
+4.一致的获取对象
+
+<bean id="date" class="java.util.Date" />//id值就如map中的键值
+2.DI（依赖注入）：已基本掌握
+
+可以减少创建实列对象，直接采用注入的方式，大大降低了对象之间的耦合度
+
+用于解决依赖关系如：action-Service-dao-sqlsessionfactory-datasource
+
+使用xml配置：
+使用default-autowire="byName"注入可以使在其他业务时不用配置bean，但在类中还是得要有set方法。
+
+
+1.构造器注入
+	这种方式的注入是指带有参数的构造函数注入，看下面的例子，我创建了两个成员变量SpringDao和User，但是并未设置对象的set方法，所以就不能支持第一种注入方式，这里的注入方式是在SpringAction的构造函数中注入，也就是说在创建SpringAction对象时要将SpringDao和User两个参数值传进来：
+Java代码  收藏代码
+public class SpringAction {  
+    //注入对象springDao  
+    private SpringDao springDao;  
+    private User user;  
+      
+    public SpringAction(SpringDao springDao,User user){  
+        this.springDao = springDao;  
+        this.user = user;  
+        System.out.println("构造方法调用springDao和user");  
+    }  
+          
+        public void save(){  
+        user.setName("卡卡");  
+        springDao.save(user);  
+    }  
+}  
+ 
+	在XML文件中同样不用<property>的形式，而是使用<constructor-arg>标签，ref属性同样指向其它<bean>标签的name属性：
+Xml代码  收藏代码
+<!--配置bean,配置后该类由spring管理-->  
+    <bean name="springAction" class="com.bless.springdemo.action.SpringAction">  
+        <!--(2)创建构造器注入,如果主类有带参的构造方法则需添加此配置-->  
+        <constructor-arg ref="springDao"></constructor-arg>  
+        <constructor-arg ref="user"></constructor-arg>  
+    </bean>  
+        <bean name="springDao" class="com.bless.springdemo.dao.impl.SpringDaoImpl"></bean>  
+         <bean name="user" class="com.bless.springdemo.vo.User"></bean>  
+ 	解决构造方法参数的不确定性，你可能会遇到构造方法传入的两参数都是同类型的，为了分清哪个该赋对应值，则需要进行一些小处理：
+	下面是设置index，就是参数位置：
+Xml代码  收藏代码
+<bean name="springAction" class="com.bless.springdemo.action.SpringAction">  
+        <constructor-arg index="0" ref="springDao"></constructor-arg>  
+        <constructor-arg index="1" ref="user"></constructor-arg>  
+    </bean>  
+
+
+
+使用注解
+1.在xml下必须得有扫描
+2.不用使用set方法
+
+3.aop ： 已基本掌握
+1.传统意义上的AOP，是针对业务处理过程中的切面进行提取，它所面对的是处理过程中的某个步骤或阶段，
+来获得逻辑过程中各部分之间低耦合性的一些隔离效率，比如：常见的应用场景有：
+
+Authentication 权限
+Caching缓存
+Context passing内容传递
+Error handling 错误处理
+Lazy loading 延时加载
+Debugging 调试
+logging, tracing, profiling and monitoring 记录跟踪 优化 校准
+Performance optimization性能优化
+Persistence 持久化
+Resource pooling资源池
+Synchronization 同步
+Transactions事务
+全文索引
+等等
+
+2.
+2.1可以使核心业务更清晰，动态的为核心业务添加附属功能。代理指定的业务，为指定的业务添加功能
+2.2非业务需求，但又很有必要写的功能如日志，验证功能
+
+
+
+3.
+注解方式
+3.1 五种通知
+
+1.前置通知: @Before
+2.后置通知：@After 
+在方法执行之后执行的代码. 无论该方法是否出现异常，类似于finally，且在@AfterReturning返回值之前
+3.返回通知：@AfterReturning
+在方法正常结束后才会执行的代码（有异常则不会执行），返回通知是可以访问到方法的返回值的!
+4.异常通知：@AfterThrowing
+在目标方法出现异常时才会执行的代码，可以访问到异常对象; 且可以指定在出现特定异常时才会执行通知代码
+5.环绕通知：@Around
+* 环绕通知需要携带 ProceedingJoinPoint 类型的参数. 
+* 环绕通知类似于动态代理的全过程: ProceedingJoinPoint 类型的参数可以决定是否执行目标方法.
+* 且环绕通知必须有返回值, 返回值即为目标方法的返回值
+
+
+
+注：
+1.在切入时大量用到模糊匹配
+2.可以使用 @Order 注解指定切面的优先级, 值越小优先级越高
+3.使用 @Pointcut 来声明切入点表达式. 后面的其他通知直接使用方法名来引用当前的切入点表达式.
+
+
+4.整合持久层：已基本掌握
+
+
+5.事务管理：
+PROPAGATION_REQUIRED--支持当前事务，如果当前没有事务，就新建一个事务。这是最常见的选择。 
+PROPAGATION_SUPPORTS--支持当前事务，如果当前没有事务，就以非事务方式执行。 
+PROPAGATION_MANDATORY--支持当前事务，如果当前没有事务，就抛出异常。 
+PROPAGATION_REQUIRES_NEW--新建事务，如果当前存在事务，把当前事务挂起。 
+PROPAGATION_NOT_SUPPORTED--以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。 
+PROPAGATION_NEVER--以非事务方式执行，如果当前存在事务，则抛出异常。
+
+编程式事务(一般不用)
+
+声明式事务：已基本掌握
+1.事务回滚：只会对出现RunTimeException时就会进行rollback
+
+
+6.web层MVC:
+
+springMVC
+
+二。
+<bean>标签下的提示
+xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<util>标签下的提示
+xmlns:util="http://www.springframework.org/schema/util"

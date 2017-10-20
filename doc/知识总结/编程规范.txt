@@ -1,0 +1,134 @@
+
+一。路径切换到java环境更加显示清晰
+
+二。一切以便于维护，阅读为根本
+1.减少代码冗余
+代码冗余：重复的代码
+
+1.一般把.properties文件放在src目录下，这样调用时就可直接使用相对路径如
+InputStream inStream = JdbcUtil.class.getResourceAsStream("/jdbc.properties");
+2.maven下的根目录为：
+src/main/java
+src/main/resources
+
+2.得有专门的常量文件
+2.1如：
+public class Constant {
+	/**
+	 * 男性
+	 */
+	public static final int GENDER_MALE = 1;
+	/**
+	 * 女性
+	 */
+	public static final int GENDER_FEMALE = 2;
+2.2
+要常用映射关系
+如。下拉框，
+传输交互：
+bgfangan.status=00:未提交,01:审核中,02:审核通过,03:审核失败,04:审批通过,05:审批不通过
+
+2.3
+有异常的部分要自定义提示信息，便于调试。
+	
+3.struts2最好在action层专门设置作用域，便于在jsp页面调用时方便阅读时	
+
+
+
+
+4.书写顺序规范
+1）.日志类
+
+ private static final Logger log = Slf4j.getLogger();        （日志为debug，可减少不必要的打断点调试）
+
+2）.所用的接口注解
+
+ @Resource
+    IEmpPositionService empPositionService;
+    @Resource
+    IInternalPurchaseService internalPurchaseService;    
+    @Resource
+    IInternalPurchaseTesseraeService internalPurchaseTesseraeService;
+
+
+3）.写方法
+
+
+
+
+
+
+
+
+
+
+
+项目一般归属：
+1.打成war包
+2.打成jar包
+3.打成sdk    SDK的英文全名是：software development kit，翻译成中文的意思就是“软件开发工具包”
+通俗一点的理解，是指由第三方服务商提供的实现软件产品某项功能的工具包。一般以集合kpi和文档、范例、工具的形式出现
+
+
+
+
+
+5.命名规范
+组词
+java：驼峰命名如createTime；数据库字段名使用下划线如create_time，包名全部小写，类名首字母大写
+文件夹：
+samples:存放例子的文件夹
+
+
+6.相关注释
+1）TODO: + 说明：
+如果代码中有该标识，说明在标识处有功能代码待编写，待实现的功能在说明中会简略说明。
+2）
+接口必须写注释，实现类可以不写
+3）
+log中的info,bug.error要注意写
+4）
+entity中的属性最好有注释
+7.在当前类下可以直接使用当前类的方法默认为this.method();
+
+
+8.登陆：
+
+将user实体放入session      request.getSession().setAttribute(Constants.USER_IN_SESSION_KEY, userDb);
+
+注销：
+
+将user实体移除session      request.getSession().removeAttribute(Constants.USER_IN_SESSION_KEY);
+
+
+
+验证账号和密码：
+
+调用  ：queryByAccountAndPwd(searchUser)
+
+
+
+
+
+
+
+9.业务都写在service层便于使用事务进行管理，避免隐患和维护成本
+
+
+
+
+
+
+10：String s = System.getProperty("user.dir") + "\\" + name;
+
+路径使用"\\"可以有效避免不同操作系统所产生的问题
+
+
+
+
+
+
+
+
+
+

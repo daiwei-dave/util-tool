@@ -1,0 +1,106 @@
+
+
+
+1.Subject：主体，可以看到主体可以是任何可以与应用交互的“用户”；
+Subject是Shiro的核心对象，基本所有身份验证、授权都是通过Subject完成。
+2.Realm：用于认证和授权
+
+
+
+credentials  证书
+
+
+3.SecurityManager
+
+SecurityManager继承了Authorizer接口，且提供了ModularRealmAuthorizer用于多Realm时的授权匹配。
+
+4.PermissionResolver:
+PermissionResolver用于解析权限字符串到Permission实例，而RolePermissionResolver用于根据角色解析相应的权限集合。
+
+WildcardPermissionResolver()：使用通配符
+
+
+
+5.Authenticator：认证器。负责主体认证的，这是一个扩展点，如果用户觉得Shiro默认的不好，可以自定义实现；其需要认证策略（Authentication Strategy），即什么情况下算用户认证通过了；
+
+5.1Authentication Strategy ：认证策略
+
+5.1.1AtLeastOneSuccessfulStrategy： 只要有一个 Realm 验证成功即可， 和 FirstSuccessfulStrategy
+不同，返回所有 Realm 身份验证成功的认证信息；
+
+
+5.2AuthenticationToken
+AuthenticationToken用于收集用户提交的身份（如用户名）及凭据（如密码）
+public interface AuthenticationToken extends Serializable {  
+    Object getPrincipal(); //身份  
+    Object getCredentials(); //凭据  
+}   
+
+
+5.3AuthenticationInfo：用于聚合授权信息
+public interface AuthorizationInfo extends Serializable {  
+    Collection<String> getRoles(); //获取角色字符串信息  
+    Collection<String> getStringPermissions(); //获取权限字符串信息  
+    Collection<Permission> getObjectPermissions(); //获取Permission对象信息  
+}   
+AuthenticationInfo有两个作用：
+1、如果Realm是AuthenticatingRealm子类，则提供给AuthenticatingRealm内部使用的CredentialsMatcher进行凭据验证；（如果没有继承它需要在自己的Realm中自己实现验证）；
+2、提供给SecurityManager来创建Subject（提供身份信息）；
+6.Authrizer：
+授权器，或者访问控制器，用来决定主体是否有权限进行相应的操作；即控制着用户能访问应用中的哪些功能；
+是Shiro API中授权核心的入口点，其提供了相应的角色/权限判断接口，具体请参考其Javadoc。
+
+
+PrincipalCollection
+因为我们可以在Shiro中同时配置多个Realm，所以呢身份信息可能就有多个；因此其提供了PrincipalCollection用于聚合这些身份信息：
+
+public interface PrincipalCollection extends Iterable, Serializable {  
+    Object getPrimaryPrincipal(); //得到主要的身份  
+    <T> T oneByType(Class<T> type); //根据身份类型获取第一个  
+    <T> Collection<T> byType(Class<T> type); //根据身份类型获取一组  
+    List asList(); //转换为List  
+    Set asSet(); //转换为Set  
+    Collection fromRealm(String realmName); //根据Realm名字获取  
+    Set<String> getRealmNames(); //获取所有身份验证通过的Realm名字  
+    boolean isEmpty(); //判断是否为空  
+}   
+
+
+
+
+
+
+
+其中最重要的就是[urls]部分的配置，其格式是： “url=拦截器[参数]，拦截器[参数]”；
+即如果当前请求的url匹配[urls]部分的某个url模式，将会执行其配置的拦截器。
+比如anon拦截器表示匿名访问（即不需要登录即可访问）；
+authc拦截器表示需要身份认证通过后才能访问；
+roles[admin]拦截器表示需要有admin角色授权才能访问；
+而perms["user:create"]拦截器表示需要有“user:create”权限才能访问。
+ 
+
+
+
+
+
+
+ 
+ 
+ 
+ 
+ 二。与springboot的整合
+ 
+ http://www.jianshu.com/p/672abf94a857?winzoom=1
+
+
+
+
+
+
+
+
+
+
+
+
+

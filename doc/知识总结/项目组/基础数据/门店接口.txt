@@ -1,0 +1,226 @@
+
+
+
+
+
+
+
+
+
+一期优化
+
+
+
+
+
+权限功能：
+数据维护问题
+
+基础数据：
+
+总部没有问题     4268=1501+      6个大区  303个分部，4268个门店
+大区没有问题     能看到所属大区的所有  华北一区：24，563   华东大区： 68 1151
+分部没有问题     分部只能看分部及其以下，不能返回大区的数据       16：123条 ：
+  22：181条  
+
+包头分部：18个门店  
+  
+  
+  
+  
+权限控制： 
+大区没有问题
+总部没有问题
+
+风险：
+虚拟机构未进行过滤
+
+
+
+查询所有二级分部
+
+SELECT
+	org_no,
+	level_detail
+FROM
+	b_org
+WHERE
+	parent_no IN (
+		SELECT
+			org_no	
+		FROM
+			b_org
+		WHERE
+			level_detail = 16
+		AND parent_no IN (
+			SELECT
+				org_no
+			FROM
+				b_org
+			WHERE
+				level_detail = 10
+			AND parent_no = 10000001
+		)
+	)
+AND level_detail = 22
+
+
+
+
+
+
+
+  共303个分部  查询六个大区下的所有一级分部和二级分部
+  
+  SELECT
+			org_no,level_detail
+		FROM
+			b_org
+		WHERE
+			level_detail = 16
+		AND parent_no IN (
+			SELECT
+				org_no
+			FROM
+				b_org
+			WHERE
+				level_detail = 10
+			AND parent_no = 10000001
+		)
+		UNION
+			SELECT
+	org_no,
+	level_detail
+FROM
+	b_org
+WHERE
+	parent_no IN (
+		SELECT
+			org_no	
+		FROM
+			b_org
+		WHERE
+			level_detail = 16
+		AND parent_no IN (
+			SELECT
+				org_no
+			FROM
+				b_org
+			WHERE
+				level_detail = 10
+			AND parent_no = 10000001
+		)
+	)
+AND level_detail = 22
+
+
+
+
+
+一二级门店关联
+
+SELECT * FROM b_org WHERE parent_no in(
+SELECT org_no FROM b_org WHERE level_detail=27)
+AND level_detail=28
+
+
+一二级分部关联
+SELECT * FROM b_org WHERE parent_no in(
+SELECT org_no FROM b_org WHERE level_detail=16)
+AND level_detail=22
+
+
+
+检查哪些组织层级有门店
+SELECT all_name,level_detail,org_level from b_org WHERE parent_no in(
+SELECT org_no from b_org WHERE level_detail=11
+) AND (level_detail=27 OR level_detail=28)
+
+
+
+查询职位所对应的权限
+
+SELECT
+	o.org_no,
+	o.all_name,
+	o.level_detail,
+	e.emp_no,
+	p.all_name as postName,
+	j.short_name
+FROM
+	B_EMPLOYEE e
+INNER JOIN b_emp_post_relation epr ON e.emp_no = epr.emp_no
+INNER JOIN b_org o ON e.dept = o.org_no
+INNER JOIN b_position p ON epr.post_no = p.post_no
+INNER JOIN b_job j ON p.job_no = j.job_no
+WHERE
+	(
+		e.STATE <> '0'
+		OR e.STATE IS NULL
+	)
+AND j.short_name='A000000002'
+
+
+
+
+
+
+SELECT
+	o.org_no,
+	o.all_name,
+	o.level_detail,
+	e.emp_no,
+	p.all_name as postName,
+	j.short_name
+FROM
+	B_EMPLOYEE e
+INNER JOIN b_emp_post_relation epr ON e.emp_no = epr.emp_no
+INNER JOIN b_org o ON e.dept = o.org_no
+INNER JOIN b_position p ON epr.post_no = p.post_no
+INNER JOIN b_job j ON p.job_no = j.job_no
+WHERE
+	(
+		e.STATE <> '0'
+		OR e.STATE IS NULL
+	)
+AND e.emp_no =00002021
+
+
+
+
+
+
+SELECT
+	o.org_no,
+	o.all_name,
+	o.level_detail,
+	e.emp_no,
+	p.all_name as postName,
+	j.short_name
+FROM
+	B_EMPLOYEE e
+INNER JOIN b_emp_post_relation epr ON e.emp_no = epr.emp_no
+INNER JOIN b_org o ON e.dept = o.org_no
+INNER JOIN b_position p ON epr.post_no = p.post_no
+INNER JOIN b_job j ON p.job_no = j.job_no
+WHERE
+	(
+		e.STATE <> '0'
+		OR e.STATE IS NULL
+	)
+AND o.org_no=10034260
+
+
+
+
+
+
+todo;
+1.几个测试账号权限恢复
+
+
+
+
+
+ 
+  

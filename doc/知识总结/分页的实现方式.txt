@@ -1,0 +1,63 @@
+1.sql方式
+
+//动态sql
+StringBuilder sql = new StringBuilder("select * from t_student where 1=1");
+sql.append(" limit " + fromIndex + "," + pageSize);
+索引起点为1
+2.subList方式实现分页
+
+sourceList.subList(fromIndex, toIndex);
+
+3.Hibernate方式实现分页
+String hql = "FROM Person as p WHERE p.name = ?";   // Person这里不是表名，而是POJO类名。
+
+Query q = session.createQuery(hql); // 创建Query对象，装载要与数据库进行交互的SQL
+
+q.setString(0,"张三"); // 设置where条件
+
+q.setFirstResult(2);  // 设置检索范围，从第2条开始取，取3条。
+
+q.setMaxResult(3);
+
+List all = q.list(); // 进行查询
+
+Iterator iter = all.iterator();
+
+while(iter.hasNext()){
+
+    Person p = (Person)iter.next();  // 遍历得到查询到的每一个记录对象
+
+}
+
+
+
+
+二。
+pageSize: 要显示的记录数，用户自己设定无需设计算法
+totalRecord:所有记录数
+totalPage：总页数
+1.获取总页数=查询的所有记录数/要显示的记录数；有余数则加1；
+如：
+int totalPage = totalRecord / pageSize;
+			if(totalRecord % pageSize !=0){
+				totalPage++;
+								
+			}
+2. 起始索引=要显示的记录数*（ 查询第几页数据-1）
+如：
+int fromIndex	= pageSize * (pageNum -1);
+
+数据库的起始索引为0
+
+
+
+
+
+
+
+
+
+
+
+
+

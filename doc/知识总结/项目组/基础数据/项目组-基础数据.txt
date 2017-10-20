@@ -1,0 +1,217 @@
+
+
+
+快速查找组织层级
+queryAllOrgByEmpAccountInfo
+
+
+
+
+小虫积分接口
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+b_employee和b_org关联的字段  dept就是对应的b_org的org_no（组织机构代码）
+
+
+
+
+
+
+
+一。gome-platform-server：
+
+
+1.gome-platform-standalone    用于启动dubbo等服务
+
+
+2.gome-platform-dao
+
+2.1gome-platform-basicdata-dao   基础数据的dao层
+
+
+3.gome-platform-service
+3.1 gome-platform-basicdata-service   基础数据的service层
+
+
+在这里写ResultData
+
+
+if(count>0){
+          return ResultData.newResultData(ErrorCode.SUCCESS,ErrorCode.SUCCESS_MSG , count);
+        }else{
+          return ResultData.newResultData(ErrorCode.DEL_FAILOR,ErrorCode.DEL_FAILOR_MSG);
+        }   
+
+4.gome-platform-facade    自己开发时主要关心这一层，跟dubbo相关
+
+4.1 gome-platform-basicdata-facade  基础数据的facade层
+
+
+备注：gome-platform-sp-facade-api   带sp的为对外提供服务，开发时先不管
+
+
+二。gome-platform-web： 主要为页面显示
+
+1.gome-platform-web-modules
+
+1.1 gome-platform-basicdata-web    基础数据的controller层
+
+2.gome-platform-web-portal   web层，包含了前端页面
+
+
+tomcat启动需先启动：
+1.BasicdataLauncher
+2.gome-platform-web-portal
+
+
+账号密码：WT080401，123456
+
+主要在http://localhost/portal/main# 页面进行操作
+
+
+
+
+
+ private static final String appSecret="ehr-server-100";
+ private static final String paramsSecret="ehr-server-100xx";
+
+
+
+
+
+
+
+
+
+1.entity：
+
+Position     职位
+org          机构
+
+b_employee   员工
+b_account    账户
+
+
+
+
+
+
+
+
+2.常用工具
+
+StringUtils     org.apache.commons.lang3
+
+技术复习：
+
+2.日志
+
+
+3.已看完
+PositionMapper.xml
+
+OrgMapper.xml
+
+EmployeeMapper.xml
+
+
+
+
+
+
+
+TODO
+根据员工编号   （增加返回员工编号）
+http://localhost:8080/marsEmployee/queryEmployeeByEmpNo?sign=DC9998DB3DBB3D5CEE7B76DC65A8FBBD&params=b89eb4c9d85140efd733a934f5820fde5c71ea502d39280ab2f80335bfec7deedf0efd00bc52d2cfb712afb0ee53361a&paramsKey=0002&appKey=0001
+
+根据生日
+http://localhost:8080/marsEmployee/queryEmployeeByBirthday?sign=CDCC495EDD8CB1A4A81E9E3D038E7E8B&params=d05d4c87de191cbbf1850476121c9e4c9f9f1404125963a183ebad438c3058e066618dbcac2aed021c731e73232fc3cd4e6c703d559b31dc8732d294f5f1e7e3a2b9415129b1f29ffd417c167d2dc6a31fc91aa0db8dff4d9acebe61d2147b64cde8b12e61bb9b14e72d3b2fa91dcc2e9ebfb6d8892d0f5196b13246348a251b70887755dcc6a5a23bd58dace52e9fbfee45aa88ca48178bae664a77c3943157063489085e6c99966d0d47d2146fab0f6547c732e8e5881dfd90476c1a9104e95c5a2520d0ed68827b187adaa4bf7bab&paramsKey=0002&appKey=0001 
+ 
+http://10.128.31.195:10300/marsEmployee/queryEmployeeByBirthday?sign=CDCC495EDD8CB1A4A81E9E3D038E7E8B&params=d05d4c87de191cbbf1850476121c9e4c9f9f1404125963a183ebad438c3058e066618dbcac2aed021c731e73232fc3cd4e6c703d559b31dc8732d294f5f1e7e3a2b9415129b1f29ffd417c167d2dc6a31fc91aa0db8dff4d9acebe61d2147b64cde8b12e61bb9b14e72d3b2fa91dcc2e9ebfb6d8892d0f5196b13246348a251b70887755dcc6a5a23bd58dace52e9fbfee45aa88ca48178bae664a77c3943157063489085e6c99966d0d47d2146fab0f6547c732e8e5881dfd90476c1a9104e95c5a2520d0ed68827b187adaa4bf7bab&paramsKey=0002&appKey=0001 
+
+
+
+
+  
+http://localhost:8080/marsEmployee/queryAllEmpNo?sign=A7478FFD340EF49AFE5D2C38EE654421&params=cb9d9c478e6a44443d102e9b087a56f8c3ddd4cea93eb929a8a0dab64dc6524ca082cf5cddca60166072ed100a836b7f4e280afa8135ce0b2d933f8e5740e3f710c03da2e3315ba7018b9723e007e01e0ff22409eb3f8b08f4ed4c6ffeb036eb3402d4321a1a987d1cc196f36299d55b4c5f92507a4ac54b753bbc56755171dcf0182cbb3bb93936156194e2e9c0630d647a9ee5c77d2f35bc1a3a447fde4257f7e4cb6ab72e9db4a7618991ad4baa75&paramsKey=0002&appKey=0001
+  
+
+
+熟悉项目，克隆
+
+
+
+
+  
+  
+  
+？  
+ 1.typeHandler=com.gome.platform.basicdata.dao.typeHandler.OrgTypeHandler     映射到对应的枚举
+  
+  
+  
+  3.String... postNos   什么类型？
+  
+  
+
+  
+  
+2.？ sql语法 
+  
+ COUNT(IF(mdorg.level_detail=27,TRUE,null)) oneLvStoreCount,
+        COUNT(IF(mdorg.level_detail=28,TRUE,null)) twoLvStoreCount 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+e
+
+
+
+postname   duty_flag=1
+
+
+
+
+
+todo:
+国美分页插件设计思路：
+1.先计算总记录数
+2.在查询要找的信息
+2.计算总页数等
+
+
+
+
+
+
+
+
+
+
+
+
+

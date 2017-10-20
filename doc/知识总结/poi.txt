@@ -1,0 +1,27 @@
+
+
+
+
+
+
+
+
+
+
+一poi:
+
+有三种解析方式：
+1、eventmodel方式，基于事件驱动,SAX的方式解析excel（.xlsx是基于OOXML的），CPU和内存消耗非常低，但是只能读不能写
+
+2、usermodel，就是我们一般使用的方式，这种方式可以读可以写，但是CPU和内存消耗非常大
+
+3、SXSSF，POI3.8以后开始支持，这种方式只能写excel
+
+@see http://www.cnblogs.com/tootwo2/p/6683143.html
+
+HSSF － 提供读写Microsoft Excel XLS格式档案的功能。
+XSSF － 提供读写Microsoft Excel OOXML XLSX格式档案的功能
+
+1.HSSF
+HSSF 是Horrible SpreadSheet Format的缩写，通过HSSF，你可以用纯Java代码来读取、写入、修改Excel文件。
+HSSF 为读取操作提供了两类API：usermodel和eventusermodel，即“用户模型”和“事件-用户模型”。

@@ -1,0 +1,195 @@
+线程：
+
+线程并不是按它们创建时的顺序运行的。事实上， CPU 处理一个现有线程集的顺序是不确定的——
+除非我们亲自介入，并用 Thread 的 setPriority()方法调整它们的优先级。
+
+
+
+
+应用场景：高并发请求，一个系统同时执行多个程序如手机同时执行多个运用程序。
+
+编程特点：程序不会完全按照顺序执行，很有可能一个线程正在执行中，下一个线程也开始了执行
+
+同步：协作完成一个进程，线程安全，性能偏低
+
+实现的方法主要有wait，notify和notifyAll
+
+
+非同步：线程不安全的
+互斥：多个线程互相争夺资源如内存
+
+Daemon Thread(守护线程)： Daemon的作用是为其他线程的运行提供便利服务，比如垃圾回收线程就是一个很称职的守护者。
+
+Thread（所有线程的父类）并已实现了Runnable接口
+
+常见方法：
+public void run()
+如果该线程是使用独立的 Runnable 运行对象构造的，
+则调用该 Runnable 对象的 run 方法；否则，该方法不执行任何操作并返回。
+ run()通常采用一种
+无限循环的形式。也就是说，通过阻止外部发出对线程的 stop()或者 destroy()调用，它会永远运行下去
+（直到程序完成）。
+public void start()
+
+使该线程开始执行；Java 虚拟机调用该线程的 run 方法。 
+结果是两个线程并发地运行；当前线程（从调用返回给 start 方法）和另一个线程（执行其 run 方法）。 
+没有start方法thread类的任何方法都不会执行。
+
+多次启动一个线程是非法的。特别是当线程已经结束执行后，不能再重新启动。 
+抛出： 
+IllegalThreadStateException - 如果线程已经启动。
+
+
+public static void sleep(long millis)
+throws InterruptedException在指定的毫秒数内让当前正在执行的线程休眠（暂停执行），
+此操作受到系统计时器和调度程序精度和准确性的影响。该线程不丢失任何监视器的所属权。
+
+public static void yield()
+暂停当前正在执行的线程对象，并执行其他线程。
+public final void stop()
+已过时。 该方法具有固有的不安全性。强迫线程停止执行，错误的停止方式，会导致该线程未执行到最后就停住了
+public final void join()
+等待该线程终止。 即只有该线程执行完后才会执行该线程后面的程序。
+public static Thread currentThread() 
+返回对当前正在执行的线程对象的引用。
+Object类下：
+public final void wait(long timeout)
+在其他线程调用此对象的 notify() 方法或 notifyAll() 方法，或者超过指定的时间量前，导致当前线程等待。 
+当前线程必须拥有此对象监视器
+public final void notify()
+唤醒在此对象监视器上等待的单个线程。如果所有线程都在此对象上等待，则会选择唤醒其中一个线程。
+选择是任意性的，并在对实现做出决定时发生。线程通过调用其中一个 wait 方法，在对象的监视器上等待。
+public final void notifyAll()
+唤醒在此对象监视器上等待的所有线程。线程通过调用其中一个 wait 方法，在对象的监视器上等待。 
+Runnable（父接口）
+
+抽象方法：
+run（）；
+
+
+二.
+
+1.sleep和wait的区别       （参考自：https://my.oschina.net/dapengking/blog/159207）
+
+
+1、这两个方法来自不同的类分别是，sleep来自Thread类，和wait来自Object类。
+(重点)2. 资源占用情况
+最主要是sleep方法没有释放锁，而wait方法释放了锁,使得其他线程可以使用同步控制块或者方法。
+sleep（100L）意思为：占用CPU，线程休眠100毫秒
+wait（100L）意思为：不占用CPU，线程等待100毫秒
+(重点)3、使用范围：wait，notify和notifyAll只能在同步控制方法或者同步控制块里面使用，而sleep可以在任何地方使用 
+
+4,sleep必须捕获异常，而wait，notify和notifyAll不需要捕获异常
+
+Runnable与Thread
+
+若某样东西有一个 Runnable 接口，实际只是意味着它有一个 run()方法，但不存在与之相关的任何特殊东
+西—— 它不具有任何天生的线程处理能力，这与那些从Thread 继承的类是不同的。
+
+
+2.正确停止线程的方法
+
+使用退出的flag，而不是stop方法
+
+3.start与run
+Thread.run()是调用方法，Thread. start()是启动线程
+如：
+public class HelloSogou{
+     public static synchronized void main(String[] a){
+         Thread t=new Thread(){
+             public void run(){Sogou();}
+     };
+     t.run();
+     System.out.print("Hello");
+     }
+     static synchronized void Sogou(){
+     System.out.print("Sogou");
+    }
+}
+
+输出为：
+SogouHello
+
+
+run()方法中是线程代码，但是该线程对象并没有启动线程（thread.start()），
+所以这里的run()方法只是一个普通的方法，顺序执行。如果加入了t.start()方法,那么多线程就会启动，输出的结果将不确定。
+
+
+
+
+
+
+
+synchronized关键字
+1.当一个线程访问object的一个synchronized(this)同步代码块时，
+另一个线程仍然可以访问该object中的非synchronized(this)同步代码块。
+
+package ths;
+
+public class Thread2 {  
+     public void m4t1() {  
+			//只允许一个线程访问
+          synchronized(this) {  
+               int i = 5;  
+               while( i-- > 0) {  
+                    System.out.println(Thread.currentThread().getName() + " : " + i);  
+                    try {  
+                         Thread.sleep(500);  
+                    } catch (InterruptedException ie) {  
+                    }  
+               }  
+          }  
+     }  
+     public void m4t2() {  
+          int i = 5;  
+          while( i-- > 0) {  
+               System.out.println(Thread.currentThread().getName() + " : " + i);  
+               try {  
+                    Thread.sleep(500);  
+               } catch (InterruptedException ie) {  
+               }  
+          }  
+     }  
+     public static void main(String[] args) {  
+          final Thread2 myt2 = new Thread2();  
+          Thread t1 = new Thread(  new Runnable() {  public void run() {  myt2.m4t1();  }  }, "t1"  );  
+          Thread t2 = new Thread(  new Runnable() {  public void run() { myt2.m4t2();   }  }, "t2"  );  
+          t1.start();  
+          t2.start();  
+     } 
+}
+
+结果：  
+     t1 : 4  
+     t2 : 4  
+     t1 : 3  
+     t2 : 3  
+     t1 : 2  
+     t2 : 2  
+     t1 : 1  
+     t2 : 1  
+     t1 : 0  
+     t2 : 0
+
+
+
+
+FutureTask：
+一个线程未执行完，其他线程也可以并行执行
+
+将线程都交给了线程池来进行管理，线程池来安排各个线程的执行
+
+
+
+
+
+
+
+
+
+
+http://www.cnblogs.com/GarfieldEr007/p/5746362.html
+
+
+
+
