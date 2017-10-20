@@ -26,6 +26,11 @@ import java.util.Date;
  */
 public abstract class BigExcelReaderUtil {
 
+    /**
+     *单元格类型
+     * The type of the data value is indicated by an attribute on the cell. The
+     * value is usually in a "v" element within the cell.
+     */
     enum xssfDataType {
         BOOL, ERROR, FORMULA, INLINESTR, SSTINDEX, NUMBER,
     }
@@ -55,6 +60,7 @@ public abstract class BigExcelReaderUtil {
      * @throws SAXException
      */
     public BigExcelReaderUtil(String filename) throws IOException, OpenXML4JException, SAXException{
+        //Open a package with read/write permission.
         pkg = OPCPackage.open(filename);
         init(pkg);
     }
@@ -87,7 +93,8 @@ public abstract class BigExcelReaderUtil {
     }
 
     /**
-     * 初始化 将Excel转换为XML
+     * 初始化 parser和sheetSource
+     * 将Excel转换为XML，获得xml输入流
      *
      * @param pkg
      * @throws IOException
@@ -96,10 +103,13 @@ public abstract class BigExcelReaderUtil {
      */
     private void init(OPCPackage pkg) throws IOException, OpenXML4JException, SAXException{
         XSSFReader xssfReader = new XSSFReader(pkg);
+        //获取String表格
         SharedStringsTable sharedStringsTable = xssfReader.getSharedStringsTable();
         StylesTable stylesTable = xssfReader.getStylesTable();
+        //获取具体Excel的sheet表输入流
         sheet = xssfReader.getSheet("rId1");
         parser = fetchSheetParser(sharedStringsTable, stylesTable);
+        //xml输入流
         sheetSource = new InputSource(sheet);
     }
 
@@ -138,9 +148,18 @@ public abstract class BigExcelReaderUtil {
         return index;
     }
 
+    /**
+     *获取一个xml解析器
+     * @param sharedStringsTable
+     * @param stylesTable
+     * @return
+     * @throws SAXException
+     */
     private XMLReader fetchSheetParser(SharedStringsTable sharedStringsTable, StylesTable stylesTable) throws SAXException {
+        //获取一个xml阅读器实例
         XMLReader parser =
                 XMLReaderFactory.createXMLReader();
+        //获取一个内容处理器
         ContentHandler handler = new SheetHandler(sharedStringsTable, stylesTable);
         parser.setContentHandler(handler);
         return parser;
@@ -169,6 +188,14 @@ public abstract class BigExcelReaderUtil {
             this.stylesTable = stylesTable;
         }
 
+        /**
+         *
+         * @param uri
+         * @param localName
+         * @param name
+         * @param attributes
+         * @throws SAXException
+         */
         public void startElement(String uri, String localName, String name,
                                  Attributes attributes) throws SAXException {
             if(name.equals("c")) {// c > 单元格
