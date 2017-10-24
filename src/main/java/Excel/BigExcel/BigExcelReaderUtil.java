@@ -189,13 +189,15 @@ public abstract class BigExcelReaderUtil {
         }
 
         /**
-         *
-         * @param uri
-         * @param localName
-         * @param name
+         *标签（节点）解析开始时调用
+         * @param uri xml文档的命名空间
+         * @param localName 标签的名字
+         * @param name 带命名空间的标签名称
          * @param attributes
          * @throws SAXException
          */
+
+        @Override
         public void startElement(String uri, String localName, String name,
                                  Attributes attributes) throws SAXException {
             if(name.equals("c")) {// c > 单元格
@@ -229,12 +231,20 @@ public abstract class BigExcelReaderUtil {
             // 解析到一行的开始处时，初始化数组
             else if(name.equals("row")){
                 int cols = getColsNum(attributes);// 获取该行的单元格数
-                rowDatas = new String[cols];
-                rowTypes = new int[cols];
+                rowDatas = new String[cols]; //获取该行的数据
+                rowTypes = new int[cols]; //获取该行的数据类型
             }
             readValue = "";
         }
 
+        /**
+         * 节点解析结束后调用
+         * @param uri 命名空间的uri
+         * @param localName 标签的名称
+         * @param name 带命名空间的标签名称
+         * @throws SAXException
+         */
+        @Override
         public void endElement(String uri, String localName, String name)
                 throws SAXException {
             if(name.equals("v")) { // 单元格的值
@@ -292,6 +302,14 @@ public abstract class BigExcelReaderUtil {
             }
         }
 
+        /**
+         * 解析到每个元素的内容时会调用此方法
+         * @param ch
+         * @param start
+         * @param length
+         * @throws SAXException
+         */
+        @Override
         public void characters(char[] ch, int start, int length)
                 throws SAXException {
             readValue += new String(ch, start, length);

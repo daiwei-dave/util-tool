@@ -10,8 +10,8 @@ import java.util.Arrays;
  */
 public class BigExcelReaderTest {
     public static void main(String[] args) throws Exception{
-       // String filepath = "d:/竞争力模型-样机管理-201731.xlsx";
-        String filepath = "E:/poiTest.xlsx";
+        String filepath = "d:/竞争力模型-标准值-201731.xlsx";
+  //      String filepath = "E:/poiTest.xlsx";
 
  //       BigExcelReader reader = new BigExcelReader(filepath) {
         BigExcelReaderUtil reader=new BigExcelReaderUtil(filepath) {
