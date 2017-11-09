@@ -430,7 +430,7 @@ public class ExcelUitl {
 //				Object objValue = getFieldValueByNameSequence(enFields[i], item);
 //				String fieldValue=null;
 //				if(objValue instanceof Date){
-//					fieldValue = objValue == null ? "" : DateUtil.toDateString((Date)objValue, dateFormat);
+//					fieldValue = objValue == null ? "" : time.DateUtil.toDateString((Date)objValue, dateFormat);
 //				}else if(objValue instanceof BaseEnum){
 //					BaseEnum temp=	(BaseEnum)objValue;
 //					fieldValue = objValue == null ? "" : temp.getDisplayName();

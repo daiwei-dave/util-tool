@@ -1,7 +1,7 @@
 package reflect;
 
 /**
- * @Description 通过反射获取类类型的几种方法
+ * @Description 通过反射获取类类型的几种方法，并进行实例化
  * @auther diawei
  * @Date 2017年7月20日 下午5:14:19
  */
@@ -20,6 +20,7 @@ public class ClassDemo1 {
 		}
 		System.out.println(c2==c3);
 		try {
+			//将类进行实例化
 			Foo foo=(Foo)c1.newInstance();
 			foo.print();
 		} catch (InstantiationException e) {
