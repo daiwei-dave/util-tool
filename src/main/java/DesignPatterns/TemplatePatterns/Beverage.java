@@ -1,7 +1,7 @@
 package DesignPatterns.TemplatePatterns;
 
 /**
- * 1>创建一个模板(抽象)类：Beverage(饮料)
+ * 创建一个模板(抽象)类：制作Beverage(饮料)
  * Created by daiwei on 2017/3/15.
  */
 public abstract class Beverage {

@@ -5,7 +5,7 @@ package DesignPatterns.TemplatePatterns;
  */
 public class Test {
     public static void main(String[] args) {
-        Coffee coffee = new Coffee();
+        Beverage coffee = new Coffee();
         coffee.create();//冲泡咖啡
         System.out.println("-----------------------");
         Tea tea = new Tea();//冲泡茶
