@@ -15,7 +15,7 @@
           <element id="library" level="project" name="Maven: org.apache.poi:poi-ooxml:3.10.1" />
           <element id="library" level="project" name="Maven: dom4j:dom4j:1.6.1" />
           <element id="library" level="project" name="Maven: xml-apis:xml-apis:1.0.b2" />
-          <element id="library" level="project" name="Maven: com.github.daiwei-dave:simple-spring:0.0.1-SNAPSHOT" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/github/daiwei-dave/simple-spring/0.0.1-SNAPSHOT/simple-spring-0.0.1-20171110.110903-2.jar" output-file-name="simple-spring-0.0.1-SNAPSHOT.jar" />
           <element id="library" level="project" name="Maven: jaxen:jaxen:1.1.1" />
           <element id="library" level="project" name="Maven: jdom:jdom:1.0" />
           <element id="library" level="project" name="Maven: xerces:xercesImpl:2.6.2" />
