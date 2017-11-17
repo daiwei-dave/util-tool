@@ -1,7 +1,7 @@
 package reflect;
 
 
-import Validation.entity.CouponUser;
+
 
 public class ClassDemo3 {
 
