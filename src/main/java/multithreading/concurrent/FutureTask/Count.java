@@ -1,4 +1,4 @@
-package multithreading.FutureTask;
+package multithreading.concurrent.FutureTask;
 
 import java.util.ArrayList;
 import java.util.List;
