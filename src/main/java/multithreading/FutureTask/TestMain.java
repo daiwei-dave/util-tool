@@ -41,7 +41,7 @@ public class TestMain {
         for(int i=0;i<10;i++){
             //创建一个异步任务
             FutureTask<Integer> futureTask = new FutureTask<Integer>(callable);
-            //将返回结果放进list
+            //将返回结果异步任务列表
             futureTasks.add(futureTask);
             //提交异步任务到线程池，让线程池管理任务 特爽把。
             //由于是异步并行任务，所以这里并不会阻塞
