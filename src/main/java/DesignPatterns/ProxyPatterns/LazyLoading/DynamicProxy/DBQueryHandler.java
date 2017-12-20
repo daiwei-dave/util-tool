@@ -12,6 +12,15 @@ import java.lang.reflect.Proxy;
  */
 public class DBQueryHandler implements InvocationHandler{
     IDBQuery realQuery = null;//定义主题接口
+
+    /**
+     *
+     * @param proxy  在其上调用方法的代理实例
+     * @param method
+     * @param args
+     * @return
+     * @throws Throwable
+     */
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         //如果第一次调用，生成真实主题
         if(realQuery == null){

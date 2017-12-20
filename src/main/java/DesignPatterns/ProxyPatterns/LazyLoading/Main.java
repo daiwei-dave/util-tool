@@ -1,6 +1,7 @@
 package DesignPatterns.ProxyPatterns.LazyLoading;
 
 /**
+ * @sees https://www.ibm.com/developerworks/cn/java/j-lo-proxy-pattern/
  * Created by daiwei on 2017/3/31.
  */
 public class Main {
