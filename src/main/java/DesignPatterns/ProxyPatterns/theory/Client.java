@@ -1,4 +1,4 @@
-package DesignPatterns.ProxyPatterns.LazyLoading.theory;
+package DesignPatterns.ProxyPatterns.theory;
 
 /**
  * Created by daiwei on 2017/12/20.

@@ -1,4 +1,4 @@
-package DesignPatterns.ProxyPatterns.LazyLoading.theory;
+package DesignPatterns.ProxyPatterns.theory;
 
 /**
  * 抽象对象角色

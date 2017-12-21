@@ -217,6 +217,47 @@ public class DateUtil {
 	}
 
 
+	/**
+	 * 获取某月第一天
+	 * @return
+	 */
+	public static String getFirstDay(SimpleDateFormat format,String dateStr) {
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+		//获取当前月第一天：
+		Calendar c = Calendar.getInstance();
+		try {
+			c.setTime(format.parse(dateStr));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		c.set(Calendar.DAY_OF_MONTH,1);//设置为1号,当前日期既为本月第一天
+		String first = df.format(c.getTime());
+		System.out.println("===============first:"+first);
+		return first;
+	}
+
+
+	/**
+	 * 获取某月最后一天
+	 * @return
+	 */
+	public static String getLastDay(SimpleDateFormat format,String dateStr) {
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+		//获取当前月最后一天
+		Calendar ca = Calendar.getInstance();
+		try {
+			ca.setTime(format.parse(dateStr));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		ca.add(Calendar.MONTH, 1);
+		ca.add(Calendar.DAY_OF_MONTH, -1);
+		String last = df.format(ca.getTime());
+		System.out.println("===============last:"+last);
+		return last;
+	}
+
+
 
 }
 

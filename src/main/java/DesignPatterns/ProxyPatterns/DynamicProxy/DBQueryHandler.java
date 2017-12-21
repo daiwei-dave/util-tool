@@ -1,7 +1,7 @@
-package DesignPatterns.ProxyPatterns.LazyLoading.DynamicProxy;
+package DesignPatterns.ProxyPatterns.DynamicProxy;
 
-import DesignPatterns.ProxyPatterns.LazyLoading.DBQuery;
-import DesignPatterns.ProxyPatterns.LazyLoading.IDBQuery;
+import DesignPatterns.ProxyPatterns.DBQuery;
+import DesignPatterns.ProxyPatterns.IDBQuery;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

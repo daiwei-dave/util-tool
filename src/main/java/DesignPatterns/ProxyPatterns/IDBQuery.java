@@ -1,4 +1,4 @@
-package DesignPatterns.ProxyPatterns.LazyLoading;
+package DesignPatterns.ProxyPatterns;
 
 /**
  * 代理类和被代理对象需要实现的接口

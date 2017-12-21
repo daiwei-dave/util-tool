@@ -1,4 +1,4 @@
-package DesignPatterns.ProxyPatterns.LazyLoading;
+package DesignPatterns.ProxyPatterns;
 
 /**
  * 目标对象

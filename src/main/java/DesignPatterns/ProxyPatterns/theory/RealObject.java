@@ -1,4 +1,4 @@
-package DesignPatterns.ProxyPatterns.LazyLoading.theory;
+package DesignPatterns.ProxyPatterns.theory;
 
 /**
  * 目标对象角色
