@@ -16,10 +16,25 @@ public class genricMethod {
         System.out.println(t);
     }
 
+    /**
+     * 定义到可变参数
+     * @param args
+     * @param <T>
+     */
+    public static <T> void out(int x,T... args) {
+        System.out.println(x);
+        for (T t : args) {
+            System.out.println(t);
+        }
+    }
+
+
+
     public static void main(String[] args) {
-        out("findingsea");
-        out(123);
-        out(11.11);
-        out(true);
+//        out("findingsea");
+//        out(123);
+//        out(11.11);
+//        out(true);
+        out(1);
     }
 }
