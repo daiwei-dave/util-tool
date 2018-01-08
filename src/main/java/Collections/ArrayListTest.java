@@ -11,9 +11,19 @@ import java.util.List;
 public class ArrayListTest {
     public static void main(String[] args)
     {
-        add();
-        remove();
-    }
+//        add();
+//        remove();
+
+        List<String> a = new ArrayList<String>();
+        a.add("1");
+        a.add("2");
+        for (String temp : a) {
+            if ("2".equals(temp)) {
+                a.remove(temp);
+            }
+        }
+
+        }
 
     private static void remove() {
         List<String> list = new ArrayList<String>();
