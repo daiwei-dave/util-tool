@@ -10,6 +10,8 @@ public class Test {
         //饿汉模式
         HungryPatterns s1= HungryPatterns.getInstance();
         HungryPatterns s2= HungryPatterns.getInstance();
+        System.out.println(s1.hashCode());
+        System.out.println(s2.hashCode());
         if(s1==s2){
             System.out.println("s1和s2是同一个实例");
         }else{
