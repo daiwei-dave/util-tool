@@ -2,6 +2,9 @@ package Generic.genericInterface;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 /**
@@ -16,5 +19,21 @@ public class FruitGeneratorTest {
         System.out.println(generator.next());
         System.out.println(generator.next());
     }
+
+
+
+
+
+    @Test
+    public void mytest() throws Exception {
+        ArrayList list = new ArrayList();
+        System.out.println(list instanceof List);
+    }
+
+
+
+
+
+
 
 }

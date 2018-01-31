@@ -24,10 +24,6 @@ public class MyProxy implements InvocationHandler{
             System.out.println("end");
         }
     }
-    public static void main(String[] args) {
-        MyProxy proxy = new MyProxy();
-        Base targetObject = (Base) proxy.bind(new TargetObject());
-        targetObject.print();
-    }
+
 
 }
