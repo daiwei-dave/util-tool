@@ -95,4 +95,19 @@ public class FinallyTest {
 
      //    return b;
     }
+
+    /**
+     * for循环里每条循环语句执行完之后都会执行finally语句，而不是循环全部执行完之后再执行finally语句。
+     */
+    public static  void testVoid(){
+        for (int i = 0; i <5 ; i++) {
+            try {
+                System.out.println("hah"+i);
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }finally {
+                System.out.println(i);
+            }
+        }
+    }
 }
