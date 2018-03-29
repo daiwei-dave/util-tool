@@ -13,6 +13,11 @@ public class User {
 		this.age = age;
 	}
 
+	public User(String username, String userpass) {
+		this.username = username;
+		this.userpass = userpass;
+	}
+
 	public String getUsername() {
 		return username;
 	}

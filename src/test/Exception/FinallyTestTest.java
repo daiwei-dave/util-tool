@@ -10,7 +10,10 @@ import static org.junit.Assert.*;
 public class FinallyTestTest {
     @Test
     public void testVoid() throws Exception {
-        FinallyTest.testVoid();
+        double i=0.4;
+        int m= (int) i;
+        System.out.println(m);
+  //      FinallyTest.testVoid();
     }
 
 }
