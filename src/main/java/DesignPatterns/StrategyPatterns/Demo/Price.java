@@ -1,7 +1,7 @@
 package DesignPatterns.StrategyPatterns.Demo;
 
 /**
- * 相当于context
+ * 价格类相当于context
  * Created by daiwei on 2017/3/15.
  */
 public class Price {
