@@ -3,7 +3,7 @@ package DesignPatterns.ObserverPatterns.jdk;
 import java.util.Observable;
 
 /**
- * 被观察者
+ * 被观察者:相当于消息生产者
  * Created by daiwei on 2017/12/28.
  */
 public class Watched extends Observable{

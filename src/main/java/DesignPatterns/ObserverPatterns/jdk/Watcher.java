@@ -4,6 +4,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
+ * 观察者：相当于消息消费者
  * Created by daiwei on 2017/12/28.
  */
 public class Watcher implements Observer {

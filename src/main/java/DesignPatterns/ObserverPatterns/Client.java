@@ -13,6 +13,10 @@ public class Client {
         subject.attach(observer);
         //改变主题对象的状态
         subject.change("new state");
+
+
+
+
         observer.update(subject);
 
     }
