@@ -4,15 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
+
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
@@ -76,6 +76,9 @@ public class BaiduApiUtil {
 
     /**
      * 调用百度地图api
+     * <P>
+     *     urlConnection.getInputStream():读取返回的输入流
+     * </P>
      * @param url
      * @return
      */

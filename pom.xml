@@ -213,12 +213,14 @@
 
 
 
-    <!--rocketmq-->
+    <!-- fastjson -->
     <dependency>
-      <groupId>org.apache.rocketmq</groupId>
-      <artifactId>rocketmq-client</artifactId>
-      <version>4.2.0</version>
+      <groupId>com.alibaba</groupId>
+      <artifactId>fastjson</artifactId>
+      <version>1.2.7</version>
     </dependency>
+
+
 
 
     <!--Apache HttpClient-->

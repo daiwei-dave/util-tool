@@ -19,6 +19,7 @@ public class CalendarDemoTest {
 
     /**
      * 移位运算测试
+     * @sees https://www.cnblogs.com/hongten/p/hongten_java_yiweiyunsuangfu.html
      * @throws Exception
      */
     @Test
@@ -26,8 +27,9 @@ public class CalendarDemoTest {
         int number = 10;
         //原始数二进制
         printInfo(number);
-        number = number << 1;
         //左移一位
+        number = number << 1;
+
         printInfo(number);
         number = number >> 1;
         //右移一位

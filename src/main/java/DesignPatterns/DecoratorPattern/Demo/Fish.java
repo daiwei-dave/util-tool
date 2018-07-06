@@ -9,9 +9,9 @@ public class Fish extends Change {
         super(sage);
     }
 
-//    @Override
-//    public void move() {
-//        // 代码
-//        System.out.println("Fish Move");
-//    }
+    @Override
+    public void move() {
+        // 代码
+        System.out.println("Fish Move");
+    }
 }
