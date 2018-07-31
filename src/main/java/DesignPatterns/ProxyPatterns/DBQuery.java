@@ -16,4 +16,8 @@ public class DBQuery implements IDBQuery{
     public String request() {
         return "request string";
     }
+
+    public String reponse() {
+        return null;
+    }
 }

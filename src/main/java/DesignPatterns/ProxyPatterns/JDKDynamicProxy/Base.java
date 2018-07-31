@@ -5,4 +5,7 @@ package DesignPatterns.ProxyPatterns.JDKDynamicProxy;
  */
 public interface Base {
     public void print();
+
+
+    public void sing();
 }

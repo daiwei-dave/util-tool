@@ -7,4 +7,9 @@ public class TargetObject implements Base{
     public void print(){
         System.out.println("hahah");
     }
+
+
+    public void sing(){
+        System.out.println("sing");
+    }
 }

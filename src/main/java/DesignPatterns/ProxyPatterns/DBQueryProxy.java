@@ -14,4 +14,8 @@ public class DBQueryProxy implements IDBQuery{
         return real.request();
     }
 
+    public String reponse() {
+        return null;
+    }
+
 }

@@ -8,5 +8,6 @@ public class Client {
         MyProxy proxy = new MyProxy();
         Base targetObject = (Base) proxy.bind(new TargetObject());
         targetObject.print();
+        targetObject.sing();
     }
 }

@@ -6,4 +6,6 @@ package DesignPatterns.ProxyPatterns;
  */
 public interface IDBQuery {
     String request();
+
+    String reponse();
 }
