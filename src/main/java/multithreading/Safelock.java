@@ -4,6 +4,9 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.Random;
 
+/**
+ * http://www.iteye.com/magazines/131-Java-Concurrency#576
+ */
 public class Safelock {
     static class Friend {
         private final String name;

@@ -2,7 +2,7 @@ package multithreading;
 
 /**
  * 线程阻塞例子,另一个线程始终无法执行
- * @seehttp://www.iteye.com/magazines/131-Java-Concurrency#576
+ * @sees http://www.iteye.com/magazines/131-Java-Concurrency#576
  * Created by daiwei on 2017/7/21.
  */
 public class DeadLock {
@@ -34,7 +34,13 @@ public class DeadLock {
             System.out.format("%s: %s"
                             + "  has bowed to me!%n",
                     this.name, bower.getName());
+            System.out.format("%s"
+                            + "  start bowBack to %s!%n",
+                    this.name,bower.getName());
             bower.bowBack(this);
+            System.out.format("%s"
+                            + "  end bowBack to %s!%n",
+                    this.name,bower.getName());
         }
 
         public synchronized void bowBack(Friend bower) {
