@@ -41,7 +41,7 @@ public class demo {
                 {
                     System.out.print((char)buf.get());
                 }
-
+                System.out.println("------------");
                 buf.compact();
                 bytesRead = fileChannel.read(buf);
                 System.out.println(bytesRead);
@@ -59,7 +59,9 @@ public class demo {
         }
     }
 
-
+    /**
+     * io
+     */
     public  static void method2(){
         InputStream in = null;
         try{
@@ -138,7 +140,12 @@ public class demo {
         }
     }
 
-
+    /**
+     * 服务端
+     * <P>
+     *     阻塞
+     * </P>
+     */
     public static void server(){
         ServerSocket serverSocket = null;
         InputStream in = null;
