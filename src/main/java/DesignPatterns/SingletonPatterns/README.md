@@ -4,7 +4,7 @@
 
 
 
-利用反射打破单例模式等待续.......
+
 
 @see 
 1.《JAVA与模式》之单例模式https://www.cnblogs.com/java-my-life/archive/2012/03/31/2425631.html
