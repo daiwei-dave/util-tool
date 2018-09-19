@@ -259,5 +259,36 @@ public class DateUtil {
 
 
 
+	public static Date getLastMonthDayStart() {
+		Calendar calendar = Calendar.getInstance();
+		//当前月的前1个月
+		calendar.add(Calendar.MONTH, -1);
+		calendar.set(Calendar.DAY_OF_MONTH,1);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+
+
+		return calendar.getTime();
+	}
+
+
+	public static Date getLastAmountMonthDayStart(int amount) {
+		Calendar calendar = Calendar.getInstance();
+		//当前月的前amount个月
+		calendar.add(Calendar.MONTH, amount);
+		calendar.set(Calendar.DAY_OF_MONTH,1);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+
+
+		return calendar.getTime();
+	}
+
+
+
 }
 
