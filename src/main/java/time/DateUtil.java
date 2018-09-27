@@ -93,9 +93,7 @@ public class DateUtil {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		System.out.println("hah");
 
-//		Date dBegin = sdf.parse(start);
-//		Date dEnd = sdf.parse(end);
-//		List<Date> listDate = getDatesBetweenTwoDate(dBegin, dEnd);
+
 		List<Date> listDate = getDatesBetweenTwoDate(start, end);
 		for(int i=0;i<listDate.size();i++){
 			System.out.println(sdf.format(listDate.get(i)));
@@ -103,8 +101,72 @@ public class DateUtil {
 
 
 
+//		checkDates("2018年9月,2018年10月");
 
+//		checkDates("2018年9月,2018年13月");
+//		checkDates("2018年9月,2018-02");
+        checkDates("2018年9月，2018-02");
 	}
+
+
+    /**
+     * JAVA 判断一个字符串是不是一个合法的日期格式
+     * @sees https://www.cnblogs.com/xdp-gacl/p/3548307.html
+     * @param str
+     * @return
+     */
+	public static boolean isValidDate(String str) {
+		boolean convertSuccess = true;
+		SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月");
+		try {
+			format.parse(str);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			// 如果throw java.text.ParseException或者NullPointerException，就说明格式不对
+			convertSuccess = false;
+		}
+		return convertSuccess;
+	}
+
+    /**
+     * JAVA 判断一个字符串是不是一个合法的日期格式
+     * @sees https://www.cnblogs.com/xdp-gacl/p/3548307.html
+     * @param str
+     * @return
+     */
+	public static boolean checkDates(String str) {
+		boolean convertSuccess = true;
+        String regex = ",|，|\\s+";
+        String[] strs = str.split(regex); // 用,分割
+		if (strs==null||str.length()==0){
+			return false;
+		}
+		for (int i = 0; i <strs.length ; i++) {
+			String var = strs[i];
+
+			SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月");
+			try {
+				// 设置lenient为false. 否则SimpleDateFormat会比较宽松地验证日期，比如2007/02/29会被接受，并转换成2007/03/01
+				format.setLenient(false);
+				Date parseDate = format.parse(var);
+				String dateStr = format.format(parseDate);
+				System.out.println(dateStr);
+
+
+				format.parse(var);
+			} catch (ParseException e) {
+				e.printStackTrace();
+				// 如果throw java.text.ParseException或者NullPointerException，就说明格式不对
+				convertSuccess = false;
+			}
+		}
+		return convertSuccess;
+	}
+
+
+
+
+
 
 	/**
 	 * 根据开始时间和结束时间返回时间段内的时间集合
