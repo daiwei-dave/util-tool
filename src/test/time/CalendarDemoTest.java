@@ -11,11 +11,11 @@ public class CalendarDemoTest {
 
     @Test
     public void setCalendar() throws Exception {
-        CalendarDemo.setCalendar();
-        String url="http://bjgc3-gos.gomecloud.com/ax-upload/storage/emulated/0/Android/data/com.gome.axlogistics/tiny/tiny-975-2018-06-15-14-22-54.jpg";
+
+        String url="GOODSMILECOMPANY";
         System.out.println(url.length());
 
-        System.out.println(2/10);
+
     }
 
 
