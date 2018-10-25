@@ -12,7 +12,9 @@ public class AtomicTest {
 
  //       test1();
 
-        test2();
+//        test2();
+
+        test3();
 
     }
 
@@ -33,8 +35,20 @@ public class AtomicTest {
         }
     }
 
+
+    private static void test3() {
+        AtomicDemo2 ad = new AtomicDemo2();
+
+        for(int i=0; i < 10; i++){
+            new Thread(ad).start();
+        }
+    }
+
 }
 
+/**
+ * 存在线程安全问题
+ */
 class AtomicDemo implements Runnable{
     private int serialNumber = 0;
 
@@ -74,5 +88,28 @@ class AtomicDemo2 implements Runnable{
     public int getSerialNumber(){
         // 自增运算
         return serialNumber.getAndIncrement();
+    }
+}
+
+
+/**
+ * 存在线程安全问题,volatile关键字无法保证原子性
+ */
+class AtomicDemo3 implements Runnable{
+    private volatile int serialNumber = 0;
+
+    public void run(){
+
+        try{
+            Thread.sleep(200);
+        }catch(InterruptedException e){
+
+        }
+
+        System.out.println(Thread.currentThread().getName() + ":" + getSerialNumber());
+    }
+
+    public int getSerialNumber(){
+        return serialNumber++;
     }
 }
