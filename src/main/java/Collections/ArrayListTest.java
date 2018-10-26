@@ -1,6 +1,7 @@
 package Collections;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,7 +24,10 @@ public class ArrayListTest {
             }
         }
 
-        }
+
+    //    List<String> synchronizedList = Collections.synchronizedList(a);
+
+    }
 
     private static void remove() {
         List<String> list = new ArrayList<String>();
