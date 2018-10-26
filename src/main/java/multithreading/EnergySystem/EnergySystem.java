@@ -59,6 +59,10 @@ public class EnergySystem {
             // 收获能量
             energyBoxes[to] += amount;
             System.out.printf(" 能量总和：%10.2f%n", getTotalEnergies());
+
+//            //使用notify()也有可能会死锁，因为唤醒等待的线程是随机的，可能某个线程一直不被唤醒
+//            lockObj.notify();
+
             //唤醒所有在lockObj对象上等待的线程,将会由其他线程来执行唤醒操作
             lockObj.notifyAll();
         }

@@ -26,6 +26,9 @@ public class EnergyTransferTask implements Runnable{
         try{
             while (true){
                 int toBox = (int) (energySystem.getBoxAmount()* Math.random());
+                //这样设置可能会造成死锁，10个线程都处于阻塞状态，系统无法运行，可参考coreJava相关例子
+//                 double amount = 200 * Math.random();
+
                 double amount = maxAmount * Math.random();
                 energySystem.transfer(fromBox, toBox, amount);
                 Thread.sleep((int) (DELAY * Math.random()));
