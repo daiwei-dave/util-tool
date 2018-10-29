@@ -46,6 +46,33 @@ public class CountDownLatchTest {
             latch.await();
             System.out.println("2个子线程已经执行完毕");
             System.out.println("继续执行主线程");
+
+
+            /**
+             * CountDownLatch是不能够重用的
+             */
+//            new Thread(){
+//                public void run() {
+//                    try {
+//                        System.out.println("子线程"+Thread.currentThread().getName()+"正在执行");
+//                        Thread.sleep(3000);
+//                        System.out.println("子线程"+Thread.currentThread().getName()+"执行完毕");
+//                        latch.countDown();
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                };
+//            }.start();
+//            //所有任务没有执行完，主线程一直等待
+//            latch.await();
+//            System.out.println("第三个子线程已经执行完毕");
+//            System.out.println("再次执行主线程");
+
+
+
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }

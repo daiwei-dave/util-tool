@@ -15,7 +15,7 @@ public class FutureTest {
         ExecutorService executor = Executors.newCachedThreadPool();
         Task task = new Task();
         Future<Integer> result = executor.submit(task);
-        //清理线程池
+        //关闭线程池
         executor.shutdown();
 
         try {
