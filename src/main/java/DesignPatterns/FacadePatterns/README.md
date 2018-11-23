@@ -9,7 +9,7 @@
 划分访问层次
 
 1.通过合理使用Facade，可以帮助我们更好地划分访问的层次。有些方法是对系统外的，有些方法是系统内部使用的。
-把需要暴露给外部的功能集中到门面中，这样既方便客户端使用，也很好地隐藏了内部的细节。
+把需要暴露给外部的功能集中到门面中，这样既方便客户端使用，也很好地隐藏了内部的细节。而系统内部的可以不使用门面
 
 
 
@@ -20,3 +20,4 @@
 facade外观模式
 https://www.cnblogs.com/lthIU/p/5860607.html
 https://www.cnblogs.com/jiafuwei/p/6237613.html
+https://www.cnblogs.com/java-my-life/archive/2012/05/02/2478101.html
