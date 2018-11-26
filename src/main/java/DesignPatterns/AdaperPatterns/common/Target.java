@@ -1,4 +1,4 @@
-package DesignPatterns.AdaperPatterns;
+package DesignPatterns.AdaperPatterns.common;
 
 /**
  * Created by daiwei on 2017/3/15.

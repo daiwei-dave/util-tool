@@ -1,4 +1,4 @@
-package DesignPatterns.AdaperPatterns;
+package DesignPatterns.AdaperPatterns.common;
 
 /**
  * 没有sampleOperation2()方法
