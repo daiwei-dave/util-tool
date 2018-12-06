@@ -27,8 +27,8 @@
 
 动态代理实现思路
 
-1.创建代理对象，即实现InvocationHandler接口，并在该类中创建代理对象的方法并实现接口中的invoke方法
-2.使用代理对象
+1.创建代理对象，即会使用到Proxy 类创建代理对象
+2.使用代理对象，即实现InvocationHandler接口，并实现接口中的invoke方法
 
 
 
