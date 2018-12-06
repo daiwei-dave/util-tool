@@ -19,4 +19,6 @@
  @see Java内部类详解https://www.cnblogs.com/dolphin0520/p/3811445.html
     
     
+  成员内部类 :成员内部类可以无条件地访问外部类的成员
+   
     
