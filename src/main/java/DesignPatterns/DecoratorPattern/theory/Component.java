@@ -1,4 +1,4 @@
-package DesignPatterns.DecoratorPattern;
+package DesignPatterns.DecoratorPattern.theory;
 
 /**
  * 抽象构件角色

@@ -1,4 +1,6 @@
-package DesignPatterns.DecoratorPattern;
+package DesignPatterns.DecoratorPattern.theory;
+
+import DesignPatterns.DecoratorPattern.theory.Component;
 
 /**
  * 具体构件角色
@@ -9,5 +11,6 @@ public class ConcreteComponent implements Component {
 
     public void sampleOperation() {
         // 写相关的业务代码
+        System.out.println("ConcreteComponent.sampleOperation method");
     }
 }

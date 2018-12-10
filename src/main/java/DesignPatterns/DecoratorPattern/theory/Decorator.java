@@ -1,4 +1,6 @@
-package DesignPatterns.DecoratorPattern;
+package DesignPatterns.DecoratorPattern.theory;
+
+import DesignPatterns.DecoratorPattern.theory.Component;
 
 /**
  * 装饰角色
