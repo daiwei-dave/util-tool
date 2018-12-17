@@ -1,4 +1,4 @@
-package multithreading.EnergySystem;
+package multithreading.demo.EnergySystem;
 
 /**
  * 宇宙的能量系统 遵循能量守恒定律： 能量不会凭空创生或消失，只会从一处转移到另一处

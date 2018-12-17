@@ -1,4 +1,4 @@
-package multithreading.EnergySystem;
+package multithreading.demo.EnergySystem;
 
 /**
  * Created by daiwei on 2017/4/1.
