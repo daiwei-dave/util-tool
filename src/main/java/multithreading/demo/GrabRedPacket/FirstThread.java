@@ -1,4 +1,4 @@
-package multithreading.DemoTest;
+package multithreading.demo.GrabRedPacket;
 
 import java.util.Random;
 
