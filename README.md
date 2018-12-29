@@ -7,10 +7,10 @@
 
 2.某些代码学习演示
 
-1.anontation 注解代码演示
+1.anontation: 注解代码演示
 
 
 
-DesignPatterns  设计模式相关代码
+DesignPatterns:  设计模式相关代码
 
-multithreading  Java并发相关代码
+multithreading:  Java并发相关代码
