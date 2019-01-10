@@ -18,7 +18,7 @@ public class CacheManagerImpl implements ICacheManager{
      * @param key
      * @param cache
      */
-    public void putCache(String key, EntityCache cache) {
+    public synchronized void putCache(String key, EntityCache cache) {
         caches.put(key, cache);
     }
 
@@ -27,7 +27,7 @@ public class CacheManagerImpl implements ICacheManager{
      * @param key
      * @param cache
      */
-    public void putCache(String key, Object datas, long timeOut) {
+    public synchronized void putCache(String key, Object datas, long timeOut) {
         timeOut = timeOut > 0 ? timeOut : 0L;
         putCache(key, new EntityCache(datas, timeOut, System.currentTimeMillis()));
     }

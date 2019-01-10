@@ -16,7 +16,8 @@ public class TestCache {
     static Logger logger = LoggerFactory.getLogger(TestCache.class);
 
     public static void main(String[] args) {
-        testCacheManager();
+   //     testCacheManager();
+        testThredSafe();
     }
 
 
@@ -40,11 +41,11 @@ public class TestCache {
     /**
      * 测试线程安全
      */
-    public void testThredSafe() {
+    public static void testThredSafe() {
         final String key = "thread";
         final CacheManagerImpl cacheManagerImpl = new CacheManagerImpl();
         ExecutorService exec = Executors.newCachedThreadPool();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             exec.execute(new Runnable() {
                 public void run() {
                     if (!cacheManagerImpl.isContains(key)) {
