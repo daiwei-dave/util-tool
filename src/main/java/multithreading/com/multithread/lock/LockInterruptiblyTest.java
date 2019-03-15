@@ -36,7 +36,7 @@ public class LockInterruptiblyTest {
             System.out.println(thread.getName()+"得到了锁");
             long startTime = System.currentTimeMillis();
             for(    ;     ;) {
-                if(System.currentTimeMillis() - startTime >= 2000)
+                if(System.currentTimeMillis() - startTime >= 2500)
                     break;
                 //插入数据
             }
