@@ -1,6 +1,5 @@
 package DesignPatterns.CommandPatterns.theory;
 
-import DesignPatterns.CommandPatterns.theory.Command;
 
 /**
  * @author daiwei
