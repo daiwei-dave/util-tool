@@ -3,7 +3,8 @@
 在阎宏博士的《JAVA与模式》一书中开头是这样描述简单工厂模式的：简单工厂模式是类的创建模式，又叫做静态工厂方法（Static Factory Method）模式。
 简单工厂模式是由一个工厂对象决定创建出哪一种产品类的实例。
 
-简单工厂模式其实质就是实例的创建封装到工厂方法里面去执行。
+自己理解：
+即更据传入的参数做判断来决定创建那种实例，其实质就是实例的创建封装到工厂方法里面去执行。
 
 @see http://www.cnblogs.com/java-my-life/archive/2012/03/22/2412308.html
 
@@ -23,3 +24,8 @@ http://www.cnblogs.com/java-my-life/archive/2012/03/28/2418836.html
 
 优点：
 可以解决兼容问题
+
+
+简单工厂、工厂方法、抽象工厂之小结、区别 
+ 
+@see https://www.cnblogs.com/qiaoconglovelife/p/5750290.html
